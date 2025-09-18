@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Implementación - Cotizador de Seguros</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        nav a {
+            display: block;
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            border: 2px solid #667eea;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        .method-section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method-icon {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .description {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .implementation-tabs {
+            margin: 20px 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 0 8px 8px 8px;
+            border: 2px solid #dee2e6;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin: 15px 0;
+            white-space: pre-line;
+        }
+
+        .keyword {
+            color: #c678dd;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .number {
+            color: #d19a66;
+        }
+
+        .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .function {
+            color: #61afef;
+        }
+
+        .variable {
+            color: #e06c75;
+        }
+
+        .flowchart {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            min-height: 300px;
+            border: 1px solid #dee2e6;
+        }
+
+        .flowchart-container {
+            width: 100%;
+            height: 350px;
+        }
+
+        .rules-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .rules-table th,
+        .rules-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .rules-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .rules-table tr:hover {
+            background: #f1f3f5;
+        }
+
+        .tip-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box strong {
+            color: #1976d2;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #f57c00;
+        }
+
+        .formula {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+            border: 2px dashed #999;
+        }
+
+        @media (max-width: 768px) {
+            .tab-buttons {
+                flex-direction: column;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            main {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚗 Guía de Implementación</h1>
+            <p class="subtitle">Sistema de Cotización de Seguros de Automóviles</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#contexto">Contexto del Problema</a></li>
+                <li><a href="#diagrama-clase">Diagrama de Clase</a></li>
+                <li><a href="#introduccion">Introducción</a></li>
+                <li><a href="#prima-base">Prima Base</a></li>
+                <li><a href="#factor-edad">Factor Edad</a></li>
+                <li><a href="#factor-experiencia">Factor Experiencia</a></li>
+                <li><a href="#factor-antiguedad">Factor Antigüedad</a></li>
+                <li><a href="#descuento-deducible">Descuento Deducible</a></li>
+                <li><a href="#costos-adicionales">Costos Adicionales</a></li>
+                <li><a href="#prima-total">Prima Total</a></li>
+                <li><a href="#otros-metodos">Otros Métodos</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- CONTEXTO DEL PROBLEMA -->
+            <section id="contexto" class="method-section">
+                <h2>
+                    <span class="method-icon">🚗</span>
+                    Contexto del Problema
+                </h2>
+
+                <div class="description">
+                    <h3>🎯 ¿Qué es un Sistema de Cotización de Seguros?</h3>
+                    <p>Un <strong>sistema de cotización de seguros</strong> es una aplicación que calcula el costo (prima) que debe pagar un cliente por asegurar su vehículo. Este cálculo se basa en múltiples factores de riesgo que las compañías de seguros evalúan para determinar la probabilidad de siniestros.</p>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 ¿Por qué varía el precio del seguro?</strong>
+                    <p>Las compañías de seguros evalúan el <strong>riesgo</strong> de cada cliente. A mayor riesgo de accidentes o daños, mayor será la prima a pagar. Los factores principales incluyen:</p>
+                    <ul>
+                        <li><strong>Edad del conductor:</strong> Conductores jóvenes (&lt;25) y mayores (&gt;65) tienen más accidentes</li>
+                        <li><strong>Experiencia:</strong> Conductores novatos (menos de 2 años) representan mayor riesgo</li>
+                        <li><strong>Vehículo:</strong> Autos más caros requieren reparaciones más costosas</li>
+                        <li><strong>Antigüedad del vehículo:</strong> Autos viejos pueden tener fallas mecánicas</li>
+                        <li><strong>Tipo de cobertura:</strong> Más cobertura = mayor protección = mayor costo</li>
+                    </ul>
+                </div>
+
+                <div class="description">
+                    <h3>📊 Componentes del Sistema</h3>
+                    <p>Nuestro sistema calcula la prima considerando:</p>
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Descripción</th>
+                            <th>Impacto en la Prima</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Prima Base</strong></td>
+                            <td>Porcentaje del valor del vehículo según cobertura</td>
+                            <td>Punto de partida del cálculo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Factor Edad</strong></td>
+                            <td>Multiplicador según edad del conductor</td>
+                            <td>×1.5 jóvenes, ×1.3 mayores</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Factor Experiencia</strong></td>
+                            <td>Ajuste por años de experiencia</td>
+                            <td>×1.3 novatos, ×0.9 expertos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Factor Antigüedad</strong></td>
+                            <td>Recargo por vejez del vehículo</td>
+                            <td>×1.0 nuevo, ×1.3 muy antiguo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Descuento Deducible</strong></td>
+                            <td>Descuento por aceptar deducible alto</td>
+                            <td>Hasta 15% de descuento</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Servicios Adicionales</strong></td>
+                            <td>Costos fijos por servicios extras</td>
+                            <td>+$500 asistencia, +$1200 reemplazo</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="formula">
+                    🧮 FÓRMULA FINAL:<br>
+                    Prima Total = (Prima Base × Factor Edad × Factor Experiencia × Factor Antigüedad)<br>
+                    × (1 - Descuento Deducible) + Costos Adicionales
+                </div>
+
+                <div class="warning-box">
+                    <strong>🎯 Tu Misión:</strong>
+                    <p>Como desarrollador, debes implementar la lógica que automatice estos cálculos. El sistema debe:</p>
+                    <ul>
+                        <li>✅ <strong>Calcular correctamente</strong> cada componente</li>
+                        <li>✅ <strong>Validar los datos</strong> de entrada</li>
+                        <li>✅ <strong>Aplicar las reglas de negocio</strong> específicas</li>
+                        <li>✅ <strong>Integrar todos los factores</strong> en una prima final</li>
+                        <li>✅ <strong>Proporcionar información</strong> detallada al cliente</li>
+                    </ul>
+                </div>
+
+                <div class="description">
+                    <h3>🏗️ Ejemplo Práctico</h3>
+                    <p><strong>Caso:</strong> Juan, 22 años, 1 año de experiencia, quiere asegurar su Toyota Corolla 2020 (valor $25,000) con cobertura básica, deducible 10%, sin servicios adicionales.</p>
+
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>Cálculo paso a paso:</strong><br>
+                        1. Prima Base: $25,000 × 3% = <strong>$750</strong><br>
+                        2. Factor Edad: 22 años → <strong>1.5</strong> (conductor joven)<br>
+                        3. Factor Experiencia: 1 año → <strong>1.3</strong> (novato)<br>
+                        4. Factor Antigüedad: 4 años → <strong>1.1</strong> (seminuevo)<br>
+                        5. Prima Ajustada: $750 × 1.5 × 1.3 × 1.1 = <strong>$1,283.25</strong><br>
+                        6. Descuento 10%: 7% → <strong>$1,283.25 × 0.93 = $1,193.42</strong><br>
+                        7. Servicios: <strong>$0</strong><br>
+                        8. <strong>Prima Total Anual: $1,193.42</strong><br>
+                        9. <strong>Prima Mensual: $99.45</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIAGRAMA DE CLASE -->
+            <section id="diagrama-clase" class="method-section">
+                <h2>
+                    <span class="method-icon">🏗️</span>
+                    Diagrama de Clase
+                </h2>
+
+                <div class="description">
+                    <p>El sistema está compuesto por una clase principal <code>CotizadorSeguro</code> que encapsula toda la lógica de cálculo del seguro.</p>
+                </div>
+
+                <div class="flowchart">
+                    <div class="mermaid" id="class-diagram">
+                        classDiagram
+                            class CotizadorSeguro {
+                                -String marcaVehiculo
+                                -String modeloVehiculo
+                                -int anioVehiculo
+                                -double valorVehiculo
+                                -String nombreConductor
+                                -int edadConductor
+                                -String generoConductor
+                                -int aniosExperiencia
+                                -String tipoCobertura
+                                -boolean incluyeAsistenciaVial
+                                -boolean incluyeVehiculoReemplazo
+                                -int deduciblePorcentaje
+                                +CotizadorSeguro(...)
+                                +calcularPrimaBase() double
+                                +calcularFactorEdad() double
+                                +calcularFactorExperiencia() double
+                                +calcularFactorAntiguedad() double
+                                +calcularDescuentoDeducible() double
+                                +calcularCostosAdicionales() double
+                                +calcularPrimaTotal() double
+                                +calcularPrimaMensual() double
+                                +esElegible() boolean
+                                +calificaDescuentoBuenConductor() boolean
+                                +calcularMontoMaximoCobertura() double
+                                +requiereInspeccion() boolean
+                                +generarResumenCotizacion() String
+                                +validarDatos() boolean
+                                +getters_y_setters()...
+                            }
+                    </div>
+                </div>
+
+                <div class="description">
+                    <h3>📋 Responsabilidades de la Clase</h3>
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Métodos</th>
+                            <th>Función</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cálculo de Factores</strong></td>
+                            <td>calcularPrimaBase()<br>calcularFactorEdad()<br>calcularFactorExperiencia()<br>calcularFactorAntiguedad()</td>
+                            <td>Calculan los componentes básicos del seguro</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Descuentos y Extras</strong></td>
+                            <td>calcularDescuentoDeducible()<br>calcularCostosAdicionales()</td>
+                            <td>Manejan descuentos y servicios adicionales</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cálculo Final</strong></td>
+                            <td>calcularPrimaTotal()<br>calcularPrimaMensual()</td>
+                            <td>Integran todos los componentes en el resultado final</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Validación</strong></td>
+                            <td>esElegible()<br>validarDatos()</td>
+                            <td>Verifican la validez de los datos ingresados</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Condiciones Especiales</strong></td>
+                            <td>calificaDescuentoBuenConductor()<br>requiereInspeccion()<br>calcularMontoMaximoCobertura()</td>
+                            <td>Evalúan condiciones especiales del seguro</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reportes</strong></td>
+                            <td>generarResumenCotizacion()</td>
+                            <td>Genera información detallada para el cliente</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Acceso a Datos</strong></td>
+                            <td>getters y setters</td>
+                            <td>Permiten acceso controlado a los atributos</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="tip-box">
+                    <strong>🔗 Relaciones entre Métodos:</strong>
+                    <ul>
+                        <li><strong>calcularPrimaTotal()</strong> es el método principal que usa todos los demás</li>
+                        <li><strong>Los métodos de cálculo</strong> son independientes entre sí</li>
+                        <li><strong>Los métodos de validación</strong> deben ejecutarse antes de los cálculos</li>
+                        <li><strong>generarResumenCotizacion()</strong> usa los resultados de los cálculos</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Orden de Implementación Recomendado:</strong>
+                    <ol>
+                        <li>Métodos de cálculo básico (calcularPrimaBase, calcularFactorEdad, etc.)</li>
+                        <li>Métodos auxiliares (calcularDescuentoDeducible, calcularCostosAdicionales)</li>
+                        <li>Método integrador (calcularPrimaTotal)</li>
+                        <li>Métodos derivados (calcularPrimaMensual)</li>
+                        <li>Métodos de validación y condiciones especiales</li>
+                        <li>Método de resumen</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- INTRODUCCIÓN: Switch vs If-Else -->
+            <section id="introduccion" class="method-section">
+                <h2>
+                    <span class="method-icon">📚</span>
+                    Introducción: Switch vs If-Else
+                </h2>
+
+                <div class="description">
+                    <p>Antes de comenzar con la implementación, es importante entender las diferencias entre las estructuras de control <strong>switch</strong> e <strong>if-else</strong>.</p>
+                </div>
+
+                <div class="implementation-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="showTab('intro', 'switch')">¿Qué es Switch?</button>
+                        <button class="tab-button" onclick="showTab('intro', 'if')">¿Qué es If-Else?</button>
+                        <button class="tab-button" onclick="showTab('intro', 'comparison')">Comparación</button>
+                        <button class="tab-button" onclick="showTab('intro', 'when')">¿Cuándo usar cada uno?</button>
+                    </div>
+
+                    <div id="intro-switch" class="tab-content active">
+                        <h3>🔄 Estructura Switch</h3>
+                        <p><strong>Switch</strong> es una estructura de control que permite evaluar una variable contra múltiples valores constantes de forma eficiente.</p>
+
+                        <h4>Características principales:</h4>
+                        <ul>
+                            <li>✅ <strong>Más legible</strong> cuando tienes muchas opciones</li>
+                            <li>✅ <strong>Más eficiente</strong> para comparaciones de igualdad</li>
+                            <li>✅ <strong>Menos propenso a errores</strong> en comparaciones múltiples</li>
+                            <li>⚠️ Solo funciona con <strong>valores constantes</strong></li>
+                            <li>⚠️ Requiere <strong>break</strong> para evitar "fall-through"</li>
+                        </ul>
+
+                        <h4>Sintaxis básica:</h4>
+                        <div class="code-block"><span class="keyword">switch</span> (<span class="variable">variable</span>) {
+    <span class="keyword">case</span> <span class="string">"valor1"</span>:
+        <span class="comment">// código para valor1</span>
+        <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">"valor2"</span>:
+        <span class="comment">// código para valor2</span>
+        <span class="keyword">break</span>;
+    <span class="keyword">default</span>:
+        <span class="comment">// código por defecto</span>
+        <span class="keyword">break</span>;
+}</div>
+
+                        <h4>Ejemplo práctico:</h4>
+                        <div class="code-block"><span class="keyword">switch</span> (<span class="variable">tipoCobertura</span>) {
+    <span class="keyword">case</span> <span class="string">"Básica"</span>:
+        <span class="variable">porcentaje</span> = <span class="number">0.03</span>;
+        <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">"Intermedia"</span>:
+        <span class="variable">porcentaje</span> = <span class="number">0.04</span>;
+        <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">"Premium"</span>:
+        <span class="variable">porcentaje</span> = <span class="number">0.05</span>;
+        <span class="keyword">break</span>;
+    <span class="keyword">default</span>:
+        <span class="variable">porcentaje</span> = <span class="number">0.03</span>; <span class="comment">// Valor por defecto</span>
+        <span class="keyword">break</span>;
+}</div>
+                    </div>
+
+                    <div id="intro-if" class="tab-content">
+                        <h3>🔀 Estructura If-Else</h3>
+                        <p><strong>If-Else</strong> es una estructura de control que evalúa condiciones booleanas y ejecuta código según el resultado.</p>
+
+                        <h4>Características principales:</h4>
+                        <ul>
+                            <li>✅ <strong>Más flexible</strong> - acepta cualquier condición booleana</li>
+                            <li>✅ <strong>Permite rangos</strong> y comparaciones complejas</li>
+                            <li>✅ <strong>Combina múltiples condiciones</strong> con && y ||</li>
+                            <li>⚠️ Puede ser <strong>menos legible</strong> con muchas condiciones</li>
+                            <li>⚠️ <strong>Más propenso a errores</strong> en comparaciones de String</li>
+                        </ul>
+
+                        <h4>Sintaxis básica:</h4>
+                        <div class="code-block"><span class="keyword">if</span> (<span class="variable">condicion1</span>) {
+    <span class="comment">// código para condición 1</span>
+} <span class="keyword">else if</span> (<span class="variable">condicion2</span>) {
+    <span class="comment">// código para condición 2</span>
+} <span class="keyword">else</span> {
+    <span class="comment">// código por defecto</span>
+}</div>
+
+                        <h4>Ejemplo práctico:</h4>
+                        <div class="code-block"><span class="keyword">if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Básica"</span>)) {
+    <span class="variable">porcentaje</span> = <span class="number">0.03</span>;
+} <span class="keyword">else if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Intermedia"</span>)) {
+    <span class="variable">porcentaje</span> = <span class="number">0.04</span>;
+} <span class="keyword">else if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Premium"</span>)) {
+    <span class="variable">porcentaje</span> = <span class="number">0.05</span>;
+} <span class="keyword">else</span> {
+    <span class="variable">porcentaje</span> = <span class="number">0.03</span>; <span class="comment">// Valor por defecto</span>
+}</div>
+                    </div>
+
+                    <div id="intro-comparison" class="tab-content">
+                        <h3>⚖️ Comparación Switch vs If-Else</h3>
+
+                        <table class="rules-table">
+                            <thead>
+                                <tr>
+                                    <th>Aspecto</th>
+                                    <th>Switch</th>
+                                    <th>If-Else</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Legibilidad</strong></td>
+                                    <td>✅ Muy clara con muchas opciones</td>
+                                    <td>⚠️ Puede volverse confusa</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Flexibilidad</strong></td>
+                                    <td>❌ Solo valores constantes</td>
+                                    <td>✅ Cualquier condición booleana</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Rendimiento</strong></td>
+                                    <td>✅ Más eficiente</td>
+                                    <td>⚠️ Evaluación secuencial</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mantenimiento</strong></td>
+                                    <td>✅ Fácil agregar casos</td>
+                                    <td>⚠️ Más propenso a errores</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Comparaciones de String</strong></td>
+                                    <td>✅ Automática</td>
+                                    <td>⚠️ Requiere .equals()</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Rangos numéricos</strong></td>
+                                    <td>❌ No soporta</td>
+                                    <td>✅ Soporta (&lt;, &gt;, &lt;=, &gt;=)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="tip-box">
+                            <strong>💡 Regla general:</strong>
+                            <ul>
+                                <li><strong>Usa Switch</strong> cuando tengas múltiples valores exactos para comparar</li>
+                                <li><strong>Usa If-Else</strong> cuando necesites rangos o condiciones complejas</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="intro-when" class="tab-content">
+                        <h3>🤔 ¿Cuándo usar cada uno?</h3>
+
+                        <div class="description">
+                            <h4>🔄 Usa <strong>Switch</strong> cuando:</h4>
+                            <ul>
+                                <li>Tienes <strong>múltiples valores exactos</strong> para comparar</li>
+                                <li>Trabajas con <strong>String, int, char, enum</strong></li>
+                                <li>Quieres <strong>código más limpio</strong> y legible</li>
+                                <li>Las opciones son <strong>constantes conocidas</strong></li>
+                            </ul>
+
+                            <div class="code-block"><span class="comment">// ✅ Perfecto para Switch</span>
+<span class="keyword">switch</span> (<span class="variable">tipoCobertura</span>) {
+    <span class="keyword">case</span> <span class="string">"Básica"</span>: <span class="comment">/* ... */</span> <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">"Intermedia"</span>: <span class="comment">/* ... */</span> <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">"Premium"</span>: <span class="comment">/* ... */</span> <span class="keyword">break</span>;
+}</div>
+                        </div>
+
+                        <div class="description">
+                            <h4>🔀 Usa <strong>If-Else</strong> cuando:</h4>
+                            <ul>
+                                <li>Necesitas <strong>rangos numéricos</strong> (edad &lt; 25)</li>
+                                <li>Tienes <strong>condiciones complejas</strong> (múltiples variables)</li>
+                                <li>Usas <strong>operadores lógicos</strong> (&& ||)</li>
+                                <li>Las condiciones son <strong>dinámicas</strong></li>
+                            </ul>
+
+                            <div class="code-block"><span class="comment">// ✅ Perfecto para If-Else</span>
+<span class="keyword">if</span> (<span class="variable">edadConductor</span> &lt; <span class="number">25</span>) {
+    <span class="keyword">return</span> <span class="number">1.5</span>; <span class="comment">// Recargo para jóvenes</span>
+} <span class="keyword">else if</span> (<span class="variable">edadConductor</span> &gt; <span class="number">65</span>) {
+    <span class="keyword">return</span> <span class="number">1.3</span>; <span class="comment">// Recargo para mayores</span>
+} <span class="keyword">else</span> {
+    <span class="keyword">return</span> <span class="number">1.0</span>; <span class="comment">// Sin recargo</span>
+}</div>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>⚠️ Errores comunes:</strong>
+                            <ul>
+                                <li><strong>Switch sin break:</strong> Causará "fall-through" no deseado</li>
+                                <li><strong>If-Else con ==:</strong> Para String usa .equals() en lugar de ==</li>
+                                <li><strong>Switch con rangos:</strong> No funcionará, usa if-else</li>
+                            </ul>
+                        </div>
+
+                        <div class="tip-box">
+                            <strong>🎯 En este proyecto:</strong>
+                            <ul>
+                                <li><strong>Switch:</strong> Para tipos de cobertura y deducibles</li>
+                                <li><strong>If-Else:</strong> Para rangos de edad, experiencia y antigüedad</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MÉTODO 1: calcularPrimaBase -->
+            <section id="prima-base" class="method-section">
+                <h2>
+                    <span class="method-icon">1</span>
+                    calcularPrimaBase()
+                </h2>
+
+                <div class="description">
+                    <p><strong>Objetivo:</strong> Calcular la prima base del seguro según el valor del vehículo y el tipo de cobertura seleccionada.</p>
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Cobertura</th>
+                            <th>Porcentaje</th>
+                            <th>Cálculo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Básica</td>
+                            <td>3%</td>
+                            <td>valorVehiculo × 0.03</td>
+                        </tr>
+                        <tr>
+                            <td>Intermedia</td>
+                            <td>4%</td>
+                            <td>valorVehiculo × 0.04</td>
+                        </tr>
+                        <tr>
+                            <td>Premium</td>
+                            <td>5%</td>
+                            <td>valorVehiculo × 0.05</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Obtener tipoCobertura]
+                            B --> C{¿Cuál es el tipo?}
+                            C -->|Básica| D[porcentaje = 0.03]
+                            C -->|Intermedia| E[porcentaje = 0.04]
+                            C -->|Premium| F[porcentaje = 0.05]
+                            D --> G[prima = valorVehiculo × porcentaje]
+                            E --> G
+                            F --> G
+                            G --> H[Retornar prima]
+                            H --> I[Fin]
+                    </div>
+                </div>
+
+                <div class="implementation-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="showTab('base', 'switch')">Implementación con Switch</button>
+                        <button class="tab-button" onclick="showTab('base', 'if')">Implementación con If-Else</button>
+                    </div>
+
+                    <div id="base-switch" class="tab-content active">
+                        <h3>Implementación usando Switch</h3>
+                        <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularPrimaBase</span>() {
+    <span class="keyword">double</span> <span class="variable">porcentaje</span>;
+
+    <span class="keyword">switch</span> (<span class="variable">tipoCobertura</span>) {
+        <span class="keyword">case</span> <span class="string">"Básica"</span>:
+            <span class="variable">porcentaje</span> = <span class="number">0.03</span>; <span class="comment">// 3% del valor</span>
+            <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="string">"Intermedia"</span>:
+            <span class="variable">porcentaje</span> = <span class="number">0.04</span>; <span class="comment">// 4% del valor</span>
+            <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="string">"Premium"</span>:
+            <span class="variable">porcentaje</span> = <span class="number">0.05</span>; <span class="comment">// 5% del valor</span>
+            <span class="keyword">break</span>;
+        <span class="keyword">default</span>:
+            <span class="variable">porcentaje</span> = <span class="number">0.03</span>; <span class="comment">// Por defecto, básica</span>
+            <span class="keyword">break</span>;
+    }
+
+    <span class="keyword">return</span> <span class="variable">valorVehiculo</span> * <span class="variable">porcentaje</span>;
+}</div>
+                    </div>
+
+                    <div id="base-if" class="tab-content">
+                        <h3>Implementación usando If-Else</h3>
+                        <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularPrimaBase</span>() {
+    <span class="keyword">double</span> <span class="variable">porcentaje</span>;
+
+    <span class="keyword">if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Básica"</span>)) {
+        <span class="variable">porcentaje</span> = <span class="number">0.03</span>; <span class="comment">// 3% del valor</span>
+    } <span class="keyword">else if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Intermedia"</span>)) {
+        <span class="variable">porcentaje</span> = <span class="number">0.04</span>; <span class="comment">// 4% del valor</span>
+    } <span class="keyword">else if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Premium"</span>)) {
+        <span class="variable">porcentaje</span> = <span class="number">0.05</span>; <span class="comment">// 5% del valor</span>
+    } <span class="keyword">else</span> {
+        <span class="variable">porcentaje</span> = <span class="number">0.03</span>; <span class="comment">// Por defecto, básica</span>
+    }
+
+    <span class="keyword">return</span> <span class="variable">valorVehiculo</span> * <span class="variable">porcentaje</span>;
+}</div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Tip:</strong> Recuerda usar <code>.equals()</code> para comparar Strings en Java, no el operador <code>==</code>.
+                </div>
+            </section>
+
+            <!-- MÉTODO 2: calcularFactorEdad -->
+            <section id="factor-edad" class="method-section">
+                <h2>
+                    <span class="method-icon">2</span>
+                    calcularFactorEdad()
+                </h2>
+
+                <div class="description">
+                    <p><strong>Objetivo:</strong> Determinar el factor de ajuste según la edad del conductor.</p>
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Rango de Edad</th>
+                            <th>Factor</th>
+                            <th>Significado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Menos de 25 años</td>
+                            <td>1.5</td>
+                            <td>50% de recargo</td>
+                        </tr>
+                        <tr>
+                            <td>25 a 65 años</td>
+                            <td>1.0</td>
+                            <td>Sin recargo</td>
+                        </tr>
+                        <tr>
+                            <td>Más de 65 años</td>
+                            <td>1.3</td>
+                            <td>30% de recargo</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Obtener edadConductor]
+                            B --> C{edad < 25?}
+                            C -->|Sí| D[factor = 1.5]
+                            C -->|No| E{edad > 65?}
+                            E -->|Sí| F[factor = 1.3]
+                            E -->|No| G[factor = 1.0]
+                            D --> H[Retornar factor]
+                            F --> H
+                            G --> H
+                            H --> I[Fin]
+                    </div>
+                </div>
+
+                <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularFactorEdad</span>() {
+    <span class="keyword">if</span> (<span class="variable">edadConductor</span> &lt; <span class="number">25</span>) {
+        <span class="keyword">return</span> <span class="number">1.5</span>; <span class="comment">// Conductores jóvenes: 50% de recargo</span>
+    } <span class="keyword">else if</span> (<span class="variable">edadConductor</span> &gt; <span class="number">65</span>) {
+        <span class="keyword">return</span> <span class="number">1.3</span>; <span class="comment">// Conductores mayores: 30% de recargo</span>
+    } <span class="keyword">else</span> {
+        <span class="keyword">return</span> <span class="number">1.0</span>; <span class="comment">// Edad óptima: sin recargo</span>
+    }
+}</div>
+            </section>
+
+            <!-- MÉTODO 3: calcularFactorExperiencia -->
+            <section id="factor-experiencia" class="method-section">
+                <h2>
+                    <span class="method-icon">3</span>
+                    calcularFactorExperiencia()
+                </h2>
+
+                <div class="description">
+                    <p><strong>Objetivo:</strong> Calcular el factor de ajuste basado en los años de experiencia conduciendo.</p>
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Años de Experiencia</th>
+                            <th>Factor</th>
+                            <th>Significado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Menos de 2 años</td>
+                            <td>1.3</td>
+                            <td>30% de recargo</td>
+                        </tr>
+                        <tr>
+                            <td>2 a 5 años</td>
+                            <td>1.1</td>
+                            <td>10% de recargo</td>
+                        </tr>
+                        <tr>
+                            <td>5 a 10 años</td>
+                            <td>1.0</td>
+                            <td>Sin recargo</td>
+                        </tr>
+                        <tr>
+                            <td>Más de 10 años</td>
+                            <td>0.9</td>
+                            <td>10% de descuento</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Obtener aniosExperiencia]
+                            B --> C{exp < 2?}
+                            C -->|Sí| D[factor = 1.3]
+                            C -->|No| E{exp < 5?}
+                            E -->|Sí| F[factor = 1.1]
+                            E -->|No| G{exp <= 10?}
+                            G -->|Sí| H[factor = 1.0]
+                            G -->|No| I[factor = 0.9]
+                            D --> J[Retornar factor]
+                            F --> J
+                            H --> J
+                            I --> J
+                            J --> K[Fin]
+                    </div>
+                </div>
+
+                <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularFactorExperiencia</span>() {
+    <span class="keyword">if</span> (<span class="variable">aniosExperiencia</span> &lt; <span class="number">2</span>) {
+        <span class="keyword">return</span> <span class="number">1.3</span>; <span class="comment">// Conductor novato</span>
+    } <span class="keyword">else if</span> (<span class="variable">aniosExperiencia</span> &lt; <span class="number">5</span>) {
+        <span class="keyword">return</span> <span class="number">1.1</span>; <span class="comment">// Conductor junior</span>
+    } <span class="keyword">else if</span> (<span class="variable">aniosExperiencia</span> &lt;= <span class="number">10</span>) {
+        <span class="keyword">return</span> <span class="number">1.0</span>; <span class="comment">// Conductor con experiencia</span>
+    } <span class="keyword">else</span> {
+        <span class="keyword">return</span> <span class="number">0.9</span>; <span class="comment">// Conductor experto (descuento)</span>
+    }
+}</div>
+            </section>
+
+            <!-- MÉTODO 4: calcularFactorAntiguedad -->
+            <section id="factor-antiguedad" class="method-section">
+                <h2>
+                    <span class="method-icon">4</span>
+                    calcularFactorAntiguedad()
+                </h2>
+
+                <div class="description">
+                    <p><strong>Objetivo:</strong> Calcular el factor de ajuste según la antigüedad del vehículo.</p>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Importante:</strong> Primero debes calcular la antigüedad del vehículo restando el año del vehículo del año actual.
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Antigüedad</th>
+                            <th>Factor</th>
+                            <th>Significado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0 a 3 años</td>
+                            <td>1.0</td>
+                            <td>Sin recargo</td>
+                        </tr>
+                        <tr>
+                            <td>4 a 7 años</td>
+                            <td>1.1</td>
+                            <td>10% de recargo</td>
+                        </tr>
+                        <tr>
+                            <td>8 a 10 años</td>
+                            <td>1.2</td>
+                            <td>20% de recargo</td>
+                        </tr>
+                        <tr>
+                            <td>Más de 10 años</td>
+                            <td>1.3</td>
+                            <td>30% de recargo</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Obtener año actual]
+                            B --> C[antiguedad = anioActual - anioVehiculo]
+                            C --> D{antiguedad <= 3?}
+                            D -->|Sí| E[factor = 1.0]
+                            D -->|No| F{antiguedad <= 7?}
+                            F -->|Sí| G[factor = 1.1]
+                            F -->|No| H{antiguedad <= 10?}
+                            H -->|Sí| I[factor = 1.2]
+                            H -->|No| J[factor = 1.3]
+                            E --> K[Retornar factor]
+                            G --> K
+                            I --> K
+                            J --> K
+                            K --> L[Fin]
+                    </div>
+                </div>
+
+                <div class="code-block"><span class="keyword">import</span> java.util.Calendar;
+
+<span class="keyword">public double</span> <span class="function">calcularFactorAntiguedad</span>() {
+    <span class="comment">// Obtener el año actual</span>
+    <span class="keyword">int</span> <span class="variable">anioActual</span> = Calendar.<span class="function">getInstance</span>().<span class="function">get</span>(Calendar.YEAR);
+
+    <span class="comment">// Calcular la antigüedad del vehículo</span>
+    <span class="keyword">int</span> <span class="variable">antiguedad</span> = <span class="variable">anioActual</span> - <span class="variable">anioVehiculo</span>;
+
+    <span class="keyword">if</span> (<span class="variable">antiguedad</span> &lt;= <span class="number">3</span>) {
+        <span class="keyword">return</span> <span class="number">1.0</span>; <span class="comment">// Vehículo nuevo</span>
+    } <span class="keyword">else if</span> (<span class="variable">antiguedad</span> &lt;= <span class="number">7</span>) {
+        <span class="keyword">return</span> <span class="number">1.1</span>; <span class="comment">// Vehículo seminuevo</span>
+    } <span class="keyword">else if</span> (<span class="variable">antiguedad</span> &lt;= <span class="number">10</span>) {
+        <span class="keyword">return</span> <span class="number">1.2</span>; <span class="comment">// Vehículo antiguo</span>
+    } <span class="keyword">else</span> {
+        <span class="keyword">return</span> <span class="number">1.3</span>; <span class="comment">// Vehículo muy antiguo</span>
+    }
+}</div>
+            </section>
+
+            <!-- MÉTODO 5: calcularDescuentoDeducible -->
+            <section id="descuento-deducible" class="method-section">
+                <h2>
+                    <span class="method-icon">5</span>
+                    calcularDescuentoDeducible()
+                </h2>
+
+                <div class="description">
+                    <p><strong>Objetivo:</strong> Calcular el descuento aplicable según el deducible seleccionado.</p>
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Deducible</th>
+                            <th>Descuento</th>
+                            <th>Retorna</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0%</td>
+                            <td>0%</td>
+                            <td>0.0</td>
+                        </tr>
+                        <tr>
+                            <td>5%</td>
+                            <td>3%</td>
+                            <td>0.03</td>
+                        </tr>
+                        <tr>
+                            <td>10%</td>
+                            <td>7%</td>
+                            <td>0.07</td>
+                        </tr>
+                        <tr>
+                            <td>15%</td>
+                            <td>11%</td>
+                            <td>0.11</td>
+                        </tr>
+                        <tr>
+                            <td>20%</td>
+                            <td>15%</td>
+                            <td>0.15</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Obtener deduciblePorcentaje]
+                            B --> C{Evaluar deducible}
+                            C -->|0| D[descuento = 0.0]
+                            C -->|5| E[descuento = 0.03]
+                            C -->|10| F[descuento = 0.07]
+                            C -->|15| G[descuento = 0.11]
+                            C -->|20| H[descuento = 0.15]
+                            D --> I[Retornar descuento]
+                            E --> I
+                            F --> I
+                            G --> I
+                            H --> I
+                            I --> J[Fin]
+                    </div>
+                </div>
+
+                <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularDescuentoDeducible</span>() {
+    <span class="keyword">switch</span> (<span class="variable">deduciblePorcentaje</span>) {
+        <span class="keyword">case</span> <span class="number">0</span>:
+            <span class="keyword">return</span> <span class="number">0.0</span>;   <span class="comment">// Sin deducible, sin descuento</span>
+        <span class="keyword">case</span> <span class="number">5</span>:
+            <span class="keyword">return</span> <span class="number">0.03</span>;  <span class="comment">// 3% de descuento</span>
+        <span class="keyword">case</span> <span class="number">10</span>:
+            <span class="keyword">return</span> <span class="number">0.07</span>;  <span class="comment">// 7% de descuento</span>
+        <span class="keyword">case</span> <span class="number">15</span>:
+            <span class="keyword">return</span> <span class="number">0.11</span>;  <span class="comment">// 11% de descuento</span>
+        <span class="keyword">case</span> <span class="number">20</span>:
+            <span class="keyword">return</span> <span class="number">0.15</span>;  <span class="comment">// 15% de descuento</span>
+        <span class="keyword">default</span>:
+            <span class="keyword">return</span> <span class="number">0.0</span>;   <span class="comment">// Por defecto, sin descuento</span>
+    }
+}</div>
+
+                <div class="tip-box">
+                    <strong>💡 Tip:</strong> Este método retorna el descuento como decimal (0.15 para 15%). Luego se usará en la fórmula como (1 - descuento).
+                </div>
+            </section>
+
+            <!-- MÉTODO 6: calcularCostosAdicionales -->
+            <section id="costos-adicionales" class="method-section">
+                <h2>
+                    <span class="method-icon">6</span>
+                    calcularCostosAdicionales()
+                </h2>
+
+                <div class="description">
+                    <p><strong>Objetivo:</strong> Sumar los costos de servicios adicionales seleccionados.</p>
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Costo Anual</th>
+                            <th>Variable a Verificar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Asistencia Vial</td>
+                            <td>$500</td>
+                            <td>incluyeAsistenciaVial</td>
+                        </tr>
+                        <tr>
+                            <td>Vehículo de Reemplazo</td>
+                            <td>$1,200</td>
+                            <td>incluyeVehiculoReemplazo</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[costoTotal = 0]
+                            B --> C{incluye AsistenciaVial?}
+                            C -->|Sí| D[costoTotal += 500]
+                            C -->|No| E{incluye VehiculoReemplazo?}
+                            D --> E
+                            E -->|Sí| F[costoTotal += 1200]
+                            E -->|No| G[Retornar costoTotal]
+                            F --> G
+                            G --> H[Fin]
+                    </div>
+                </div>
+
+                <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularCostosAdicionales</span>() {
+    <span class="keyword">double</span> <span class="variable">costoTotal</span> = <span class="number">0</span>;
+
+    <span class="keyword">if</span> (<span class="variable">incluyeAsistenciaVial</span>) {
+        <span class="variable">costoTotal</span> += <span class="number">500</span>; <span class="comment">// Asistencia vial: $500 anuales</span>
+    }
+
+    <span class="keyword">if</span> (<span class="variable">incluyeVehiculoReemplazo</span>) {
+        <span class="variable">costoTotal</span> += <span class="number">1200</span>; <span class="comment">// Vehículo de reemplazo: $1,200 anuales</span>
+    }
+
+    <span class="keyword">return</span> <span class="variable">costoTotal</span>;
+}</div>
+            </section>
+
+            <!-- MÉTODO 7: calcularPrimaTotal -->
+            <section id="prima-total" class="method-section">
+                <h2>
+                    <span class="method-icon">7</span>
+                    calcularPrimaTotal()
+                </h2>
+
+                <div class="description">
+                    <p><strong>Objetivo:</strong> Integrar todos los componentes para calcular la prima total del seguro.</p>
+                </div>
+
+                <div class="formula">
+                    Prima Total = (Prima Base × Factor Edad × Factor Experiencia × Factor Antigüedad)
+                    × (1 - Descuento Deducible) + Costos Adicionales
+                </div>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[primaBase = calcularPrimaBase]
+                            B --> C[factorEdad = calcularFactorEdad]
+                            C --> D[factorExp = calcularFactorExperiencia]
+                            D --> E[factorAnt = calcularFactorAntiguedad]
+                            E --> F[descuento = calcularDescuentoDeducible]
+                            F --> G[adicionales = calcularCostosAdicionales]
+                            G --> H[primaAjustada = primaBase × factorEdad × factorExp × factorAnt]
+                            H --> I[primaConDescuento = primaAjustada × 1 - descuento]
+                            I --> J[primaTotal = primaConDescuento + adicionales]
+                            J --> K[Retornar primaTotal]
+                            K --> L[Fin]
+                    </div>
+                </div>
+
+                <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularPrimaTotal</span>() {
+    <span class="comment">// Obtener cada componente usando los métodos auxiliares</span>
+    <span class="keyword">double</span> <span class="variable">primaBase</span> = <span class="function">calcularPrimaBase</span>();
+    <span class="keyword">double</span> <span class="variable">factorEdad</span> = <span class="function">calcularFactorEdad</span>();
+    <span class="keyword">double</span> <span class="variable">factorExperiencia</span> = <span class="function">calcularFactorExperiencia</span>();
+    <span class="keyword">double</span> <span class="variable">factorAntiguedad</span> = <span class="function">calcularFactorAntiguedad</span>();
+    <span class="keyword">double</span> <span class="variable">descuento</span> = <span class="function">calcularDescuentoDeducible</span>();
+    <span class="keyword">double</span> <span class="variable">costosAdicionales</span> = <span class="function">calcularCostosAdicionales</span>();
+
+    <span class="comment">// Aplicar la fórmula completa</span>
+    <span class="keyword">double</span> <span class="variable">primaAjustada</span> = <span class="variable">primaBase</span> * <span class="variable">factorEdad</span> *
+                            <span class="variable">factorExperiencia</span> * <span class="variable">factorAntiguedad</span>;
+
+    <span class="keyword">double</span> <span class="variable">primaConDescuento</span> = <span class="variable">primaAjustada</span> * (<span class="number">1</span> - <span class="variable">descuento</span>);
+
+    <span class="keyword">double</span> <span class="variable">primaTotal</span> = <span class="variable">primaConDescuento</span> + <span class="variable">costosAdicionales</span>;
+
+    <span class="keyword">return</span> <span class="variable">primaTotal</span>;
+}</div>
+
+                <div class="tip-box">
+                    <strong>💡 Tip:</strong> Este método es el más importante porque integra todos los demás. Asegúrate de que todos los métodos auxiliares estén funcionando correctamente antes de implementar este.
+                </div>
+            </section>
+
+            <!-- OTROS MÉTODOS -->
+            <section id="otros-metodos" class="method-section">
+                <h2>
+                    <span class="method-icon">+</span>
+                    Otros Métodos Importantes
+                </h2>
+
+                <!-- calcularPrimaMensual -->
+                <div class="description">
+                    <h3>📅 calcularPrimaMensual()</h3>
+                    <p>Divide la prima anual entre 12 meses.</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularPrimaMensual</span>() {
+    <span class="keyword">return</span> <span class="function">calcularPrimaTotal</span>() / <span class="number">12</span>;
+}</div>
+
+                <!-- esElegible -->
+                <div class="description">
+                    <h3>✅ esElegible() - Validación de Elegibilidad</h3>
+                    <p>Determina si el conductor es elegible para obtener el seguro verificando criterios básicos de elegibilidad.</p>
+                </div>
+
+                <h4>📋 Criterios de Elegibilidad</h4>
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Criterio</th>
+                            <th>Condición</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Edad mínima</td>
+                            <td>edadConductor >= 18</td>
+                            <td>El conductor debe ser mayor de edad</td>
+                        </tr>
+                        <tr>
+                            <td>Valor del vehículo</td>
+                            <td>valorVehiculo > 0</td>
+                            <td>El vehículo debe tener un valor válido</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Obtener edadConductor y valorVehiculo]
+                            B --> C{edadConductor >= 18?}
+                            C -->|No| D[Retornar false<br/>No elegible]
+                            C -->|Sí| E{valorVehiculo > 0?}
+                            E -->|No| F[Retornar false<br/>No elegible]
+                            E -->|Sí| G[Retornar true<br/>Elegible]
+                            D --> H[Fin]
+                            F --> H
+                            G --> H
+                    </div>
+                </div>
+
+                <div class="code-block"><span class="keyword">public boolean</span> <span class="function">esElegible</span>() {
+    <span class="keyword">return</span> <span class="variable">edadConductor</span> >= <span class="number">18</span> && <span class="variable">valorVehiculo</span> > <span class="number">0</span>;
+}</div>
+
+                <div class="tip-box">
+                    <strong>💡 Tip:</strong> Este método debe ejecutarse antes de realizar cualquier cálculo de prima. Si retorna false, no se debe proceder con la cotización.
+                </div>
+
+                <!-- calificaDescuentoBuenConductor -->
+                <div class="description">
+                    <h3>🏆 calificaDescuentoBuenConductor() - Descuento Especial</h3>
+                    <p>Determina si el conductor califica para un descuento especial por ser considerado "buen conductor" según criterios específicos.</p>
+                </div>
+
+                <h4>🏆 Criterios para Buen Conductor</h4>
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Criterio</th>
+                            <th>Condición</th>
+                            <th>Razón</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Edad óptima</td>
+                            <td>30 <= edad <= 60</td>
+                            <td>Rango de edad con menor siniestralidad</td>
+                        </tr>
+                        <tr>
+                            <td>Experiencia</td>
+                            <td>aniosExperiencia > 5</td>
+                            <td>Suficiente experiencia al volante</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="flowchart">
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Obtener edadConductor y aniosExperiencia]
+                            B --> C{edadConductor >= 30?}
+                            C -->|No| D[Retornar false<br/>No califica]
+                            C -->|Sí| E{edadConductor <= 60?}
+                            E -->|No| F[Retornar false<br/>No califica]
+                            E -->|Sí| G{aniosExperiencia > 5?}
+                            G -->|No| H[Retornar false<br/>No califica]
+                            G -->|Sí| I[Retornar true<br/>Califica para descuento]
+                            D --> J[Fin]
+                            F --> J
+                            H --> J
+                            I --> J
+                    </div>
+                </div>
+
+                <div class="code-block"><span class="keyword">public boolean</span> <span class="function">calificaDescuentoBuenConductor</span>() {
+    <span class="keyword">return</span> <span class="variable">edadConductor</span> >= <span class="number">30</span> &&
+           <span class="variable">edadConductor</span> <= <span class="number">60</span> &&
+           <span class="variable">aniosExperiencia</span> > <span class="number">5</span>;
+}</div>
+
+                <div class="tip-box">
+                    <strong>💡 Tip:</strong> Este descuento es adicional a los cálculos de prima. Las aseguradoras suelen aplicar descuentos especiales del 5-10% a conductores que califican como "buen conductor".
+                </div>
+
+                <!-- calcularMontoMaximoCobertura -->
+                <div class="description">
+                    <h3>💰 calcularMontoMaximoCobertura()</h3>
+                    <p>Calcula el monto máximo que cubre el seguro según el tipo de cobertura.</p>
+                    <p><strong>Otro ejemplo perfecto para comparar Switch vs If-Else!</strong></p>
+                </div>
+
+                <table class="rules-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Cobertura</th>
+                            <th>Multiplicador</th>
+                            <th>Cálculo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Básica</td>
+                            <td>1x</td>
+                            <td>valorVehiculo × 1</td>
+                        </tr>
+                        <tr>
+                            <td>Intermedia</td>
+                            <td>1.5x</td>
+                            <td>valorVehiculo × 1.5</td>
+                        </tr>
+                        <tr>
+                            <td>Premium</td>
+                            <td>2x</td>
+                            <td>valorVehiculo × 2</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="implementation-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="showTab('cobertura', 'switch')">Implementación con Switch</button>
+                        <button class="tab-button" onclick="showTab('cobertura', 'if')">Implementación con If-Else</button>
+                    </div>
+
+                    <div id="cobertura-switch" class="tab-content active">
+                        <h4>🔄 Versión con Switch</h4>
+                        <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularMontoMaximoCobertura</span>() {
+    <span class="keyword">switch</span> (<span class="variable">tipoCobertura</span>) {
+        <span class="keyword">case</span> <span class="string">"Básica"</span>:
+            <span class="keyword">return</span> <span class="variable">valorVehiculo</span>; <span class="comment">// 1x el valor</span>
+        <span class="keyword">case</span> <span class="string">"Intermedia"</span>:
+            <span class="keyword">return</span> <span class="variable">valorVehiculo</span> * <span class="number">1.5</span>; <span class="comment">// 1.5x el valor</span>
+        <span class="keyword">case</span> <span class="string">"Premium"</span>:
+            <span class="keyword">return</span> <span class="variable">valorVehiculo</span> * <span class="number">2</span>; <span class="comment">// 2x el valor</span>
+        <span class="keyword">default</span>:
+            <span class="keyword">return</span> <span class="variable">valorVehiculo</span>; <span class="comment">// Por defecto, básica</span>
+    }
+}</div>
+
+                        <div class="tip-box">
+                            <strong>✅ Ventajas del Switch aquí:</strong>
+                            <ul>
+                                <li>Código más limpio y legible</li>
+                                <li>Fácil agregar nuevos tipos de cobertura</li>
+                                <li>Menos repetición de <code>.equals()</code></li>
+                                <li>Mejor rendimiento</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="cobertura-if" class="tab-content">
+                        <h4>🔀 Versión con If-Else</h4>
+                        <div class="code-block"><span class="keyword">public double</span> <span class="function">calcularMontoMaximoCobertura</span>() {
+    <span class="keyword">if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Básica"</span>)) {
+        <span class="keyword">return</span> <span class="variable">valorVehiculo</span>; <span class="comment">// 1x el valor</span>
+    } <span class="keyword">else if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Intermedia"</span>)) {
+        <span class="keyword">return</span> <span class="variable">valorVehiculo</span> * <span class="number">1.5</span>; <span class="comment">// 1.5x el valor</span>
+    } <span class="keyword">else if</span> (<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Premium"</span>)) {
+        <span class="keyword">return</span> <span class="variable">valorVehiculo</span> * <span class="number">2</span>; <span class="comment">// 2x el valor</span>
+    } <span class="keyword">else</span> {
+        <span class="keyword">return</span> <span class="variable">valorVehiculo</span>; <span class="comment">// Por defecto, básica</span>
+    }
+}</div>
+
+                        <div class="warning-box">
+                            <strong>⚠️ Desventajas del If-Else aquí:</strong>
+                            <ul>
+                                <li>Más verboso y repetitivo</li>
+                                <li>Múltiples llamadas a <code>.equals()</code></li>
+                                <li>Más propenso a errores de tipeo</li>
+                                <li>Menos eficiente</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>🎯 Conclusión:</strong> Este es un caso <strong>perfecto para Switch</strong> porque:
+                    <ul>
+                        <li>Comparamos valores <strong>exactos</strong> de String</li>
+                        <li>No necesitamos <strong>rangos</strong> ni condiciones complejas</li>
+                        <li>Tenemos <strong>múltiples opciones</strong> claramente definidas</li>
+                        <li>Es más <strong>mantenible</strong> y legible</li>
+                    </ul>
+                </div>
+
+                <!-- requiereInspeccion -->
+                <div class="description">
+                    <h3>🔍 requiereInspeccion()</h3>
+                    <p>Determina si el vehículo necesita inspección previa.</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">public boolean</span> <span class="function">requiereInspeccion</span>() {
+    <span class="keyword">int</span> <span class="variable">anioActual</span> = Calendar.<span class="function">getInstance</span>().<span class="function">get</span>(Calendar.YEAR);
+    <span class="keyword">int</span> <span class="variable">antiguedad</span> = <span class="variable">anioActual</span> - <span class="variable">anioVehiculo</span>;
+
+    <span class="keyword">return</span> <span class="variable">antiguedad</span> &gt; <span class="number">10</span> || <span class="variable">valorVehiculo</span> &gt; <span class="number">50000</span>;
+}</div>
+
+                <!-- validarDatos -->
+                <div class="description">
+                    <h3>🛡️ validarDatos()</h3>
+                    <p>Valida la consistencia de todos los datos ingresados.</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">public boolean</span> <span class="function">validarDatos</span>() {
+    <span class="comment">// Verificar valor del vehículo</span>
+    <span class="keyword">if</span> (<span class="variable">valorVehiculo</span> &lt;= <span class="number">0</span>) {
+        <span class="keyword">return false</span>;
+    }
+
+    <span class="comment">// Verificar edad mínima</span>
+    <span class="keyword">if</span> (<span class="variable">edadConductor</span> &lt; <span class="number">18</span>) {
+        <span class="keyword">return false</span>;
+    }
+
+    <span class="comment">// Verificar años de experiencia</span>
+    <span class="keyword">if</span> (<span class="variable">aniosExperiencia</span> &lt; <span class="number">0</span>) {
+        <span class="keyword">return false</span>;
+    }
+
+    <span class="comment">// Los años de experiencia no pueden ser mayores que (edad - 16)</span>
+    <span class="keyword">if</span> (<span class="variable">aniosExperiencia</span> &gt; (<span class="variable">edadConductor</span> - <span class="number">16</span>)) {
+        <span class="keyword">return false</span>;
+    }
+
+    <span class="comment">// Verificar tipo de cobertura válido</span>
+    <span class="keyword">if</span> (!<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Básica"</span>) &amp;&amp;
+        !<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Intermedia"</span>) &amp;&amp;
+        !<span class="variable">tipoCobertura</span>.<span class="function">equals</span>(<span class="string">"Premium"</span>)) {
+        <span class="keyword">return false</span>;
+    }
+
+    <span class="keyword">return true</span>;
+}</div>
+
+                <!-- generarResumenCotizacion -->
+                <div class="description">
+                    <h3>📄 generarResumenCotizacion()</h3>
+                    <p>Genera un resumen formateado de la cotización.</p>
+                </div>
+
+                <div class="code-block"><span class="keyword">public</span> String <span class="function">generarResumenCotizacion</span>() {
+    <span class="keyword">double</span> <span class="variable">primaBase</span> = <span class="function">calcularPrimaBase</span>();
+    <span class="keyword">double</span> <span class="variable">primaTotal</span> = <span class="function">calcularPrimaTotal</span>();
+    <span class="keyword">double</span> <span class="variable">primaMensual</span> = <span class="function">calcularPrimaMensual</span>();
+
+    String <span class="variable">resumen</span> = <span class="string">"Cotización de Seguro - "</span> + <span class="variable">tipoCobertura</span> + <span class="string">"\n"</span>;
+    <span class="variable">resumen</span> += <span class="string">"Prima Base: $"</span> + String.<span class="function">format</span>(<span class="string">"%.2f"</span>, <span class="variable">primaBase</span>) + <span class="string">"\n"</span>;
+    <span class="variable">resumen</span> += <span class="string">"Prima Total Anual: $"</span> + String.<span class="function">format</span>(<span class="string">"%.2f"</span>, <span class="variable">primaTotal</span>) + <span class="string">"\n"</span>;
+    <span class="variable">resumen</span> += <span class="string">"Prima Mensual: $"</span> + String.<span class="function">format</span>(<span class="string">"%.2f"</span>, <span class="variable">primaMensual</span>) + <span class="string">"\n"</span>;
+
+    <span class="keyword">if</span> (<span class="variable">incluyeAsistenciaVial</span>) {
+        <span class="variable">resumen</span> += <span class="string">"Incluye: Asistencia Vial\n"</span>;
+    }
+
+    <span class="keyword">if</span> (<span class="variable">incluyeVehiculoReemplazo</span>) {
+        <span class="variable">resumen</span> += <span class="string">"Incluye: Vehículo de Reemplazo\n"</span>;
+    }
+
+    <span class="keyword">return</span> <span class="variable">resumen</span>;
+}</div>
+            </section>
+
+            <!-- CONSEJOS FINALES -->
+            <section class="method-section">
+                <h2>
+                    <span class="method-icon">💡</span>
+                    Consejos para la Implementación
+                </h2>
+
+                <div class="tip-box">
+                    <strong>🎯 Estrategia Recomendada:</strong>
+                    <ol>
+                        <li>Implementa los métodos en orden (del 1 al 7)</li>
+                        <li>Prueba cada método individualmente con los tests</li>
+                        <li>El método <code>calcularPrimaTotal()</code> depende de todos los demás</li>
+                        <li>Usa el depurador si algún test falla</li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Errores Comunes a Evitar:</strong>
+                    <ul>
+                        <li>No usar <code>.equals()</code> para comparar Strings</li>
+                        <li>Olvidar importar <code>java.util.Calendar</code> para el año actual</li>
+                        <li>Confundir el retorno decimal del descuento (0.15 no 15)</li>
+                        <li>No considerar todos los rangos en las condiciones</li>
+                    </ul>
+                </div>
+
+                <div class="tip-box">
+                    <strong>✅ Para Verificar tu Implementación:</strong>
+                    <pre style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
+mvn test                                    # Ejecutar todos los tests
+mvn test -Dtest=CotizadorSeguroTest#testCalcularPrimaBase  # Test específico
+                    </pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Inicializar Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#3498db',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#2980b9',
+                lineColor: '#34495e',
+                sectionBkgColor: '#ecf0f1',
+                altSectionBkgColor: '#bdc3c7',
+                gridColor: '#95a5a6',
+                secondaryColor: '#e74c3c',
+                tertiaryColor: '#f39c12'
+            }
+        });
+
+        // Función para reinicializar mermaid después de cambios de tabs
+        function reinitializeMermaid() {
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+        }
+
+        // Función para cambiar tabs
+        function showTab(section, type) {
+            // Ocultar todos los tabs de esa sección
+            document.querySelectorAll(`#${section}-switch, #${section}-if`).forEach(tab => {
+                if (tab) tab.classList.remove('active');
+            });
+
+            // Ocultar todos los botones de esa sección
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                if (btn.onclick && btn.onclick.toString().includes(section)) {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Mostrar el tab seleccionado
+            const selectedTab = document.getElementById(`${section}-${type}`);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Activar el botón correspondiente
+            event.target.classList.add('active');
+        }
+
+        // Smooth scroll para navegación
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
