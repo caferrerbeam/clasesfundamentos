@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solución Examen 3: Facturador de Servicio de Energía</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #f39c12;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #f39c12;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #e67e22;
+            margin-top: 25px;
+        }
+        
+        .class-diagram {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-line;
+        }
+        
+        .scenario {
+            background-color: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .code-block code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #212529;
+            white-space: pre;
+            display: block;
+        }
+        
+        pre.code-block {
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .mermaid {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .explanation {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        @media print {
+            body {
+                margin: 0;
+                padding: 10px;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>⚡ Examen 3: Facturador de Servicio de Energía</h1>
+
+    <h2>📋 Enunciado del Examen</h2>
+    
+    <h3>Contexto</h3>
+    <p>La empresa de energía municipal necesita un programa para calcular las facturas mensuales de electricidad, considerando el consumo, el estrato del hogar y aplicando penalizaciones por exceso de consumo.</p>
+
+    <h3>Requerimientos Funcionales</h3>
+    <p>El programa debe solicitar y procesar:</p>
+    
+    <table>
+        <tr>
+            <th>Datos del hogar</th>
+            <th>Tarifas por kWh</th>
+            <th>Límites y penalizaciones</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li>Dirección</li>
+                    <li>Estrato socioeconómico (1-6)</li>
+                    <li>Número de personas en el hogar</li>
+                    <li>Consumo del mes en kWh</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>Estratos 1-2: $350/kWh</li>
+                    <li>Estratos 3-4: $450/kWh</li>
+                    <li>Estratos 5-6: $550/kWh</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>Consumo base permitido: 200 kWh</li>
+                    <li>Adicional por persona: 50 kWh</li>
+                    <li>Penalización por exceso: 50% adicional en el kWh sobre el excedente</li>
+                    <li>Cargo fijo de servicio: $15.000</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <p><strong>Salida esperada:</strong></p>
+    <ul>
+        <li>Tarifa por KW</li>
+        <li>Número de kWh consumidos de más (Exceso de kWh)</li>
+        <li>Costo total de consumo excesivo</li>
+        <li>Total a pagar</li>
+    </ul>
+
+    <h3>Escenario de Ejemplo</h3>
+    <table>
+        <tr>
+            <th>Entrada</th>
+            <th>Salida</th>
+        </tr>
+        <tr>
+            <td>
+                Dirección: Calle 45 #23-15<br>
+                Estrato: 3<br>
+                Personas: 4<br>
+                Consumo: 450 kWh
+            </td>
+            <td>
+                === FACTURA DE ENERGÍA ===<br>
+                Dirección: Calle 45 #23-15<br>
+                Período: Mes actual<br>
+                Consumo total: 450 kWh<br>
+                Límite permitido: 400 kWh<br>
+                Exceso: 50 kWh<br>
+                Consumo normal (400 kWh x $450): $180.000<br>
+                Consumo excedente (50 kWh x $675): $33.750<br>
+                Cargo fijo: $15.000<br>
+                TOTAL A PAGAR: $228.750
+            </td>
+        </tr>
+    </table>
+
+    <h3>Entregables</h3>
+    <ol>
+        <li><strong>Diagrama de clase</strong> de FacturadorEnergia con sus atributos y métodos</li>
+        <li><strong>Diagrama de flujo</strong> del proceso de facturación</li>
+        <li><strong>Implementación en Java</strong> de toda la clase</li>
+    </ol>
+
+    <div class="page-break"></div>
+    
+    <h1>📝 Solución del Examen</h1>
+
+    <h2>1. Diagrama de Clase</h2>
+    <div class="class-diagram">
+┌──────────────────────────────────────┐
+│        FacturadorEnergia             │
+├──────────────────────────────────────┤
+│ - direccion: String                  │
+│ - estrato: int                       │
+│ - numeroPersonas: int                │
+│ - consumoMes: double                 │
+├──────────────────────────────────────┤
+│ + FacturadorEnergia()                │
+│ + determinarTarifa(): double         │
+│ + calcularLimite(): double           │
+│ + calcularConsumoExceso(): double    │
+│ + calcularCostoNormal(): double      │
+│ + calcularCostoExcedente(): double   │
+│ + obtenerCargoFijo(): double         │
+│ + generarFactura(): double           │
+└──────────────────────────────────────┘
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>2. Diagramas de Flujo por Método</h2>
+
+    <h3>Método: determinarTarifa()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO determinarTarifa] --> B{estrato >= 1 AND estrato <= 2?}
+            B -->|Sí| C[tarifa = 350]
+            B -->|No| D{estrato >= 3 AND estrato <= 4?}
+            D -->|Sí| E[tarifa = 450]
+            D -->|No| F{estrato >= 5 AND estrato <= 6?}
+            F -->|Sí| G[tarifa = 550]
+            F -->|No| H[tarifa = 450]
+            C --> I[RETORNAR tarifa]
+            E --> I
+            G --> I
+            H --> I
+    </div>
+
+    <h3>Método: calcularLimite()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularLimite] --> B[limite = 200 + numeroPersonas * 50]
+            B --> C[RETORNAR limite]
+    </div>
+
+    <h3>Método: calcularConsumoExceso()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularConsumoExceso] --> B[limitePermitido = calcularLimite]
+            B --> C{consumoMes > limitePermitido?}
+            C -->|Sí| D[exceso = consumoMes - limitePermitido]
+            C -->|No| E[exceso = 0]
+            D --> F[RETORNAR exceso]
+            E --> F
+    </div>
+
+    <h3>Método: calcularCostoNormal()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularCostoNormal] --> B[tarifaKwh = determinarTarifa]
+            B --> C[limitePermitido = calcularLimite]
+            C --> D{consumoMes <= limitePermitido?}
+            D -->|Sí| E[costoNormal = consumoMes * tarifaKwh]
+            D -->|No| F[costoNormal = limitePermitido * tarifaKwh]
+            E --> G[RETORNAR costoNormal]
+            F --> G
+    </div>
+
+    <h3>Método: calcularCostoExcedente()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularCostoExcedente] --> B[consumoExceso = calcularConsumoExceso]
+            B --> C[tarifaKwh = determinarTarifa]
+            C --> D[costoExcedente = consumoExceso * tarifaKwh * 1.5]
+            D --> E[RETORNAR costoExcedente]
+    </div>
+
+    <h3>Método: obtenerCargoFijo()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO obtenerCargoFijo] --> B[cargoFijo = 15000]
+            B --> C[RETORNAR cargoFijo]
+    </div>
+
+    <h3>Método: generarFactura()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO generarFactura] --> B[costoNormal = calcularCostoNormal]
+            B --> C[costoExcedente = calcularCostoExcedente]
+            C --> D[cargoFijo = obtenerCargoFijo]
+            D --> E[total = costoNormal + costoExcedente + cargoFijo]
+            E --> F[RETORNAR total]
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>3. Implementación en Java</h2>
+    <pre class="code-block"><code>import java.util.Scanner;
+import java.text.DecimalFormat;
+
+public class FacturadorEnergia {
+    // Atributos - Solo datos de entrada
+    private String direccion;
+    private int estrato;
+    private int numeroPersonas;
+    private double consumoMes;
+    
+    // Constructor
+    public FacturadorEnergia() {
+        // Constructor vacío
+    }
+    
+    // Método para determinar tarifa según estrato
+    public double determinarTarifa() {
+        if (estrato >= 1 && estrato <= 2) {
+            return 350; // $350/kWh
+        } else if (estrato >= 3 && estrato <= 4) {
+            return 450; // $450/kWh
+        } else if (estrato >= 5 && estrato <= 6) {
+            return 550; // $550/kWh
+        }
+        return 450; // Valor por defecto
+    }
+    
+    // Método para calcular límite permitido
+    public double calcularLimite() {
+        return 200 + (numeroPersonas * 50); // Base 200 + 50 por persona
+    }
+    
+    // Método para calcular consumo en exceso
+    public double calcularConsumoExceso() {
+        double limitePermitido = calcularLimite();
+        if (consumoMes > limitePermitido) {
+            return consumoMes - limitePermitido;
+        }
+        return 0;
+    }
+    
+    // Método para calcular costo del consumo normal
+    public double calcularCostoNormal() {
+        double tarifaKwh = determinarTarifa();
+        double limitePermitido = calcularLimite();
+        
+        if (consumoMes <= limitePermitido) {
+            return consumoMes * tarifaKwh;
+        } else {
+            return limitePermitido * tarifaKwh;
+        }
+    }
+    
+    // Método para calcular costo del consumo excedente
+    public double calcularCostoExcedente() {
+        double consumoExceso = calcularConsumoExceso();
+        double tarifaKwh = determinarTarifa();
+        
+        // Consumo excedente con penalización del 50%
+        return consumoExceso * tarifaKwh * 1.5;
+    }
+    
+    // Método para obtener cargo fijo
+    public double obtenerCargoFijo() {
+        return 15000; // Cargo fijo establecido
+    }
+    
+    // Método principal para generar el total de la factura
+    public double generarFactura() {
+        double costoNormal = calcularCostoNormal();
+        double costoExcedente = calcularCostoExcedente();
+        double cargoFijo = obtenerCargoFijo();
+        
+        return costoNormal + costoExcedente + cargoFijo;
+    }
+}</code></pre>
+
+    <div class="page-break"></div>
+
+    <h2>4. Prueba con el Escenario de Ejemplo</h2>
+
+    <div class="scenario">
+        <h3>Entrada:</h3>
+        <ul>
+            <li>Dirección: Calle 45 #23-15</li>
+            <li>Estrato: 3</li>
+            <li>Personas: 4</li>
+            <li>Consumo: 450 kWh</li>
+        </ul>
+
+        <h3>Cálculos paso a paso:</h3>
+        <table>
+            <tr>
+                <th>Paso</th>
+                <th>Operación</th>
+                <th>Resultado</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Tarifa por kWh (estrato 3)</td>
+                <td>$450</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Límite permitido (200 + 4 × 50)</td>
+                <td>400 kWh</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Consumo exceso (450 - 400)</td>
+                <td>50 kWh</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Costo normal (400 × $450)</td>
+                <td>$180.000</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Costo excedente (50 × $450 × 1.5)</td>
+                <td>$33.750</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Cargo fijo</td>
+                <td>$15.000</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Total a pagar</td>
+                <td><strong>$228.750</strong></td>
+            </tr>
+        </table>
+
+        <h3>Salida Esperada:</h3>
+        <pre class="code-block"><code>=== FACTURA DE ENERGÍA ===
+Dirección: Calle 45 #23-15
+Período: Mes actual
+
+Consumo total: 450 kWh
+Límite permitido: 400 kWh
+Exceso: 50 kWh
+
+Consumo normal (400 kWh x $450): $180.000
+Consumo excedente (50 kWh x $675): $33.750
+Cargo fijo: $15.000
+
+TOTAL A PAGAR: $228.750</code></pre>
+    </div>
+
+    <h2>5. Explicación del Código</h2>
+    
+    <div class="explanation">
+        <h3>Estructura de la Clase:</h3>
+        <ol>
+            <li><strong>Atributos privados</strong>: Solo almacenan los datos de entrada del hogar</li>
+            <li><strong>Constructor</strong>: Constructor vacío simple</li>
+            <li><strong>determinarTarifa()</strong>: Retorna la tarifa según el estrato socioeconómico</li>
+            <li><strong>calcularLimite()</strong>: Calcula el consumo máximo permitido sin penalización</li>
+            <li><strong>calcularConsumoExceso()</strong>: Determina si hay consumo excedente</li>
+            <li><strong>calcularCostoNormal()</strong>: Calcula el costo del consumo dentro del límite</li>
+            <li><strong>calcularCostoExcedente()</strong>: Calcula el costo con penalización del 50%</li>
+            <li><strong>obtenerCargoFijo()</strong>: Retorna el cargo fijo de servicio</li>
+            <li><strong>generarFactura()</strong>: Calcula el total sumando todos los componentes</li>
+        </ol>
+
+        <h3>Puntos Clave:</h3>
+        <ul>
+            <li>Los valores calculados NO son atributos de la clase</li>
+            <li>Cada cálculo tiene su propio método que retorna el valor</li>
+            <li>Los métodos se pueden llamar cuando se necesiten</li>
+            <li>Solo se almacenan como atributos los datos ingresados por el usuario</li>
+            <li>La lógica de negocio está separada en métodos específicos</li>
+            <li>Penalización del 50% sobre consumo excedente implementada correctamente</li>
+        </ul>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solución Examen 2: Calculadora de Impuestos sobre Ingresos</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #e74c3c;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #c0392b;
+            margin-top: 25px;
+        }
+        
+        .class-diagram {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-line;
+        }
+        
+        .scenario {
+            background-color: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .code-block code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #212529;
+            white-space: pre;
+            display: block;
+        }
+        
+        pre.code-block {
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .mermaid {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .explanation {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        @media print {
+            body {
+                margin: 0;
+                padding: 10px;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>💰 Examen 2: Calculadora de Impuestos sobre Ingresos</h1>
+
+    <h2>📋 Enunciado del Examen</h2>
+    
+    <h3>Contexto</h3>
+    <p>La Dirección de Impuestos necesita un programa para calcular el impuesto sobre la renta anual de los contribuyentes, considerando sus ingresos, personas a cargo y pagos de seguridad social.</p>
+
+    <h3>Requerimientos Funcionales</h3>
+    
+    <table>
+        <tr>
+            <th>Datos del contribuyente</th>
+            <th>Tabla de impuestos base</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li>Nombre completo</li>
+                    <li>Identificación</li>
+                    <li>Ingresos anuales</li>
+                    <li>Número de personas a cargo</li>
+                    <li>Monto pagado en seguridad social</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>$0 - $35.000.000: 0%</li>
+                    <li>$35.000.001 - $60.000.000: 19%</li>
+                    <li>$60.000.001 - $100.000.000: 28%</li>
+                    <li>Más de $100.000.000: 33%</li>
+                </ul>
+                <p>El impuesto base es entonces este porcentaje del ingreso anual.</p>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Ajustes al impuesto:</h3>
+    <ul>
+        <li>Reducción del 10% por cada persona a cargo (máximo 30%)</li>
+        <li>Si seguridad social > 8% del ingreso: tasa efectiva 10%</li>
+        <li>Si seguridad social ≤ 8% del ingreso: tasa efectiva 12%</li>
+    </ul>
+
+    <p><strong>Salida esperada:</strong></p>
+    <ul>
+        <li>Impuesto Base</li>
+        <li>Descuento por seguridad social</li>
+        <li>Descuento por personas a cargo</li>
+        <li>Total a pagar de impuestos</li>
+    </ul>
+
+    <h3>Escenario de Ejemplo</h3>
+    <table>
+        <tr>
+            <th>Entrada</th>
+            <th>Salida</th>
+        </tr>
+        <tr>
+            <td>
+                Nombre: María González<br>
+                Identificación: 1234567890<br>
+                Ingresos anuales: $75.000.000<br>
+                Personas a cargo: 2<br>
+                Seguridad social pagada: $7.000.000
+            </td>
+            <td>
+                === LIQUIDACIÓN DE IMPUESTO ===<br>
+                Contribuyente: María González<br>
+                ID: 1234567890<br>
+                Ingreso gravable: $75.000.000<br>
+                Impuesto base (28%): $21.000.000<br>
+                Deducción por dependientes (20%): -$4.200.000<br>
+                Impuesto ajustado: $16.800.000<br>
+                Tasa efectiva aplicada (10%): $1.680.000<br>
+                IMPUESTO A PAGAR: $1.680.000
+            </td>
+        </tr>
+    </table>
+
+    <h3>Entregables</h3>
+    <ol>
+        <li><strong>Diagrama de clase</strong> de CalculadoraImpuestos con sus atributos y métodos</li>
+        <li><strong>Diagrama de flujo</strong> del proceso de cálculo</li>
+        <li><strong>Implementación en Java</strong> de toda la clase</li>
+    </ol>
+
+    <div class="page-break"></div>
+    
+    <h1>📝 Solución del Examen</h1>
+
+    <h2>1. Diagrama de Clase</h2>
+    <div class="class-diagram">
+┌─────────────────────────────────────────┐
+│        CalculadoraImpuestos             │
+├─────────────────────────────────────────┤
+│ - nombre: String                        │
+│ - identificacion: String                │
+│ - ingresosAnuales: double               │
+│ - personasACargo: int                   │
+│ - seguridadSocial: double               │
+├─────────────────────────────────────────┤
+│ + CalculadoraImpuestos()                │
+│ + calcularImpuestoBase(): double        │
+│ + calcularDeduccionDependientes(): double│
+│ + calcularImpuestoAjustado(): double    │
+│ + calcularTasaEfectiva(): double        │
+│ + calcularImpuestoRenta(): double       │
+└─────────────────────────────────────────┘
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>2. Diagramas de Flujo por Método</h2>
+
+    <h3>Método: calcularImpuestoBase()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularImpuestoBase] --> B{ingresosAnuales <= 35000000?}
+            B -->|Sí| C[porcentaje = 0]
+            B -->|No| D{ingresosAnuales <= 60000000?}
+            D -->|Sí| E[porcentaje = 0.19]
+            D -->|No| F{ingresosAnuales <= 100000000?}
+            F -->|Sí| G[porcentaje = 0.28]
+            F -->|No| H[porcentaje = 0.33]
+            C --> I[resultado = ingresosAnuales * porcentaje]
+            E --> I
+            G --> I
+            H --> I
+            I --> J[RETORNAR resultado]
+    </div>
+
+    <h3>Método: calcularDeduccionDependientes()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularDeduccionDependientes] --> B[impuestoBase = calcularImpuestoBase]
+            B --> C[porcentajeDeduccion = personasACargo * 0.10]
+            C --> D{porcentajeDeduccion > 0.30?}
+            D -->|Sí| E[porcentajeDeduccion = 0.30]
+            D -->|No| F[mantener porcentajeDeduccion]
+            E --> G[resultado = impuestoBase * porcentajeDeduccion]
+            F --> G
+            G --> H[RETORNAR resultado]
+    </div>
+
+    <h3>Método: calcularImpuestoAjustado()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularImpuestoAjustado] --> B[impuestoBase = calcularImpuestoBase]
+            B --> C[deduccionDependientes = calcularDeduccionDependientes]
+            C --> D[resultado = impuestoBase - deduccionDependientes]
+            D --> E[RETORNAR resultado]
+    </div>
+
+    <h3>Método: calcularTasaEfectiva()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularTasaEfectiva] --> B[porcentajeSS = seguridadSocial / ingresosAnuales]
+            B --> C{porcentajeSS > 0.08?}
+            C -->|Sí| D[tasaEfectiva = 0.10]
+            C -->|No| E[tasaEfectiva = 0.12]
+            D --> F[RETORNAR tasaEfectiva]
+            E --> F
+    </div>
+
+    <h3>Método: calcularImpuestoRenta()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularImpuestoRenta] --> B[impuestoAjustado = calcularImpuestoAjustado]
+            B --> C[tasaEfectiva = calcularTasaEfectiva]
+            C --> D[impuestoFinal = impuestoAjustado * tasaEfectiva]
+            D --> E[RETORNAR impuestoFinal]
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>3. Implementación en Java</h2>
+    <pre class="code-block"><code>import java.util.Scanner;
+import java.text.DecimalFormat;
+
+public class CalculadoraImpuestos {
+    // Atributos - Solo datos de entrada
+    private String nombre;
+    private String identificacion;
+    private double ingresosAnuales;
+    private int personasACargo;
+    private double seguridadSocial;
+    
+    // Constructor
+    public CalculadoraImpuestos() {
+        // Constructor vacío
+    }
+    
+    // Método para calcular impuesto base
+    public double calcularImpuestoBase() {
+        double porcentaje = 0;
+        
+        if (ingresosAnuales <= 35000000) {
+            porcentaje = 0; // 0%
+        } else if (ingresosAnuales <= 60000000) {
+            porcentaje = 0.19; // 19%
+        } else if (ingresosAnuales <= 100000000) {
+            porcentaje = 0.28; // 28%
+        } else {
+            porcentaje = 0.33; // 33%
+        }
+        
+        return ingresosAnuales * porcentaje;
+    }
+    
+    // Método para calcular deducción por dependientes
+    public double calcularDeduccionDependientes() {
+        double impuestoBase = calcularImpuestoBase();
+        double porcentajeDeduccion = personasACargo * 0.10; // 10% por persona
+        
+        // Máximo 30% de deducción
+        if (porcentajeDeduccion > 0.30) {
+            porcentajeDeduccion = 0.30;
+        }
+        
+        return impuestoBase * porcentajeDeduccion;
+    }
+    
+    // Método para calcular impuesto ajustado
+    public double calcularImpuestoAjustado() {
+        double impuestoBase = calcularImpuestoBase();
+        double deduccionDependientes = calcularDeduccionDependientes();
+        
+        return impuestoBase - deduccionDependientes;
+    }
+    
+    // Método para calcular tasa efectiva
+    public double calcularTasaEfectiva() {
+        double porcentajeSeguridadSocial = seguridadSocial / ingresosAnuales;
+        
+        if (porcentajeSeguridadSocial > 0.08) {
+            return 0.10; // 10%
+        } else {
+            return 0.12; // 12%
+        }
+    }
+    
+    // Método principal de cálculo que retorna el impuesto final
+    public double calcularImpuestoRenta() {
+        double impuestoAjustado = calcularImpuestoAjustado();
+        double tasaEfectiva = calcularTasaEfectiva();
+        
+        return impuestoAjustado * tasaEfectiva;
+    }
+}</code></pre>
+
+    <div class="page-break"></div>
+
+    <h2>4. Prueba con el Escenario de Ejemplo</h2>
+
+    <div class="scenario">
+        <h3>Entrada:</h3>
+        <ul>
+            <li>Nombre: María González</li>
+            <li>Identificación: 1234567890</li>
+            <li>Ingresos anuales: $75.000.000</li>
+            <li>Personas a cargo: 2</li>
+            <li>Seguridad social pagada: $7.000.000</li>
+        </ul>
+
+        <h3>Cálculos paso a paso:</h3>
+        <table>
+            <tr>
+                <th>Paso</th>
+                <th>Operación</th>
+                <th>Resultado</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Impuesto base (28% de $75.000.000)</td>
+                <td>$21.000.000</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Deducción por dependientes (2 × 10% = 20%)</td>
+                <td>-$4.200.000</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Impuesto ajustado</td>
+                <td>$16.800.000</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>% Seguridad social ($7M/$75M = 9.33%)</td>
+                <td>Mayor a 8%</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Tasa efectiva aplicada</td>
+                <td>10%</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Impuesto final ($16.800.000 × 10%)</td>
+                <td><strong>$1.680.000</strong></td>
+            </tr>
+        </table>
+
+        <h3>Salida Esperada:</h3>
+        <pre class="code-block"><code>=== LIQUIDACIÓN DE IMPUESTO ===
+Contribuyente: María González
+ID: 1234567890
+
+Ingreso gravable: $75.000.000
+Impuesto base (28%): $21.000.000
+Deducción por dependientes (20%): -$4.200.000
+Impuesto ajustado: $16.800.000
+Tasa efectiva aplicada (10%): $1.680.000
+
+IMPUESTO A PAGAR: $1.680.000</code></pre>
+    </div>
+
+    <h2>5. Explicación del Código</h2>
+    
+    <div class="explanation">
+        <h3>Estructura de la Clase:</h3>
+        <ol>
+            <li><strong>Atributos privados</strong>: Solo almacenan los datos de entrada del contribuyente</li>
+            <li><strong>Constructor</strong>: Constructor vacío simple</li>
+            <li><strong>calcularImpuestoBase()</strong>: Aplica la tabla de impuestos según el rango de ingresos</li>
+            <li><strong>calcularDeduccionDependientes()</strong>: Calcula deducción por personas a cargo (máximo 30%)</li>
+            <li><strong>calcularImpuestoAjustado()</strong>: Resta las deducciones del impuesto base</li>
+            <li><strong>calcularTasaEfectiva()</strong>: Determina la tasa según el pago de seguridad social</li>
+            <li><strong>calcularImpuestoRenta()</strong>: Aplica la tasa efectiva al impuesto ajustado</li>
+        </ol>
+
+        <h3>Puntos Clave:</h3>
+        <ul>
+            <li>Los valores calculados NO son atributos de la clase</li>
+            <li>Cada cálculo se realiza mediante un método independiente</li>
+            <li>Los métodos pueden llamarse cuando se necesiten</li>
+            <li>Solo se almacenan como atributos los datos ingresados por el usuario</li>
+            <li>Cada método tiene una responsabilidad específica en el cálculo</li>
+        </ul>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+</body>
+</html>

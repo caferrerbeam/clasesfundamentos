@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solución Examen 4: Sistema de Parqueadero</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #27ae60;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #2ecc71;
+            margin-top: 25px;
+        }
+        
+        .class-diagram {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-line;
+        }
+        
+        .scenario {
+            background-color: #e8f6f3;
+            border-left: 4px solid #1abc9c;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .code-block code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #212529;
+            white-space: pre;
+            display: block;
+        }
+        
+        pre.code-block {
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .mermaid {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .explanation {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        @media print {
+            body {
+                margin: 0;
+                padding: 10px;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🚗 Examen 4: Sistema de Parqueadero</h1>
+
+    <h2>📋 Enunciado del Examen</h2>
+    
+    <h3>Contexto</h3>
+    <p>El centro comercial Plaza Mayor necesita un programa para calcular el cobro del parqueadero según el tiempo de permanencia y el tipo de vehículo.</p>
+
+    <h3>Requerimientos Funcionales</h3>
+    <p>El programa debe solicitar y procesar:</p>
+    
+    <table>
+        <tr>
+            <th>Datos del vehículo</th>
+            <th>Tarifas escalonadas</th>
+            <th>Recargos por tipo</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li>Placa</li>
+                    <li>Tipo (Sedán, SUV, Camioneta, Camión)</li>
+                    <li>Nombre del propietario</li>
+                    <li>Teléfono de contacto</li>
+                    <li>Horas de permanencia</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>0-12 horas: $3.000/hora</li>
+                    <li>13-24 horas: $2.700/hora</li>
+                    <li>Más de 24 horas: $2.500/hora</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>Sedán: 0%</li>
+                    <li>SUV: 15%</li>
+                    <li>Camioneta: 25%</li>
+                    <li>Camión: 40%</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <p><strong>Salida esperada:</strong></p>
+    <ul>
+        <li>Descuento por tipo de vehículo</li>
+        <li>Valor a pagar del parqueadero</li>
+    </ul>
+
+    <h3>Escenario de Ejemplo</h3>
+    <table>
+        <tr>
+            <th>Entrada</th>
+            <th>Salida</th>
+        </tr>
+        <tr>
+            <td>
+                Placa: ABC-123<br>
+                Tipo: SUV<br>
+                Propietario: Carlos Rodríguez<br>
+                Teléfono: 3001234567<br>
+                Horas: 16
+            </td>
+            <td>
+                === TICKET DE PARQUEADERO ===<br>
+                Placa: ABC-123<br>
+                Tipo: SUV<br>
+                Propietario: Carlos Rodríguez<br>
+                Tiempo: 16 horas<br>
+                - Primeras 12 horas (12 x $3.000): $36.000<br>
+                - Siguientes 4 horas (4 x $2.700): $10.800<br>
+                Subtotal: $46.800<br>
+                Recargo SUV (15%): $7.020<br>
+                TOTAL A PAGAR: $53.820
+            </td>
+        </tr>
+    </table>
+
+    <h3>Entregables</h3>
+    <ol>
+        <li><strong>Diagrama de clase</strong> de SistemaParqueadero con sus atributos y métodos</li>
+        <li><strong>Diagrama de flujo</strong> del cálculo de tarifa</li>
+        <li><strong>Implementación en Java</strong> de toda la clase</li>
+    </ol>
+
+    <div class="page-break"></div>
+    
+    <h1>📝 Solución del Examen</h1>
+
+    <h2>1. Diagrama de Clase</h2>
+    <div class="class-diagram">
+┌──────────────────────────────────────┐
+│        SistemaParqueadero            │
+├──────────────────────────────────────┤
+│ - placa: String                      │
+│ - tipoVehiculo: String               │
+│ - propietario: String                │
+│ - telefono: String                   │
+│ - horasPermanencia: int              │
+├──────────────────────────────────────┤
+│ + SistemaParqueadero()               │
+│ + calcularCostoHoras12(): double     │
+│ + calcularCostoHoras24(): double     │
+│ + calcularCostoHorasMas24(): double  │
+│ + calcularSubtotal(): double         │
+│ + obtenerPorcentajeRecargo(): double │
+│ + calcularRecargo(): double          │
+│ + calcularCobro(): double            │
+└──────────────────────────────────────┘
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>2. Diagramas de Flujo por Método</h2>
+
+    <h3>Método: calcularCostoHoras12()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularCostoHoras12] --> B{horasPermanencia <= 12?}
+            B -->|Sí| C[costo = horasPermanencia * 3000]
+            B -->|No| D[costo = 12 * 3000]
+            C --> E[RETORNAR costo]
+            D --> E
+    </div>
+
+    <h3>Método: calcularCostoHoras24()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularCostoHoras24] --> B{horasPermanencia <= 12?}
+            B -->|Sí| C[costo = 0]
+            B -->|No| D{horasPermanencia <= 24?}
+            D -->|Sí| E[costo = horas_restantes * 2700]
+            D -->|No| F[costo = 12 * 2700]
+            C --> G[RETORNAR costo]
+            E --> G
+            F --> G
+    </div>
+
+    <h3>Método: calcularCostoHorasMas24()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularCostoHorasMas24] --> B{horasPermanencia <= 24?}
+            B -->|Sí| C[costo = 0]
+            B -->|No| D[costo = horas_excedentes * 2500]
+            C --> E[RETORNAR costo]
+            D --> E
+    </div>
+
+    <h3>Método: calcularSubtotal()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularSubtotal] --> B[costoHoras12 = calcularCostoHoras12]
+            B --> C[costoHoras24 = calcularCostoHoras24]
+            C --> D[costoHorasMas24 = calcularCostoHorasMas24]
+            D --> E[subtotal = costoHoras12 + costoHoras24 + costoHorasMas24]
+            E --> F[RETORNAR subtotal]
+    </div>
+
+    <h3>Método: obtenerPorcentajeRecargo()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO obtenerPorcentajeRecargo] --> B{tipoVehiculo es Sedan?}
+            B -->|Sí| C[porcentaje = 0]
+            B -->|No| D{tipoVehiculo es SUV?}
+            D -->|Sí| E[porcentaje = 0.15]
+            D -->|No| F{tipoVehiculo es Camioneta?}
+            F -->|Sí| G[porcentaje = 0.25]
+            F -->|No| H{tipoVehiculo es Camion?}
+            H -->|Sí| I[porcentaje = 0.40]
+            H -->|No| J[porcentaje = 0]
+            C --> K[RETORNAR porcentaje]
+            E --> K
+            G --> K
+            I --> K
+            J --> K
+    </div>
+
+    <h3>Método: calcularRecargo()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularRecargo] --> B[subtotal = calcularSubtotal]
+            B --> C[porcentajeRecargo = obtenerPorcentajeRecargo]
+            C --> D[recargo = subtotal * porcentajeRecargo]
+            D --> E[RETORNAR recargo]
+    </div>
+
+    <h3>Método: calcularCobro()</h3>
+    <div class="mermaid">
+        flowchart TD
+            A[INICIO calcularCobro] --> B[subtotal = calcularSubtotal]
+            B --> C[recargo = calcularRecargo]
+            C --> D[total = subtotal + recargo]
+            D --> E[RETORNAR total]
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>3. Implementación en Java</h2>
+    <pre class="code-block"><code>import java.util.Scanner;
+import java.text.DecimalFormat;
+
+public class SistemaParqueadero {
+    // Atributos - Solo datos de entrada
+    private String placa;
+    private String tipoVehiculo;
+    private String propietario;
+    private String telefono;
+    private int horasPermanencia;
+    
+    // Constructor
+    public SistemaParqueadero() {
+        // Constructor vacío
+    }
+    
+    // Método para calcular costo de las primeras 12 horas
+    public double calcularCostoHoras12() {
+        if (horasPermanencia <= 12) {
+            return horasPermanencia * 3000;
+        } else {
+            return 12 * 3000; // Máximo 12 horas a esta tarifa
+        }
+    }
+    
+    // Método para calcular costo de horas entre 13 y 24
+    public double calcularCostoHoras24() {
+        if (horasPermanencia <= 12) {
+            return 0;
+        } else if (horasPermanencia <= 24) {
+            return (horasPermanencia - 12) * 2700;
+        } else {
+            return 12 * 2700; // Máximo 12 horas a esta tarifa
+        }
+    }
+    
+    // Método para calcular costo de horas después de 24
+    public double calcularCostoHorasMas24() {
+        if (horasPermanencia <= 24) {
+            return 0;
+        } else {
+            return (horasPermanencia - 24) * 2500;
+        }
+    }
+    
+    // Método para calcular subtotal
+    public double calcularSubtotal() {
+        double costoHoras12 = calcularCostoHoras12();
+        double costoHoras24 = calcularCostoHoras24();
+        double costoHorasMas24 = calcularCostoHorasMas24();
+        
+        return costoHoras12 + costoHoras24 + costoHorasMas24;
+    }
+    
+    // Método para obtener porcentaje de recargo según tipo de vehículo
+    public double obtenerPorcentajeRecargo() {
+        if (tipoVehiculo.equalsIgnoreCase("Sedan")) {
+            return 0; // 0%
+        } else if (tipoVehiculo.equalsIgnoreCase("SUV")) {
+            return 0.15; // 15%
+        } else if (tipoVehiculo.equalsIgnoreCase("Camioneta")) {
+            return 0.25; // 25%
+        } else if (tipoVehiculo.equalsIgnoreCase("Camion")) {
+            return 0.40; // 40%
+        }
+        return 0; // Por defecto sin recargo
+    }
+    
+    // Método para calcular recargo
+    public double calcularRecargo() {
+        double subtotal = calcularSubtotal();
+        double porcentajeRecargo = obtenerPorcentajeRecargo();
+        
+        return subtotal * porcentajeRecargo;
+    }
+    
+    // Método principal de cálculo que retorna el total a pagar
+    public double calcularCobro() {
+        double subtotal = calcularSubtotal();
+        double recargo = calcularRecargo();
+        
+        return subtotal + recargo;
+    }
+}</code></pre>
+
+    <div class="page-break"></div>
+
+    <h2>4. Prueba con el Escenario de Ejemplo</h2>
+
+    <div class="scenario">
+        <h3>Entrada:</h3>
+        <ul>
+            <li>Placa: ABC-123</li>
+            <li>Tipo: SUV</li>
+            <li>Propietario: Carlos Rodríguez</li>
+            <li>Teléfono: 3001234567</li>
+            <li>Horas: 16</li>
+        </ul>
+
+        <h3>Cálculos paso a paso:</h3>
+        <table>
+            <tr>
+                <th>Paso</th>
+                <th>Operación</th>
+                <th>Resultado</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Primeras 12 horas (12 × $3.000)</td>
+                <td>$36.000</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Siguientes 4 horas (4 × $2.700)</td>
+                <td>$10.800</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Subtotal</td>
+                <td>$46.800</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Recargo por SUV (15%)</td>
+                <td>$7.020</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Total a pagar</td>
+                <td><strong>$53.820</strong></td>
+            </tr>
+        </table>
+
+        <h3>Salida Esperada:</h3>
+        <pre class="code-block"><code>=== TICKET DE PARQUEADERO ===
+Placa: ABC-123
+Tipo: SUV
+Propietario: Carlos Rodríguez
+
+Tiempo: 16 horas
+- Primeras 12 horas (12 x $3.000): $36.000
+- Siguientes 4 horas (4 x $2.700): $10.800
+
+Subtotal: $46.800
+Recargo SUV (15%): $7.020
+
+TOTAL A PAGAR: $53.820</code></pre>
+    </div>
+
+    <h2>5. Explicación del Código</h2>
+    
+    <div class="explanation">
+        <h3>Estructura de la Clase:</h3>
+        <ol>
+            <li><strong>Atributos privados</strong>: Solo almacenan los datos de entrada del vehículo</li>
+            <li><strong>Constructor</strong>: Constructor vacío simple</li>
+            <li><strong>calcularCostoHoras12()</strong>: Calcula el costo de las primeras 12 horas ($3.000/hora)</li>
+            <li><strong>calcularCostoHoras24()</strong>: Calcula el costo de las horas 13-24 ($2.700/hora)</li>
+            <li><strong>calcularCostoHorasMas24()</strong>: Calcula el costo de horas después de 24 ($2.500/hora)</li>
+            <li><strong>calcularSubtotal()</strong>: Suma todos los costos por rangos de horas</li>
+            <li><strong>obtenerPorcentajeRecargo()</strong>: Determina el recargo según tipo de vehículo</li>
+            <li><strong>calcularRecargo()</strong>: Calcula el monto del recargo aplicado</li>
+            <li><strong>calcularCobro()</strong>: Método principal que retorna el total a pagar</li>
+        </ol>
+
+        <h3>Puntos Clave:</h3>
+        <ul>
+            <li>Los valores calculados NO son atributos de la clase</li>
+            <li>Cada cálculo tiene su propio método específico</li>
+            <li>Los métodos de cálculo retornan valores cuando se necesitan</li>
+            <li>Solo se almacenan como atributos los datos ingresados por el usuario</li>
+            <li>La lógica de tarifas escalonadas está separada en métodos independientes</li>
+            <li>Manejo correcto de recargos diferenciados por tipo de vehículo</li>
+        </ul>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+</body>
+</html>
