@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Pedidos y Fidelización - Restaurante Sabores del Mundo</title>
+    <!-- Mermaid JS para renderizar diagramas de flujo -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .emoji {
+            font-size: 3rem;
+            margin: 0 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #764ba2;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #f093fb;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin: 20px 0 15px 0;
+        }
+
+        .menu-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item-info h4 {
+            color: #f5576c;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .menu-item-details {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .menu-item-price {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .categoria-card {
+            background: white;
+            border-left: 5px solid #764ba2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .categoria-card h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+
+        .factura-ejemplo {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .situacion-card {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2dfdb 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .situacion-card h4 {
+            color: #00796b;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        ul li {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff6e5 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .activity-section {
+            background: linear-gradient(135deg, #f6f7ff 0%, #e8f0ff 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-section h2 {
+            color: #4a00e0;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #8e2de2;
+            padding-bottom: 15px;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .activity-card h3 {
+            color: #8e2de2;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .flowchart {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .flow-element {
+            background: #f5f5f5;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .flow-element.decision {
+            background: #fff3e0;
+            border-color: #ff9800;
+            transform: rotate(0deg);
+        }
+
+        .flow-element.process {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .flow-element.start-end {
+            background: #fce4ec;
+            border-color: #e91e63;
+            border-radius: 50px;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .class-diagram {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .class-box {
+            background: white;
+            border: 2px solid #4a00e0;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .class-title {
+            background: #4a00e0;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .class-attributes {
+            padding: 15px;
+            border-bottom: 2px solid #4a00e0;
+        }
+
+        .class-methods {
+            padding: 15px;
+        }
+
+        .class-attributes p, .class-methods p {
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+            color: #333;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .keyword {
+            color: #66d9ef;
+            font-weight: bold;
+        }
+
+        .string {
+            color: #a6e22e;
+        }
+
+        .comment {
+            color: #75715e;
+            font-style: italic;
+        }
+
+        .number {
+            color: #ae81ff;
+        }
+
+        .class-name {
+            color: #f92672;
+        }
+
+        .function {
+            color: #e6db74;
+        }
+
+        .instruction-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .instruction-box h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .instruction-box p {
+            margin: 10px 0;
+        }
+
+        .note-card {
+            background: #fffbf0;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note-card strong {
+            color: #f57c00;
+        }
+        
+        .mermaid-diagram {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="emoji">🍽️</span>
+            <h1>Sistema de Pedidos y Fidelización</h1>
+            <span class="emoji">🎯</span>
+            <p style="font-size: 1.2rem; margin-top: 10px;">Restaurante "Sabores del Mundo"</p>
+        </div>
+
+        <div class="content">
+            <!-- Contexto de negocio -->
+            <div class="section">
+                <h2>📋 Contexto de Negocio</h2>
+                <p>El restaurante <strong>"Sabores del Mundo"</strong> está implementando un plan de modernización. Actualmente, sus pedidos se hacen en papel y los clientes participan en un <strong>programa de fidelización</strong> que busca premiar a quienes consumen con frecuencia. Sin embargo, al no tener un sistema organizado, han surgido múltiples problemas:</p>
+                
+                <ul>
+                    <li>Los meseros olvidan anotar correctamente lo que pide el cliente.</li>
+                    <li>El cálculo de la cuenta muchas veces es incorrecto porque se suman mal los precios.</li>
+                    <li>Los puntos de fidelidad se pierden, se olvidan o se asignan mal.</li>
+                    <li>No hay control sobre cuándo un cliente debería cambiar de categoría (Regular, VIP o Corporativo).</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p><strong>Solución:</strong> La administración decidió que cada pedido debe registrarse en un <strong>sistema automatizado</strong> que cumpla con condiciones específicas.</p>
+                </div>
+            </div>
+
+            <!-- Condiciones del Sistema -->
+            <div class="section">
+                <h2>⚙️ Condiciones del Sistema</h2>
+                
+                <h3>1. Simplicidad del pedido</h3>
+                <p>Cada pedido solo puede contener <strong>un tipo de plato</strong> del menú, pero el cliente puede indicar la <strong>cantidad de platos</strong> que desea de esa categoría.</p>
+                <p>Ejemplo: "3 proteínas" o "2 postres".</p>
+
+                <h3>2. Menú fijo y sencillo</h3>
+                <div class="menu-card">
+                    <h4 style="text-align: center; color: #f5576c; margin-bottom: 20px;">MENÚ DEL RESTAURANTE</h4>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>🥩 Proteína</h4>
+                            <div class="menu-item-details">
+                                <span>15 puntos por unidad</span>
+                                <span>Ejemplos: pollo, carne, pescado</span>
+                            </div>
+                        </div>
+                        <div class="menu-item-price">$30.000</div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>🥗 Ensalada</h4>
+                            <div class="menu-item-details">
+                                <span>5 puntos por unidad</span>
+                                <span>Ejemplos: césar, frutas, verde</span>
+                            </div>
+                        </div>
+                        <div class="menu-item-price">$12.000</div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>🍲 Sopa</h4>
+                            <div class="menu-item-details">
+                                <span>8 puntos por unidad</span>
+                                <span>Ejemplos: verduras, ajiaco, crema</span>
+                            </div>
+                        </div>
+                        <div class="menu-item-price">$15.000</div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>🍰 Postre</h4>
+                            <div class="menu-item-details">
+                                <span>3 puntos por unidad</span>
+                                <span>Ejemplos: flan, helado, torta</span>
+                            </div>
+                        </div>
+                        <div class="menu-item-price">$10.000</div>
+                    </div>
+                </div>
+
+                <h3>3. Acumulación de puntos y categorías</h3>
+                <p>Cada cliente acumula puntos con sus pedidos. Todos inician en categoría <strong>Regular</strong> con 0 puntos:</p>
+                
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 4px solid #4caf50;">
+                    <h4 style="color: #2e7d32; margin-bottom: 15px;">🔢 ¿Cómo se acumulan los puntos?</h4>
+                    <p><strong>Fórmula simple:</strong> <code>puntos_pedido = puntos_por_unidad × cantidad</code></p>
+                    <p><strong>Ejemplos prácticos:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Si pides <strong>3 proteínas</strong>: 15 puntos × 3 = <strong>45 puntos</strong></li>
+                        <li>Si pides <strong>2 ensaladas</strong>: 5 puntos × 2 = <strong>10 puntos</strong></li>
+                        <li>Si pides <strong>4 sopas</strong>: 8 puntos × 4 = <strong>32 puntos</strong></li>
+                        <li>Si pides <strong>1 postre</strong>: 3 puntos × 1 = <strong>3 puntos</strong></li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>⚠️ Importante:</strong> Los puntos se acumulan <strong>después</strong> de cada pedido y son <strong>permanentes</strong> (nunca se pierden).</p>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-left: 4px solid #ff9800;">
+                    <h4 style="color: #e65100; margin-bottom: 15px;">📈 Ejemplo de progresión de un cliente:</h4>
+                    <div style="font-family: 'Courier New', monospace; background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>Cliente: María González</strong><br><br>
+                        
+                        <strong>📅 Pedido 1:</strong> 2 proteínas<br>
+                        • Puntos del pedido: 15 × 2 = 30 puntos<br>
+                        • Total acumulado: 0 + 30 = <strong>30 puntos</strong><br>
+                        • Categoría: <span style="color: #666;">Regular</span> (sigue siendo menor a 100)<br><br>
+                        
+                        <strong>📅 Pedido 2:</strong> 1 sopa<br>
+                        • Puntos del pedido: 8 × 1 = 8 puntos<br>
+                        • Total acumulado: 30 + 8 = <strong>38 puntos</strong><br>
+                        • Categoría: <span style="color: #666;">Regular</span><br><br>
+                        
+                        <strong>📅 Pedido 3:</strong> 5 ensaladas<br>
+                        • Puntos del pedido: 5 × 5 = 25 puntos<br>
+                        • Total acumulado: 38 + 25 = <strong>63 puntos</strong><br>
+                        • Categoría: <span style="color: #666;">Regular</span><br><br>
+                        
+                        <strong>📅 Pedido 4:</strong> 3 proteínas<br>
+                        • Puntos del pedido: 15 × 3 = 45 puntos<br>
+                        • Total acumulado: 63 + 45 = <strong>108 puntos</strong><br>
+                        • Categoría: <span style="color: #2196f3;">VIP</span> ⭐ (automáticamente cambia a VIP!)<br>
+                    </div>
+                    <p style="margin-top: 10px;"><strong>🎉 Resultado:</strong> María ya puede recibir descuentos VIP en pedidos superiores a $100.000</p>
+                </div>
+                
+                <div class="categoria-card">
+                    <h4>👤 Regular (0 - 99 puntos)</h4>
+                    <p>No recibe descuentos.</p>
+                </div>
+                
+                <div class="categoria-card">
+                    <h4>⭐ VIP (100 - 499 puntos)</h4>
+                    <p>Si el pedido supera $100.000, tiene 10% de descuento.</p>
+                </div>
+                
+                <div class="categoria-card">
+                    <h4>💎 Corporativo (500+ puntos)</h4>
+                    <p>Si el pedido supera $200.000, tiene 20% de descuento.</p>
+                </div>
+
+                <h3>4. Estadísticas personales</h3>
+                <p>El sistema debe registrar en todo momento:</p>
+                <ul>
+                    <li>El total de platos pedidos por el cliente (histórico)</li>
+                    <li>Los puntos acumulados</li>
+                    <li>La categoría actual</li>
+                </ul>
+
+                <h3>5. Factura automática</h3>
+                <p>Cada pedido debe generar una <strong>factura clara y sencilla</strong> con todos los detalles del pedido y la información del cliente.</p>
+            </div>
+
+            <!-- Ejemplo de Factura -->
+            <div class="section">
+                <h2>📄 Ejemplo de Factura</h2>
+                <p>Supongamos que el cliente <strong>Laura Torres</strong>, quien ya es <strong>VIP</strong>, pide <strong>5 proteínas</strong>.</p>
+                
+                <div class="factura-ejemplo">===============================
+        FACTURA DE PEDIDO
+===============================
+Cliente: Laura Torres
+Categoría actual: VIP
+
+Plato elegido: Proteína
+Cantidad: 5
+Precio unitario: $30.000
+----------------------------------------
+Precio base del pedido: $150.000
+Descuento aplicado (10% VIP): -$15.000
+Valor final a pagar: $135.000
+----------------------------------------
+Puntos obtenidos en este pedido: 75
+Puntos acumulados: 220
+Platos comprados en total: 18
+===============================
+   ¡Gracias por su compra!
+===============================</div>
+            </div>
+
+            <!-- Situaciones Problemáticas -->
+            <div class="section">
+                <h2>🎯 Situaciones Problemáticas</h2>
+                
+                <div class="situacion-card">
+                    <h4>Situación 1 – Pedido económico de un cliente Regular</h4>
+                    <p>Un cliente nuevo, <strong>Pedro Ramírez</strong>, pide <strong>2 ensaladas</strong>.</p>
+                    <ul>
+                        <li>Precio base: 2 × $12.000</li>
+                        <li>Puntos ganados: 2 × 5</li>
+                        <li>Categoría: sigue siendo Regular</li>
+                        <li>La factura debe mostrar precio base, sin descuentos, puntos obtenidos y total acumulado</li>
+                    </ul>
+                </div>
+
+                <div class="situacion-card">
+                    <h4>Situación 2 – Cambio de categoría</h4>
+                    <p>Un cliente <strong>Regular</strong> ya tiene 95 puntos. En su siguiente pedido pide <strong>1 proteína y 1 sopa</strong> (se elige uno de esos platos con la cantidad correspondiente en el sistema).</p>
+                    <ul>
+                        <li>Puntos del pedido: 15 + 8 = 23</li>
+                        <li>Nuevos puntos acumulados: 95 + 23 = 118</li>
+                        <li>El cliente pasa automáticamente a la categoría VIP</li>
+                        <li>La factura debe mostrar el cambio de categoría</li>
+                    </ul>
+                </div>
+
+                <div class="situacion-card">
+                    <h4>Situación 3 – Corporativo con pedido grande</h4>
+                    <p>Un cliente <strong>Corporativo</strong> pide <strong>10 proteínas</strong>.</p>
+                    <ul>
+                        <li>Precio base: 10 × $30.000</li>
+                        <li>Como el pedido supera $200.000, se aplica el 20% de descuento</li>
+                        <li>Puntos obtenidos: 10 × 15 = 150</li>
+                        <li>La factura debe mostrar el descuento, el valor final y los puntos acumulados</li>
+                    </ul>
+                </div>
+
+                <div class="situacion-card">
+                    <h4>Situación 4 – Pedido de postres</h4>
+                    <p>Una clienta <strong>Regular</strong> pide <strong>5 postres</strong>.</p>
+                    <ul>
+                        <li>Precio base: 5 × $10.000</li>
+                        <li>Puntos obtenidos: 5 × 3</li>
+                        <li>La categoría sigue siendo Regular porque aún no llega a 100 puntos</li>
+                        <li>La factura debe mostrar claramente el pedido, sin descuentos, pero con los puntos sumados</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ANÁLISIS DE DATOS -->
+            <div class="section">
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 4px solid #2196f3;">
+                    <h4 style="color: #0d47a1; margin-bottom: 15px;">📊 Análisis de Datos: Atributos vs Operaciones</h4>
+                    <p>Antes de implementar, es <strong>crucial</strong> entender qué datos son <strong>atributos</strong> (se almacenan directamente) y cuáles son <strong>operaciones</strong> (se calculan a partir de otros datos):</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                    <div class="note-card" style="background: #f1f8e9; border-left: 5px solid #689f38;">
+                        <h4 style="color: #33691e;">✅ ATRIBUTOS (Datos básicos)</h4>
+                        <p><strong>Estos datos se almacenan directamente:</strong></p>
+                        <ul style="margin-left: 15px; margin-top: 10px;">
+                            <li><code>String nombreCliente</code> - Dato de entrada</li>
+                            <li><code>int puntosAcumulados</code> - Estado del cliente</li>
+                            <li><code>int totalPlatosPedidos</code> - Historial del cliente</li>
+                        </ul>
+                        <p style="margin-top: 15px; font-size: 0.9rem; color: #666;"><em>↑ Solo el estado permanente del cliente</em></p>
+                    </div>
+
+                    <div class="note-card" style="background: #fff3e0; border-left: 5px solid #f57c00;">
+                        <h4 style="color: #bf360c;">⚙️ OPERACIONES (Datos calculados)</h4>
+                        <p><strong>Estos datos se calculan usando otros datos:</strong></p>
+                        <ul style="margin-left: 15px; margin-top: 10px;">
+                            <li><code>double precioUnitario</code> - <span style="color: #f57c00;">depende de</span> <code>tipoPlato</code> (parámetro)</li>
+                            <li><code>int puntosUnitarios</code> - <span style="color: #f57c00;">depende de</span> <code>tipoPlato</code> (parámetro)</li>
+                            <li><code>double precioBase</code> - <span style="color: #f57c00;">depende de</span> <code>precioUnitario × cantidad</code></li>
+                            <li><code>int puntosPedido</code> - <span style="color: #f57c00;">depende de</span> <code>puntosUnitarios × cantidad</code></li>
+                            <li><code>String categoria</code> - <span style="color: #f57c00;">depende de</span> <code>puntosAcumulados</code></li>
+                            <li><code>double descuento</code> - <span style="color: #f57c00;">depende de</span> <code>categoria + precioBase</code></li>
+                            <li><code>double valorFinal</code> - <span style="color: #f57c00;">depende de</span> <code>precioBase - descuento</code></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); border-left: 4px solid #e91e63;">
+                    <h4 style="color: #880e4f; margin-bottom: 15px;">🔗 Cadena de Dependencias</h4>
+                    <div style="font-family: 'Courier New', monospace; background: white; padding: 15px; border-radius: 8px; margin: 10px 0; line-height: 1.8;">
+                        <strong>1. Entrada:</strong> <code>tipoPlato</code> → <code>cantidad</code> (parámetros)<br>
+                        <strong>2. Cálculos básicos:</strong><br>
+                        &nbsp;&nbsp;&nbsp;• <code>precioUnitario = calcularPrecio(tipoPlato)</code><br>
+                        &nbsp;&nbsp;&nbsp;• <code>puntosUnitarios = calcularPuntos(tipoPlato)</code><br>
+                        <strong>3. Totales:</strong><br>
+                        &nbsp;&nbsp;&nbsp;• <code>precioBase = precioUnitario × cantidad</code><br>
+                        &nbsp;&nbsp;&nbsp;• <code>puntosPedido = puntosUnitarios × cantidad</code><br>
+                        <strong>4. Estado del cliente:</strong><br>
+                        &nbsp;&nbsp;&nbsp;• <code>categoria = determinarCategoria(puntosAcumulados)</code><br>
+                        <strong>5. Descuentos:</strong><br>
+                        &nbsp;&nbsp;&nbsp;• <code>descuento = calcularDescuento(categoria, precioBase)</code><br>
+                        <strong>6. Resultado final:</strong><br>
+                        &nbsp;&nbsp;&nbsp;• <code>valorFinal = precioBase - descuento</code>
+                    </div>
+                    <p><strong>⚡ Punto clave:</strong> Los switch-case se usan principalmente para las <strong>operaciones 2</strong> (precioUnitario y puntosUnitarios), ya que dependen del tipo de plato que llega como parámetro.</p>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE ACTIVIDADES PARA LOS ESTUDIANTES -->
+            <div class="activity-section">
+                <h2>💻 ACTIVIDADES PARA DESARROLLAR</h2>
+                
+                <!-- Link de GitHub Classroom -->
+                <div class="highlight-box" style="background: linear-gradient(135deg, #24292e 0%, #586069 100%); color: white; margin: 30px 0; text-align: center;">
+                    <h3 style="color: white; margin-bottom: 20px;">🚀 ACCEDE AL PROYECTO EN GITHUB CLASSROOM</h3>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin: 20px 0;">
+                        <h4 style="color: #ffffff; margin-bottom: 15px;">📋 Link de la Asignación:</h4>
+                        <a href="https://classroom.github.com/a/kwQWBHVj" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           style="display: inline-block; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); 
+                                  color: white; text-decoration: none; padding: 15px 30px; border-radius: 8px; 
+                                  font-weight: bold; font-size: 1.1rem; transition: transform 0.3s ease;"
+                           onmouseover="this.style.transform='translateY(-2px)'" 
+                           onmouseout="this.style.transform='translateY(0px)'">
+                            🔗 https://classroom.github.com/a/kwQWBHVj
+                        </a>
+                        <p style="color: #ffffff; margin-top: 15px; font-size: 0.9rem;">
+                            👆 Haz clic en el enlace para acceder al repositorio de la tarea
+                        </p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0;">
+                        <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                            <h5 style="color: #f8f9fa; margin-bottom: 10px; font-weight: bold;">📂 ¿Qué encontrarás?</h5>
+                            <ul style="color: #ffffff; text-align: left; font-size: 0.9rem; margin: 0; padding-left: 20px; font-weight: 500;">
+                                <li>Estructura del proyecto completa</li>
+                                <li>Clase ClienteRestaurante vacía</li>
+                                <li>Pruebas unitarias</li>
+                                <li>CLI para pruebas manuales</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                            <h5 style="color: #f8f9fa; margin-bottom: 10px; font-weight: bold;">⚡ Instrucciones rápidas:</h5>
+                            <ol style="color: #ffffff; text-align: left; font-size: 0.9rem; margin: 0; padding-left: 20px; font-weight: 500;">
+                                <li>Acepta la asignación</li>
+                                <li>Abre en Codespaces</li>
+                                <li>Implementa los métodos</li>
+                                <li>Ejecuta las pruebas</li>
+                                <li>Haz commit y push</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DISEÑO DE LA CLASE -->
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%); border-left: 4px solid #3f51b5; margin-bottom: 40px;">
+                    <h3 style="color: #1a237e; margin-bottom: 15px;">🏗️ DISEÑO DE LA CLASE CLIENTERESTAURANTE</h3>
+                    <p>Antes de implementar las actividades, analicemos la estructura completa de la clase que vamos a desarrollar:</p>
+                    <p><strong>📍 Ubicación en GitHub Classroom:</strong> <code>src/main/java/edu/eam/ingesoft/fundamentos/restaurante/logica/ClienteRestaurante.java</code></p>
+                </div>
+
+                <div class="class-diagram" style="margin-bottom: 40px;">
+                    <div class="class-box">
+                        <div class="class-title">ClienteRestaurante</div>
+                        <div class="class-attributes" style="background: #f1f8e9;">
+                            <p><strong>📋 ATRIBUTOS (Solo datos del cliente):</strong></p>
+                            <p style="color: #2e7d32;">- String nombreCliente</p>
+                            <p style="color: #2e7d32;">- int puntosAcumulados</p>
+                            <p style="color: #2e7d32;">- int totalPlatosPedidos</p>
+                            <p style="margin-top: 10px; font-size: 0.9rem; color: #666;"><em>↑ Solo el estado permanente del cliente</em></p>
+                        </div>
+                        <div class="class-methods" style="background: #fff3e0;">
+                            <p><strong>⚙️ MÉTODOS (Operaciones del sistema):</strong></p>
+                            <p style="color: #e65100;">+ ClienteRestaurante(String nombre, int puntos, int totalPlatos)</p>
+                            <p style="color: #1976d2;"><strong>+ double realizarPedido(String tipoPlato, int cantidad)</strong></p>
+                            <p style="color: #f57c00;">+ String determinarCategoria()</p>
+                            <p style="color: #f57c00;">+ double calcularPrecioUnitario(String tipoPlato)</p>
+                            <p style="color: #f57c00;">+ int calcularPuntosPorUnidad(String tipoPlato)</p>
+                            <p style="color: #f57c00;">+ double calcularPrecioBase(String tipoPlato, int cantidad)</p>
+                            <p style="color: #f57c00;">+ double calcularDescuento(String categoria, double precio)</p>
+                            <p style="color: #f57c00;">+ double calcularValorFinal(double base, double descuento)</p>
+                            <p style="color: #1976d2;">+ String generarFactura(String tipo, int cant, double valor)</p>
+                            <p style="color: #666;">+ getters y setters...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 4px solid #2196f3; margin-bottom: 40px;">
+                    <h4 style="color: #0d47a1; margin-bottom: 15px;">🔍 ¿Qué hace cada método?</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                        <div class="note-card" style="background: #f3e5f5; border-left: 5px solid #9c27b0;">
+                            <h5 style="color: #4a148c;">🎯 MÉTODO PRINCIPAL</h5>
+                            <p><strong>realizarPedido(String tipoPlato, int cantidad)</strong></p>
+                            <ul style="font-size: 0.9rem; margin: 5px 0 0 15px;">
+                                <li>Recibe tipo y cantidad como <strong>parámetros</strong></li>
+                                <li>Orquesta todos los cálculos</li>
+                                <li>Actualiza el estado del cliente</li>
+                                <li>Retorna el valor final a pagar</li>
+                            </ul>
+                        </div>
+
+                        <div class="note-card" style="background: #fff3e0; border-left: 5px solid #ff9800;">
+                            <h5 style="color: #e65100;">🔢 MÉTODOS DE CÁLCULO</h5>
+                            <p><strong>calcularPrecioUnitario(tipoPlato)</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ Usa switch-case para determinar precio</p>
+                            <p><strong>calcularPuntosPorUnidad(tipoPlato)</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ Usa switch-case para determinar puntos</p>
+                            <p><strong>calcularDescuento(categoria, precio)</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ Aplica descuentos según reglas VIP/Corp</p>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                        <div class="note-card" style="background: #e8f5e9; border-left: 5px solid #4caf50;">
+                            <h5 style="color: #1b5e20;">📊 MÉTODOS DE ESTADO</h5>
+                            <p><strong>determinarCategoria()</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ Regular/VIP/Corporativo según puntos</p>
+                            <p><strong>Métodos de actualización:</strong></p>
+                            <ul style="font-size: 0.9rem; margin: 5px 0 0 15px;">
+                                <li>Actualizar puntos acumulados</li>
+                                <li>Actualizar total platos pedidos</li>
+                            </ul>
+                        </div>
+
+                        <div class="note-card" style="background: #e1f5fe; border-left: 5px solid #03a9f4;">
+                            <h5 style="color: #01579b;">📄 MÉTODOS DE SALIDA</h5>
+                            <p><strong>generarFactura(...)</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ Crea la factura formateada con StringBuilder</p>
+                            <p><strong>Características:</strong></p>
+                            <ul style="font-size: 0.9rem; margin: 5px 0 0 15px;">
+                                <li>Incluye todos los detalles del pedido</li>
+                                <li>Muestra cálculos paso a paso</li>
+                                <li>Formatea números con separador de miles</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); border-left: 4px solid #e91e63; margin-bottom: 40px;">
+                    <h4 style="color: #880e4f; margin-bottom: 15px;">🔗 Flujo de Ejecución</h4>
+                    <div style="font-family: 'Courier New', monospace; background: white; padding: 15px; border-radius: 8px; margin: 10px 0; line-height: 1.8;">
+                        <strong>1. Usuario llama:</strong> <code>realizarPedido("Proteína", 3)</code><br>
+                        <strong>2. Sistema calcula:</strong><br>
+                        &nbsp;&nbsp;&nbsp;• <code>precioUnitario = calcularPrecioUnitario("Proteína")</code> → 30000<br>
+                        &nbsp;&nbsp;&nbsp;• <code>puntosUnitarios = calcularPuntosPorUnidad("Proteína")</code> → 15<br>
+                        &nbsp;&nbsp;&nbsp;• <code>precioBase = calcularPrecioBase(30000, 3)</code> → 90000<br>
+                        &nbsp;&nbsp;&nbsp;• <code>categoria = determinarCategoria()</code> → "VIP"<br>
+                        &nbsp;&nbsp;&nbsp;• <code>descuento = calcularDescuento("VIP", 90000)</code> → 0<br>
+                        &nbsp;&nbsp;&nbsp;• <code>valorFinal = calcularValorFinal(90000, 0)</code> → 90000<br>
+                        <strong>3. Sistema actualiza:</strong><br>
+                        &nbsp;&nbsp;&nbsp;• <code>puntosAcumulados += 45</code><br>
+                        &nbsp;&nbsp;&nbsp;• <code>totalPlatosPedidos += 3</code><br>
+                        <strong>4. Sistema genera:</strong> <code>factura = generarFactura(...)</code><br>
+                        <strong>5. Retorna:</strong> <code>90000.0</code>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); border-left: 4px solid #ffa000; margin-bottom: 40px;">
+                    <h4 style="color: #e65100; margin-bottom: 15px;">🤔 ¿Por qué algunos métodos necesitan parámetros?</h4>
+                    
+                    <p style="margin-bottom: 15px;">La decisión de si un método necesita parámetros depende de <strong>si puede obtener toda la información necesaria desde los atributos</strong> o si necesita información externa:</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                        <div class="note-card" style="background: #e8f5e9; border-left: 5px solid #4caf50;">
+                            <h5 style="color: #2e7d32;">✅ SIN parámetros</h5>
+                            <p style="font-size: 0.9rem; margin-bottom: 10px;"><strong>Usan solo atributos de la clase:</strong></p>
+                            <div style="font-family: 'Courier New', monospace; background: white; padding: 10px; border-radius: 5px; font-size: 0.85rem;">
+                                <strong>determinarCategoria()</strong><br>
+                                • Usa: <code>puntosAcumulados</code><br>
+                                • ¿Por qué? Los puntos ya están almacenados
+                            </div>
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 5px;"><em>💡 El objeto ya tiene toda la info necesaria</em></p>
+                        </div>
+
+                        <div class="note-card" style="background: #fff3e0; border-left: 5px solid #ff9800;">
+                            <h5 style="color: #e65100;">⚙️ CON parámetros</h5>
+                            <p style="font-size: 0.9rem; margin-bottom: 10px;"><strong>Necesitan información externa:</strong></p>
+                            <div style="font-family: 'Courier New', monospace; background: white; padding: 10px; border-radius: 5px; font-size: 0.85rem;">
+                                <strong>calcularPrecioUnitario(tipoPlato)</strong><br>
+                                • Usa: <code>tipoPlato</code> (parámetro)<br>
+                                • ¿Por qué? No sabemos qué plato hasta que se pide
+                            </div>
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 5px;"><em>💡 Necesita info que no está en los atributos</em></p>
+                        </div>
+                    </div>
+
+                    <div class="note-card" style="background: #f3e5f5; border-left: 5px solid #9c27b0; margin-top: 20px;">
+                        <h5 style="color: #4a148c;">🔍 Análisis detallado método por método:</h5>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <div style="background: #4caf50; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; margin-right: 10px;">SIN</div>
+                                <code style="background: #f5f5f5; padding: 2px 8px; border-radius: 4px;">determinarCategoria()</code>
+                                <span style="margin-left: 10px; font-size: 0.85rem; color: #666;">→ Lee <code>puntosAcumulados</code> (ya existe)</span>
+                            </div>
+
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <div style="background: #ff9800; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; margin-right: 10px;">CON</div>
+                                <code style="background: #f5f5f5; padding: 2px 8px; border-radius: 4px;">calcularPrecioUnitario(tipoPlato)</code>
+                                <span style="margin-left: 10px; font-size: 0.85rem; color: #666;">→ Necesita saber QUÉ plato</span>
+                            </div>
+
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <div style="background: #ff9800; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; margin-right: 10px;">CON</div>
+                                <code style="background: #f5f5f5; padding: 2px 8px; border-radius: 4px;">calcularPuntosPorUnidad(tipoPlato)</code>
+                                <span style="margin-left: 10px; font-size: 0.85rem; color: #666;">→ Necesita saber QUÉ plato</span>
+                            </div>
+
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <div style="background: #ff9800; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; margin-right: 10px;">CON</div>
+                                <code style="background: #f5f5f5; padding: 2px 8px; border-radius: 4px;">calcularPrecioBase(precio, cantidad)</code>
+                                <span style="margin-left: 10px; font-size: 0.85rem; color: #666;">→ Son datos del pedido específico</span>
+                            </div>
+
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <div style="background: #ff9800; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; margin-right: 10px;">CON</div>
+                                <code style="background: #f5f5f5; padding: 2px 8px; border-radius: 4px;">calcularDescuento(categoria, precioBase)</code>
+                                <span style="margin-left: 10px; font-size: 0.85rem; color: #666;">→ Son resultados de otros cálculos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #e1f5fe; padding: 15px; border-radius: 8px; border-left: 4px solid #03a9f4; margin-top: 20px;">
+                        <h6 style="color: #01579b; margin-bottom: 10px;">💡 Regla de Oro:</h6>
+                        <p style="margin: 0; font-size: 0.9rem;"><strong>Si el método puede funcionar solo con los atributos de la clase</strong> → NO necesita parámetros</p>
+                        <p style="margin: 5px 0 0 0; font-size: 0.9rem;"><strong>Si el método necesita información que no está en los atributos</strong> → SÍ necesita parámetros</p>
+                    </div>
+                </div>
+                
+                <!-- Actividad 1 -->
+                <div class="activity-card">
+                    <h3>
+                        <span class="activity-number">1</span>
+                        Implementar el Menú del Restaurante con Switch-Case
+                    </h3>
+                    
+                    <p>Ahora vas a implementar los métodos que calculan precios y puntos usando <strong>switch-case</strong>. Basándote en el diseño de la clase mostrado arriba, implementa los siguientes diagramas:</p>
+                    
+                    <!-- Diagrama de clase antes del Diagrama 1 -->
+                    <div class="class-diagram" style="margin: 30px 0;">
+                        <div class="class-box">
+                            <div class="class-title">ClienteRestaurante - Métodos a implementar</div>
+                            <div class="class-methods" style="background: #fff3e0;">
+                                <p style="color: #1976d2;"><strong>+ double realizarPedido(String tipoPlato, int cantidad)</strong></p>
+                                <p style="color: #f57c00;"><strong>+ double calcularPrecioUnitario(String tipoPlato)</strong> <span style="font-size:0.8em; color:#666;">// switch-case</span></p>
+                                <p style="color: #f57c00;"><strong>+ int calcularPuntosPorUnidad(String tipoPlato)</strong> <span style="font-size:0.8em; color:#666;">// switch-case</span></p>
+                                <p style="color: #f57c00;">+ double calcularPrecioBase(String tipoPlato, int cantidad)</p>
+                                <p style="color: #f57c00;">+ String determinarCategoria()</p>
+                                <p style="color: #f57c00;">+ double calcularDescuento(String tipoPlato, int cantidad)</p>
+                                <p style="color: #f57c00;">+ double calcularValorFinal(double base, double descuento)</p>
+                                <p style="color: #1976d2;">+ String generarFactura(String tipo, int cant, double valor)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: #667eea; margin: 25px 0 15px 0;">📊 Diagrama 1: Método calcularPrecioUnitario()</h4>
+                    
+                    <div class="note-card" style="background: #e3f2fd; border-left: 5px solid #2196f3; margin: 20px 0;">
+                        <h5 style="color: #0d47a1;">📄 Código del método vacío a completar:</h5>
+                        <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code><span class="comment">/**
+ * Calcula el precio unitario según el tipo de plato
+ * @param tipoPlato El tipo de plato ("Proteína", "Ensalada", "Sopa", "Postre")
+ * @return El precio unitario del plato
+ */</span>
+<span class="keyword">public</span> <span class="keyword">double</span> <span class="function">calcularPrecioUnitario</span>(<span class="class-name">String</span> tipoPlato) {
+    <span class="comment">// TODO: Implementar usando switch-case</span>
+    <span class="comment">// Usa las constantes: PRECIO_PROTEINA, PRECIO_ENSALADA, PRECIO_SOPA, PRECIO_POSTRE</span>
+    <span class="keyword">return</span> <span class="number">0.0</span>; <span class="comment">// Cambiar por la implementación</span>
+}</code></pre>
+                    </div>
+                    <div class="mermaid-diagram">
+                        <div class="mermaid">
+flowchart TD
+    A["🎯 INICIO<br/>calcularPrecioUnitario()"] --> B{"🔄 switch(tipoPlato)"}
+    B -->|"Proteína"| C["💪 return 30000<br/>(PRECIO_PROTEINA)"]
+    B -->|"Ensalada"| D["🥗 return 12000<br/>(PRECIO_ENSALADA)"]
+    B -->|"Sopa"| E["🍲 return 15000<br/>(PRECIO_SOPA)"]
+    B -->|"Postre"| F["🍰 return 10000<br/>(PRECIO_POSTRE)"]
+    B -->|"default"| G["❌ return 0.0<br/>(Plato inválido)"]
+    C --> H["📤 RETURN precio"]
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+    
+    classDef startEnd fill:#fce4ec,stroke:#e91e63,stroke-width:3px,color:#000
+    classDef decision fill:#fff8e1,stroke:#ffb74d,stroke-width:3px,color:#000
+    classDef process fill:#e8f5e9,stroke:#4caf50,stroke-width:2px,color:#000
+    classDef error fill:#ffebee,stroke:#f44336,stroke-width:2px,color:#000
+    classDef return fill:#e3f2fd,stroke:#2196f3,stroke-width:3px,color:#000
+    
+    class A startEnd
+    class B decision
+    class C,D,E,F process
+    class G error
+    class H return
+                        </div>
+                    </div>
+
+                    <h4 style="color: #667eea; margin: 25px 0 15px 0;">📊 Diagrama 2: Método calcularPuntosPorUnidad()</h4>
+                    
+                    <div class="note-card" style="background: #e3f2fd; border-left: 5px solid #2196f3; margin: 20px 0;">
+                        <h5 style="color: #0d47a1;">📄 Código del método vacío a completar:</h5>
+                        <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code><span class="comment">/**
+ * Calcula los puntos por unidad según el tipo de plato
+ * @param tipoPlato El tipo de plato ("Proteína", "Ensalada", "Sopa", "Postre")
+ * @return Los puntos por unidad del plato
+ */</span>
+<span class="keyword">public</span> <span class="keyword">int</span> <span class="function">calcularPuntosPorUnidad</span>(<span class="class-name">String</span> tipoPlato) {
+    <span class="comment">// TODO: Implementar usando switch-case</span>
+    <span class="comment">// Usa las constantes: PUNTOS_PROTEINA, PUNTOS_ENSALADA, PUNTOS_SOPA, PUNTOS_POSTRE</span>
+    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// Cambiar por la implementación</span>
+}</code></pre>
+                    </div>
+                    <div class="mermaid-diagram">
+                        <div class="mermaid">
+flowchart TD
+    A["🎯 INICIO<br/>calcularPuntosPorUnidad()"] --> B{"🔄 switch(tipoPlato)"}
+    B -->|"Proteína"| C["💪 return 15<br/>(PUNTOS_PROTEINA)"]
+    B -->|"Ensalada"| D["🥗 return 5<br/>(PUNTOS_ENSALADA)"]
+    B -->|"Sopa"| E["🍲 return 8<br/>(PUNTOS_SOPA)"]
+    B -->|"Postre"| F["🍰 return 3<br/>(PUNTOS_POSTRE)"]
+    B -->|"default"| G["❌ return 0<br/>(Plato inválido)"]
+    C --> H["📤 RETURN puntos"]
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+    
+    classDef startEnd fill:#fce4ec,stroke:#e91e63,stroke-width:3px,color:#000
+    classDef decision fill:#fff8e1,stroke:#ffb74d,stroke-width:3px,color:#000
+    classDef process fill:#e3f2fd,stroke:#2196f3,stroke-width:2px,color:#000
+    classDef error fill:#ffebee,stroke:#f44336,stroke-width:2px,color:#000
+    classDef return fill:#e8f5e9,stroke:#4caf50,stroke-width:3px,color:#000
+    
+    class A startEnd
+    class B decision
+    class C,D,E,F process
+    class G error
+    class H return
+                        </div>
+                    </div>
+
+                    <h4 style="color: #667eea; margin: 25px 0 15px 0;">📊 Diagrama 3: Método calcularPrecioBase()</h4>
+                    
+                    <div class="note-card" style="background: #e3f2fd; border-left: 5px solid #2196f3; margin: 20px 0;">
+                        <h5 style="color: #0d47a1;">📄 Código del método vacío a completar:</h5>
+                        <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code><span class="comment">/**
+ * Calcula el precio base del pedido llamando a calcularPrecioUnitario()
+ * @param tipoPlato El tipo de plato
+ * @param cantidad La cantidad de platos pedidos
+ * @return El precio base total del pedido
+ */</span>
+<span class="keyword">public</span> <span class="keyword">double</span> <span class="function">calcularPrecioBase</span>(<span class="class-name">String</span> tipoPlato, <span class="keyword">int</span> cantidad) {
+    <span class="comment">// TODO: Llamar a calcularPrecioUnitario(tipoPlato) y multiplicar por cantidad</span>
+    <span class="keyword">return</span> <span class="number">0.0</span>; <span class="comment">// Cambiar por la implementación</span>
+}</code></pre>
+                    </div>
+                    <div class="mermaid-diagram">
+                        <div class="mermaid">
+flowchart TD
+    A["🎯 INICIO<br/>calcularPrecioBase()"] --> B["💰 precioUnitario = calcularPrecioUnitario(tipoPlato)"]
+    B --> C["🧮 resultado = precioUnitario × cantidad"]
+    C --> D["📤 RETURN resultado"]
+    
+    classDef startEnd fill:#fce4ec,stroke:#e91e63,stroke-width:3px,color:#000
+    classDef methodCall fill:#e3f2fd,stroke:#2196f3,stroke-width:2px,color:#000
+    classDef process fill:#fff3e0,stroke:#ff9800,stroke-width:2px,color:#000
+    
+    class A,D startEnd
+    class B methodCall
+    class C process
+                        </div>
+                    </div>
+
+                    <h4 style="color: #667eea; margin: 25px 0 15px 0;">📊 Diagrama 4: Método determinarCategoria()</h4>
+                    
+                    <div class="note-card" style="background: #e3f2fd; border-left: 5px solid #2196f3; margin: 20px 0;">
+                        <h5 style="color: #0d47a1;">📄 Código del método vacío a completar:</h5>
+                        <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code><span class="comment">/**
+ * Determina la categoría del cliente según los puntos acumulados
+ * @return La categoría del cliente ("Regular", "VIP", "Corporativo")
+ */</span>
+<span class="keyword">public</span> <span class="class-name">String</span> <span class="function">determinarCategoria</span>() {
+    <span class="comment">// TODO: Implementar usando if-else anidados</span>
+    <span class="comment">// Regular: 0-99 puntos, VIP: 100-499 puntos, Corporativo: 500+ puntos</span>
+    <span class="keyword">return</span> <span class="string">"Regular"</span>; <span class="comment">// Cambiar por la implementación</span>
+}</code></pre>
+                    </div>
+                    <div class="mermaid-diagram">
+                        <div class="mermaid">
+flowchart TD
+    A["🎯 INICIO<br/>determinarCategoria()"] --> B["📊 Leer puntosAcumulados"]
+    B --> C{"🔍 ¿puntosAcumulados >= 500?"}
+    C -->|"Sí"| D["💎 return \"Corporativo\""]
+    C -->|"No"| E{"🔍 ¿puntosAcumulados >= 100?"}
+    E -->|"Sí"| F["⭐ return \"VIP\""]
+    E -->|"No"| G["👤 return \"Regular\""]
+    D --> H["📤 RETURN categoria"]
+    F --> H
+    G --> H
+    
+    classDef startEnd fill:#fce4ec,stroke:#e91e63,stroke-width:3px,color:#000
+    classDef process fill:#e8f5e9,stroke:#4caf50,stroke-width:2px,color:#000
+    classDef decision fill:#fff8e1,stroke:#ffb74d,stroke-width:3px,color:#000
+    classDef category fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px,color:#000
+    classDef return fill:#e3f2fd,stroke:#2196f3,stroke-width:3px,color:#000
+    
+    class A,H startEnd
+    class B process
+    class C,E decision
+    class D,F,G category
+                        </div>
+                    </div>
+
+                    <h4 style="color: #667eea; margin: 25px 0 15px 0;">📊 Diagrama 5: Método calcularDescuento()</h4>
+                    
+                    <div class="note-card" style="background: #e3f2fd; border-left: 5px solid #2196f3; margin: 20px 0;">
+                        <h5 style="color: #0d47a1;">📄 Código del método vacío a completar:</h5>
+                        <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code><span class="comment">/**
+ * Calcula el descuento aplicable según la categoría del cliente y el monto
+ * @param tipoPlato El tipo de plato para calcular el precio base
+ * @param cantidad La cantidad de platos
+ * @return El monto del descuento a aplicar
+ */</span>
+<span class="keyword">public</span> <span class="keyword">double</span> <span class="function">calcularDescuento</span>(<span class="class-name">String</span> tipoPlato, <span class="keyword">int</span> cantidad) {
+    <span class="comment">// TODO: Llamar a determinarCategoria() y calcularPrecioBase()</span>
+    <span class="comment">// Luego aplicar switch para categoria y if dentro de cada case</span>
+    <span class="comment">// VIP: 10% si > 100.000, Corporativo: 20% si > 200.000, Regular: 0%</span>
+    <span class="keyword">return</span> <span class="number">0.0</span>; <span class="comment">// Cambiar por la implementación</span>
+}</code></pre>
+                    </div>
+                    <div class="mermaid-diagram">
+                        <div class="mermaid">
+flowchart TD
+    A["🎯 INICIO<br/>calcularDescuento()"] --> B["👤 categoria = determinarCategoria()"]
+    B --> C["💰 precioBase = calcularPrecioBase(tipoPlato, cantidad)"]
+    C --> D{"🔄 switch(categoria)"}
+    D -->|"Corporativo"| E{"💰 if (precioBase > 200000)"}
+    D -->|"VIP"| F{"💰 if (precioBase > 100000)"}
+    D -->|"Regular"| G["❌ return 0.0"]
+    D -->|"default"| G
+    E -->|"true"| H["💎 return precioBase × 0.20"]
+    E -->|"false"| I["❌ return 0.0"]
+    F -->|"true"| J["⭐ return precioBase × 0.10"]
+    F -->|"false"| K["❌ return 0.0"]
+    G --> L["📤 RETURN descuento"]
+    H --> L
+    I --> L
+    J --> L
+    K --> L
+    
+    classDef startEnd fill:#fce4ec,stroke:#e91e63,stroke-width:3px,color:#000
+    classDef methodCall fill:#e3f2fd,stroke:#2196f3,stroke-width:2px,color:#000
+    classDef switch fill:#fff8e1,stroke:#ffb74d,stroke-width:3px,color:#000
+    classDef ifCondition fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px,color:#000
+    classDef discount fill:#e8f5e9,stroke:#4caf50,stroke-width:2px,color:#000
+    classDef noDiscount fill:#ffebee,stroke:#f44336,stroke-width:2px,color:#000
+    
+    class A,L startEnd
+    class B,C methodCall
+    class D switch
+    class E,F ifCondition
+    class H,J discount
+    class G,I,K noDiscount
+                        </div>
+                    </div>
+
+                    <div class="instruction-box">
+                        <h4>📝 Instrucciones de implementación:</h4>
+                        <p>1. <strong>Implementa los métodos mostrados</strong> usando los diagramas como guía</p>
+                        <p>2. <strong>Usa switch-case</strong> para calcularPrecioUnitario() y calcularPuntosPorUnidad()</p>
+                        <p>3. <strong>Usa if-else anidados</strong> para determinarCategoria() y calcularDescuento()</p>
+                        <p>4. <strong>Los métodos llaman a otros métodos</strong> - NO reciben parámetros con cálculos</p>
+                        <p>5. <strong>Solo tipoPlato y cantidad son parámetros</strong> de realizarPedido() (datos externos)</p>
+                        <p>6. <strong>Usa constantes finales</strong> para los valores fijos (precios, puntos, límites)</p>
+                        <p>7. <strong>IMPORTANTE:</strong> Implementa este código en tu proyecto de GitHub Classroom</p>
+                    </div>
+                </div>
+
+                <!-- Sección especial para realizarPedido -->
+                <div class="activity-section" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border: 3px solid #ff9800; margin: 50px 0;">
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%); color: white; margin: -30px -30px 30px -30px; padding: 30px;">
+                        <h2 style="color: white; font-size: 2.2rem; text-align: center; margin-bottom: 15px; border-bottom: none;">🧩 RETO ESPECIAL: Método realizarPedido()</h2>
+                        <p style="text-align: center; font-size: 1.1rem; margin: 0;">El método más importante que debes implementar por tu cuenta</p>
+                    </div>
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 4px solid #2196f3; margin: 30px 0;">
+                        <h4 style="color: #0d47a1; margin-bottom: 15px;">🎯 Tu misión</h4>
+                        <p>El método <code>realizarPedido(String tipoPlato, int cantidad)</code> es el <strong>corazón del sistema</strong>. Este método debe:</p>
+                        <ol style="margin: 15px 0 0 20px; color: #1565c0;">
+                            <li>Orquestar todos los cálculos usando los métodos que acabas de implementar</li>
+                            <li>Actualizar el estado del cliente (puntos y platos totales)</li>
+                            <li>Retornar el valor final a pagar</li>
+                        </ol>
+                    </div>
+
+                    <div class="note-card" style="background: #fff3e0; border-left: 5px solid #ff9800; margin: 30px 0;">
+                        <h5 style="color: #e65100;">📄 Método vacío a completar:</h5>
+                        <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code><span class="comment">/**
+ * Realiza un pedido completo: calcula precios, aplica descuentos y actualiza cliente
+ * @param tipoPlato El tipo de plato pedido
+ * @param cantidad La cantidad de platos
+ * @return El valor final a pagar
+ */</span>
+<span class="keyword">public</span> <span class="keyword">double</span> <span class="function">realizarPedido</span>(<span class="class-name">String</span> tipoPlato, <span class="keyword">int</span> cantidad) {
+    <span class="comment">// TODO: Implementar la lógica completa del pedido</span>
+    <span class="comment">// PISTA: Usa TODOS los métodos que implementaste arriba</span>
+    <span class="keyword">return</span> <span class="number">0.0</span>; <span class="comment">// Cambiar por la implementación</span>
+}</code></pre>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+                        <div class="highlight-box" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 4px solid #4caf50;">
+                            <h5 style="color: #2e7d32; margin-bottom: 15px;">✅ Lo que SÍ debes hacer:</h5>
+                            <ul style="margin: 0; padding-left: 20px; color: #388e3c;">
+                                <li>Usar <code>calcularPrecioUnitario(tipoPlato)</code></li>
+                                <li>Usar <code>calcularPuntosPorUnidad(tipoPlato)</code> y multiplicar por cantidad</li>
+                                <li>Usar <code>calcularPrecioBase(tipoPlato, cantidad)</code></li>
+                                <li>Obtener la categoría actual del cliente</li>
+                                <li>Usar <code>calcularDescuento(tipoPlato, cantidad)</code></li>
+                                <li>Actualizar puntos acumulados</li>
+                                <li>Actualizar total de platos pedidos</li>
+                                <li>Retornar el valor final</li>
+                            </ul>
+                        </div>
+
+                        <div class="highlight-box" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left: 4px solid #f44336;">
+                            <h5 style="color: #c62828; margin-bottom: 15px;">❌ Lo que NO debes hacer:</h5>
+                            <ul style="margin: 0; padding-left: 20px; color: #d32f2f;">
+                                <li>Repetir la lógica de switch-case</li>
+                                <li>Hardcodear precios o puntos</li>
+                                <li>Calcular descuentos sin verificar condiciones</li>
+                                <li>Olvidar actualizar el estado del cliente</li>
+                                <li>Usar variables temporales innecesarias</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-left: 4px solid #9c27b0; margin: 30px 0;">
+                        <h4 style="color: #4a148c; margin-bottom: 15px;">💡 Pistas para pensadores</h4>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 20px 0;">
+                            <div style="background: white; padding: 15px; border-radius: 10px; border: 2px solid #ab47bc;">
+                                <h6 style="color: #6a1b9a; margin-bottom: 8px;">🔍 Pista 1:</h6>
+                                <p style="margin: 0; font-size: 0.9rem;">¿En qué orden debes hacer los cálculos? Piensa en las dependencias entre métodos.</p>
+                            </div>
+                            
+                            <div style="background: white; padding: 15px; border-radius: 10px; border: 2px solid #ab47bc;">
+                                <h6 style="color: #6a1b9a; margin-bottom: 8px;">🔍 Pista 2:</h6>
+                                <p style="margin: 0; font-size: 0.9rem;">¿Cuándo debes actualizar los puntos del cliente? ¿Antes o después de calcular la categoría?</p>
+                            </div>
+                            
+                            <div style="background: white; padding: 15px; border-radius: 10px; border: 2px solid #ab47bc;">
+                                <h6 style="color: #6a1b9a; margin-bottom: 8px;">🔍 Pista 3:</h6>
+                                <p style="margin: 0; font-size: 0.9rem;">¿Qué valor debes retornar al final? ¿Precio base, precio con descuento, o algo más?</p>
+                            </div>
+                        </div>
+
+                        <div style="background: #ede7f6; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h6 style="color: #4a148c; margin-bottom: 10px;">🤔 Preguntas para reflexionar:</h6>
+                            <ul style="margin: 0; padding-left: 20px; color: #6a1b9a;">
+                                <li>¿Cómo puedes reutilizar los métodos que ya implementaste?</li>
+                                <li>¿En qué momento del proceso se debe aplicar el descuento?</li>
+                                <li>¿Cómo mantienes el código limpio y fácil de entender?</li>
+                                <li>¿Qué pasa si el cliente cambia de categoría después de este pedido?</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="instruction-box" style="background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);">
+                        <h4>🎯 Desafío final:</h4>
+                        <p>Una vez implementado <code>realizarPedido()</code>, tu sistema debería poder:</p>
+                        <ul style="margin-top: 10px;">
+                            <li>Procesar cualquier pedido del menú correctamente</li>
+                            <li>Aplicar descuentos automáticamente según la categoría</li>
+                            <li>Mantener actualizado el historial del cliente</li>
+                            <li>Manejar todos los escenarios problemáticos del enunciado</li>
+                        </ul>
+                        <p style="margin-top: 15px; font-weight: bold;">¡Demuestra que entiendes la lógica del negocio implementando este método!</p>
+                    </div>
+                </div>
+
+                <!-- Actividad 2 -->
+                <div class="activity-card">
+                    <h3>
+                        <span class="activity-number">2</span>
+                        Acumulación de Puntos y Categorías
+                    </h3>
+                    
+                    <p>Implementa los métodos de la clase <strong>PedidoRestaurante</strong> que ya fue diseñada arriba. Enfócate en los métodos que manejan la lógica de categorías:</p>
+
+                    <div class="note-card">
+                        <p><strong>Nota importante:</strong> La actualización de categoría debe ser automática:</p>
+                        <ul>
+                            <li>Regular: 0-99 puntos</li>
+                            <li>VIP: 100-499 puntos</li>
+                            <li>Corporativo: 500+ puntos</li>
+                        </ul>
+                    </div>
+
+                    <div class="instruction-box">
+                        <h4>📝 Tareas a realizar:</h4>
+                        <p>1. Implementa la clase Cliente con todos sus atributos y métodos</p>
+                        <p>2. Crea el método actualizarCategoria() que cambie automáticamente la categoría según los puntos</p>
+                        <p>3. Implementa aplicarDescuento() considerando las reglas de negocio</p>
+                        <p>4. <strong>Sube tu implementación al proyecto de GitHub Classroom</strong></p>
+                    </div>
+                </div>
+
+                <!-- Actividad 3 -->
+                <div class="activity-card">
+                    <h3>
+                        <span class="activity-number">3</span>
+                        Generación de Factura con Concatenación
+                    </h3>
+                    
+                    <p>Implementa la generación de facturas utilizando <strong>concatenación simple</strong> con el operador <code>+</code> en Java:</p>
+                    
+                    <pre><code><span class="comment">/**
+ * Método para generar factura usando concatenación simple
+ * Usa el operador + para unir cadenas de texto
+ */</span>
+<span class="keyword">public</span> <span class="class-name">String</span> <span class="function">generarFactura</span>() {
+    <span class="comment">// Construir la factura usando concatenación con +</span>
+    <span class="class-name">String</span> factura = <span class="string">""</span>;
+    
+    <span class="comment">// Encabezado de la factura</span>
+    factura = factura + <span class="string">"===============================\n"</span>;
+    factura = factura + <span class="string">"        FACTURA DE PEDIDO\n"</span>;
+    factura = factura + <span class="string">"===============================\n"</span>;
+    
+    <span class="comment">// Información del cliente</span>
+    factura = factura + <span class="string">"Cliente: "</span> + nombreCliente + <span class="string">"\n"</span>;
+    factura = factura + <span class="string">"Categoría actual: "</span> + determinarCategoria() + <span class="string">"\n"</span>;
+    factura = factura + <span class="string">"\n"</span>;
+    
+    <span class="comment">// Detalles del pedido</span>
+    factura = factura + <span class="string">"Plato elegido: "</span> + tipoPlato + <span class="string">"\n"</span>;
+    factura = factura + <span class="string">"Cantidad: "</span> + cantidad + <span class="string">"\n"</span>;
+    factura = factura + <span class="string">"Precio unitario: $"</span> + calcularPrecioUnitario() + <span class="string">"\n"</span>;
+    factura = factura + <span class="string">"----------------------------------------\n"</span>;
+    
+    <span class="comment">// Cálculos del pedido</span>
+    factura = factura + <span class="string">"Precio base del pedido: $"</span> + calcularPrecioBase() + <span class="string">"\n"</span>;
+    
+    <span class="comment">// Aplicar descuento si corresponde</span>
+    <span class="keyword">double</span> descuento = calcularDescuento();
+    <span class="keyword">if</span> (descuento > <span class="number">0</span>) {
+        <span class="class-name">String</span> porcentaje = <span class="string">""</span>;
+        <span class="class-name">String</span> categoria = determinarCategoria();
+        <span class="keyword">if</span> (categoria.equals(<span class="string">"VIP"</span>)) {
+            porcentaje = <span class="string">"10% VIP"</span>;
+        } <span class="keyword">else if</span> (categoria.equals(<span class="string">"Corporativo"</span>)) {
+            porcentaje = <span class="string">"20% Corporativo"</span>;
+        }
+        factura = factura + <span class="string">"Descuento aplicado ("</span> + porcentaje + <span class="string">"): -$"</span> + descuento + <span class="string">"\n"</span>;
+    } <span class="keyword">else</span> {
+        factura = factura + <span class="string">"Descuento aplicado: $0\n"</span>;
+    }
+    
+    <span class="comment">// Valor final</span>
+    <span class="keyword">double</span> valorFinal = calcularPrecioBase() - descuento;
+    factura = factura + <span class="string">"Valor final a pagar: $"</span> + valorFinal + <span class="string">"\n"</span>;
+    factura = factura + <span class="string">"----------------------------------------\n"</span>;
+    
+    <span class="comment">// Información de puntos</span>
+    factura = factura + <span class="string">"Puntos obtenidos en este pedido: "</span> + calcularPuntosPedido() + <span class="string">"\n"</span>;
+    factura = factura + <span class="string">"Puntos acumulados: "</span> + puntosAcumulados + <span class="string">"\n"</span>;
+    factura = factura + <span class="string">"Platos comprados en total: "</span> + totalPlatosPedidos + <span class="string">"\n"</span>;
+    
+    <span class="comment">// Pie de factura</span>
+    factura = factura + <span class="string">"===============================\n"</span>;
+    factura = factura + <span class="string">"   ¡Gracias por su compra!\n"</span>;
+    factura = factura + <span class="string">"==============================="</span>;
+    
+    <span class="keyword">return</span> factura;
+}
+
+</code></pre>
+
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-left: 4px solid #9c27b0; margin: 30px 0;">
+                        <h4 style="color: #4a148c; margin-bottom: 15px;">🔗 ¿Cómo funciona la concatenación de cadenas en Java?</h4>
+                        
+                        <p style="margin-bottom: 15px;">La <strong>concatenación de cadenas</strong> es el proceso de unir múltiples cadenas de texto para formar una sola cadena más larga. En Java, usamos el operador <code>+</code>:</p>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0; font-family: 'Courier New', monospace;">
+                            <h5 style="color: #6a1b9a; margin-bottom: 10px;">📝 Ejemplo básico:</h5>
+                            <div style="background: #f5f5f5; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                                <code>String nombre = "Juan";</code><br>
+                                <code>String saludo = "Hola " + nombre + "!";  // Resultado: "Hola Juan!"</code>
+                            </div>
+                            
+                            <h5 style="color: #6a1b9a; margin: 20px 0 10px 0;">🔢 Con números:</h5>
+                            <div style="background: #f5f5f5; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                                <code>int precio = 30000;</code><br>
+                                <code>String mensaje = "El precio es: $" + precio;  // Resultado: "El precio es: $30000"</code>
+                            </div>
+                            
+                            <h5 style="color: #6a1b9a; margin: 20px 0 10px 0;">📄 Construyendo paso a paso (como en la factura):</h5>
+                            <div style="background: #f5f5f5; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                                <code>String factura = "";  // Empezamos vacío</code><br>
+                                <code>factura = factura + "Cliente: Juan\n";  // "Cliente: Juan\n"</code><br>
+                                <code>factura = factura + "Total: $" + 50000;  // "Cliente: Juan\nTotal: $50000"</code><br>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50; margin: 20px 0;">
+                            <h5 style="color: #2e7d32; margin-bottom: 10px;">✅ Reglas importantes:</h5>
+                            <ul style="margin: 0; padding-left: 20px;">
+                                <li><strong>Conversión automática:</strong> Java convierte números a texto automáticamente cuando los concatenas</li>
+                                <li><strong>Salto de línea:</strong> <code>\n</code> hace que el texto continúe en la siguiente línea</li>
+                                <li><strong>Orden de operaciones:</strong> Las operaciones se ejecutan de izquierda a derecha</li>
+                                <li><strong>Construcción gradual:</strong> Puedes ir agregando partes paso a paso</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800; margin: 20px 0;">
+                            <h5 style="color: #e65100; margin-bottom: 10px;">💡 En nuestro ejercicio:</h5>
+                            <div style="background: white; padding: 10px; border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.9rem;">
+                                <code>// Cada línea se agrega a la factura:</code><br>
+                                <code>factura = factura + "Cliente: " + nombreCliente + "\n";</code><br>
+                                <code>factura = factura + "Total: $" + calcularPrecioBase() + "\n";</code><br><br>
+                                <code>// Al final tendremos algo como:</code><br>
+                                <code>// "Cliente: María\nTotal: $90000\n..."</code>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="instruction-box">
+                        <h4>📝 Tareas finales:</h4>
+                        <p>1. <strong>Implementa generarFactura()</strong> usando concatenación simple con <code>+</code></p>
+                        <p>2. <strong>Prueba con los 4 escenarios</strong> problemáticos del enunciado</p>
+                        <p>3. <strong>Verifica que las facturas</strong> se generen correctamente</p>
+                        <p>4. <strong>Integra con realizarPedido()</strong> para llamar generarFactura() al final</p>
+                        <p>5. <strong>Sube todo el código completo</strong> a tu repositorio de GitHub Classroom</p>
+                    </div>
+
+                    <div class="highlight-box" style="margin-top: 30px;">
+                        <h4>⚡ Tips importantes:</h4>
+                        <ul>
+                            <li>Recuerda actualizar la categoría del cliente DESPUÉS de procesar el pedido</li>
+                            <li>Verifica que los descuentos se apliquen solo cuando se cumplen las condiciones</li>
+                            <li>Prueba todos los casos de uso antes de subir tu código</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE CODESPACES -->
+            <div class="activity-section" style="background: linear-gradient(135deg, #263238 0%, #37474f 100%); margin: 50px 0; color: white;">
+                <h2 style="color: #ffffff; text-align: center; margin-bottom: 40px;">🚀 TRABAJO CON GITHUB CODESPACES</h2>
+                
+                <!-- Ejecutar en Codespaces -->
+                <div class="activity-card" style="background: white; color: #333;">
+                    <h3>
+                        <span class="activity-number" style="background: linear-gradient(135deg, #24292e 0%, #586069 100%);">1</span>
+                        Ejecutar tu Código en Codespaces
+                    </h3>
+                    
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #f6f8fa 0%, #e1e4e8 100%); border-left: 4px solid #24292e;">
+                        <h4 style="color: #24292e; margin-bottom: 15px;">☁️ Ejecución en la Nube</h4>
+                        <p>Una vez implementada tu solución, puedes ejecutarla directamente en GitHub Codespaces:</p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+                            <!-- RunJava 1 -->
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 2px solid #0366d6;">
+                                <div style="background: #0366d6; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                                    <h5 style="margin: 0; font-size: 1.1rem;">🏃‍♂️ Paso 1: Ejecutar CLI</h5>
+                                </div>
+                                <img src="runjava1.png" alt="Ejecutar RestauranteCLI en Codespaces" style="width: 100%; max-width: 500px; border: 2px solid #0366d6; border-radius: 8px; margin: 10px 0;">
+                                <p style="margin: 10px 0; font-weight: bold; color: #0366d6;">runjava1.png</p>
+                                <p style="margin: 0; font-size: 0.9rem; color: #586069;">Ejecutar RestauranteCLI.java en el terminal</p>
+                            </div>
+                            
+                            <!-- RunJava 2 -->
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 2px solid #28a745;">
+                                <div style="background: #28a745; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                                    <h5 style="margin: 0; font-size: 1.1rem;">✅ Paso 2: Interactuar</h5>
+                                </div>
+                                <img src="runjava2.png" alt="Interacción con el programa CLI" style="width: 100%; max-width: 500px; border: 2px solid #28a745; border-radius: 8px; margin: 10px 0;">
+                                <p style="margin: 10px 0; font-weight: bold; color: #28a745;">runjava2.png</p>
+                                <p style="margin: 0; font-size: 0.9rem; color: #586069;">Interacción con el programa y resultados</p>
+                            </div>
+                        </div>
+                        
+                        <div class="instruction-box" style="background: linear-gradient(135deg, #0366d6 0%, #0256cc 100%);">
+                            <h4 style="color: white;">💻 Comandos para ejecutar:</h4>
+                            <div style="background: #24292e; color: #f6f8fa; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace;">
+                                <code># Compilar y ejecutar el CLI<br>
+                                cd src/main/java<br>
+                                javac edu/eam/ingesoft/fundamentos/restaurante/cli/RestauranteCLI.java<br>
+                                java edu.eam.ingesoft.fundamentos.restaurante.cli.RestauranteCLI</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pruebas Unitarias -->
+                <div class="activity-card" style="background: white; color: #333;">
+                    <h3>
+                        <span class="activity-number" style="background: linear-gradient(135deg, #d73a49 0%, #cb2431 100%);">2</span>
+                        Ejecutar Pruebas Unitarias
+                    </h3>
+                    
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #ffeef0 0%, #ffdce0 100%); border-left: 4px solid #d73a49;">
+                        <h4 style="color: #d73a49; margin-bottom: 15px;">🧪 Validación Automática</h4>
+                        <p>Antes de hacer commit, asegúrate de que todas las pruebas unitarias pasen:</p>
+                        
+                        <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 12px; border: 2px solid #d73a49; margin: 20px 0;">
+                            <div style="background: #d73a49; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                                <h5 style="margin: 0; font-size: 1.1rem;">🔬 Ejecutar Tests</h5>
+                            </div>
+                            <img src="runtest.png" alt="Ejecutar pruebas unitarias en Codespaces" style="width: 100%; max-width: 600px; border: 2px solid #d73a49; border-radius: 8px; margin: 10px 0;">
+                            <p style="margin: 10px 0; font-weight: bold; color: #d73a49;">runtest.png</p>
+                            <p style="margin: 0; font-size: 0.9rem; color: #586069;">Ejecución de pruebas unitarias - TODOS deben pasar</p>
+                        </div>
+                        
+                        <div class="note-card" style="background: #fff8f0; border-left: 5px solid #f66a0a; margin: 20px 0;">
+                            <h5 style="color: #e65100;">📁 Ubicación de las pruebas:</h5>
+                            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code>src/test/java/edu/eam/ingesoft/fundamentos/restaurante/PedidoRestauranteTest.java</code></pre>
+                            <p style="margin: 10px 0; color: #bf360c;"><strong>💡 Nota:</strong> Las pruebas validan tu implementación de la clase ClienteRestaurante.</p>
+                        </div>
+                        
+                        <div class="instruction-box" style="background: linear-gradient(135deg, #d73a49 0%, #cb2431 100%);">
+                            <h4 style="color: white;">⚡ Comando para las pruebas:</h4>
+                            <div style="background: #24292e; color: #f6f8fa; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace;">
+                                <code># Ejecutar todas las pruebas unitarias<br>
+                                mvn test<br><br>
+                                # O usando Gradle (si aplica)<br>
+                                ./gradlew test<br><br>
+                                # Ejecutar solo las pruebas del restaurante<br>
+                                mvn test -Dtest=PedidoRestauranteTest</code>
+                            </div>
+                            <p style="color: white; margin: 10px 0;"><strong>⚠️ IMPORTANTE:</strong> TODAS las pruebas en PedidoRestauranteTest.java deben pasar antes de continuar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proceso de Commits -->
+                <div class="activity-card" style="background: white; color: #333;">
+                    <h3>
+                        <span class="activity-number" style="background: linear-gradient(135deg, #f66a0a 0%, #e36209 100%);">3</span>
+                        Proceso de Entrega con Git
+                    </h3>
+                    
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #fff8f0 0%, #ffebda 100%); border-left: 4px solid #f66a0a;">
+                        <h4 style="color: #f66a0a; margin-bottom: 15px;">📦 Commits paso a paso</h4>
+                        <p>Sigue este proceso para entregar tu tarea correctamente en GitHub Classroom:</p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 30px 0;">
+                            <!-- Commit 1 -->
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 12px; border: 2px solid #28a745;">
+                                <div style="background: #28a745; color: white; padding: 10px; border-radius: 6px; margin-bottom: 12px;">
+                                    <h6 style="margin: 0; font-size: 1rem;">1️⃣ Primer Commit</h6>
+                                </div>
+                                <img src="commit1.png" alt="Primer commit - git add y git commit" style="width: 100%; max-width: 300px; border: 2px solid #28a745; border-radius: 8px; margin: 10px 0;">
+                                <p style="margin: 8px 0; font-weight: bold; color: #28a745; font-size: 0.9rem;">commit1.png</p>
+                                <p style="margin: 0; font-size: 0.85rem; color: #586069;">git add . && git commit</p>
+                            </div>
+                            
+                            <!-- Commit 2 -->
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 12px; border: 2px solid #0366d6;">
+                                <div style="background: #0366d6; color: white; padding: 10px; border-radius: 6px; margin-bottom: 12px;">
+                                    <h6 style="margin: 0; font-size: 1rem;">2️⃣ Segundo Commit</h6>
+                                </div>
+                                <img src="commit2.png" alt="Segundo commit - mensaje descriptivo" style="width: 100%; max-width: 300px; border: 2px solid #0366d6; border-radius: 8px; margin: 10px 0;">
+                                <p style="margin: 8px 0; font-weight: bold; color: #0366d6; font-size: 0.9rem;">commit2.png</p>
+                                <p style="margin: 0; font-size: 0.85rem; color: #586069;">Mensaje de commit descriptivo</p>
+                            </div>
+                            
+                            <!-- Commit 3 -->
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 12px; border: 2px solid #6f42c1;">
+                                <div style="background: #6f42c1; color: white; padding: 10px; border-radius: 6px; margin-bottom: 12px;">
+                                    <h6 style="margin: 0; font-size: 1rem;">3️⃣ Push Final</h6>
+                                </div>
+                                <img src="commit3.png" alt="Push final - git push origin main" style="width: 100%; max-width: 300px; border: 2px solid #6f42c1; border-radius: 8px; margin: 10px 0;">
+                                <p style="margin: 8px 0; font-weight: bold; color: #6f42c1; font-size: 0.9rem;">commit3.png</p>
+                                <p style="margin: 0; font-size: 0.85rem; color: #586069;">git push origin main</p>
+                            </div>
+                        </div>
+                        
+                        <div class="instruction-box" style="background: linear-gradient(135deg, #f66a0a 0%, #e36209 100%);">
+                            <h4 style="color: white;">🔄 Comandos Git completos:</h4>
+                            <div style="background: #24292e; color: #f6f8fa; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; line-height: 1.6;">
+                                <code># 1. Agregar todos los cambios<br>
+                                git add .<br><br>
+                                
+                                # 2. Crear commit con mensaje descriptivo<br>
+                                git commit -m "Implementación completa del sistema de restaurante"<br><br>
+                                
+                                # 3. Subir cambios al repositorio remoto<br>
+                                git push origin main</code>
+                            </div>
+                            <p style="color: white; margin: 10px 0;"><strong>📋 Checklist antes del push:</strong></p>
+                            <ul style="color: white; margin: 10px 0 0 20px;">
+                                <li>✅ Todas las pruebas unitarias pasan</li>
+                                <li>✅ El CLI funciona correctamente</li>
+                                <li>✅ Código implementado y comentado</li>
+                                <li>✅ Sin errores de compilación</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE PRUEBAS MANUALES -->
+            <div class="activity-section" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); margin: 50px 0;">
+                <h2 style="color: #2e7d32; text-align: center; margin-bottom: 40px;">🧪 PRUEBAS MANUALES ADICIONALES</h2>
+                
+                <!-- Pruebas Manuales -->
+                <div class="activity-card">
+                    <h3>
+                        <span class="activity-number" style="background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);">1</span>
+                        Pruebas Manuales con CLI
+                    </h3>
+                    
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 4px solid #2196f3;">
+                        <h4 style="color: #0d47a1; margin-bottom: 15px;">🖥️ Interfaz de Línea de Comandos</h4>
+                        <p>Además de las pruebas unitarias en Codespaces, puedes probar tu implementación de forma interactiva ejecutando la clase CLI del proyecto:</p>
+                        
+                        <div class="note-card" style="background: #fff3e0; border-left: 5px solid #ff9800; margin: 20px 0;">
+                            <h5 style="color: #e65100;">📁 Clase a ejecutar:</h5>
+                            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code>src/main/java/edu/eam/ingesoft/fundamentos/restaurante/cli/RestauranteCLI.java</code></pre>
+                        </div>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h5 style="color: #1976d2; margin-bottom: 15px;">📸 Pasos de prueba visual:</h5>
+                            <p>Sigue los pasos mostrados a continuación:</p>
+                            
+                            <!-- Visualización de los pasos CLI -->
+                            <div style="border: 3px solid #ff9800; background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                                <div style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem; border-left: 4px solid #ff9800;">
+                                    <h6 style="color: #ff9800; margin-bottom: 10px;">📁 Clase a ejecutar:</h6>
+                                    <code style="background: #3d3d3d; padding: 5px 10px; border-radius: 4px;">src/main/java/edu/eam/ingesoft/fundamentos/restaurante/cli/RestauranteCLI.java</code>
+                                </div>
+                                
+                                <p style="color: #e65100; font-weight: bold; margin: 15px 0;">Sigue los pasos mostrados en las imágenes de referencia:</p>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                                    <!-- Paso 1 -->
+                                    <div style="text-align: center; padding: 15px; background: #e3f2fd; border-radius: 8px; border: 2px solid #2196f3;">
+                                        <div style="background: #2196f3; color: white; padding: 8px; border-radius: 6px; margin-bottom: 10px;">
+                                            <h6 style="margin: 0; font-size: 1rem;">📁 Paso 1</h6>
+                                        </div>
+                                        <img src="cli-1.png" alt="Inicio del programa" style="width: 100%; max-width: 400px; border: 2px solid #2196f3; border-radius: 8px; margin: 10px 0;">
+                                        <p style="margin: 5px 0; font-weight: bold; color: #1976d2;">cli-1.png</p>
+                                        <p style="margin: 0; font-size: 0.9rem; color: #555;">Inicio del programa</p>
+                                    </div>
+                                    
+                                    <!-- Paso 2 -->
+                                    <div style="text-align: center; padding: 15px; background: #e8f5e9; border-radius: 8px; border: 2px solid #4caf50;">
+                                        <div style="background: #4caf50; color: white; padding: 8px; border-radius: 6px; margin-bottom: 10px;">
+                                            <h6 style="margin: 0; font-size: 1rem;">📝 Paso 2</h6>
+                                        </div>
+                                        <img src="cli-2.png" alt="Registro de pedido" style="width: 100%; max-width: 400px; border: 2px solid #4caf50; border-radius: 8px; margin: 10px 0;">
+                                        <p style="margin: 5px 0; font-weight: bold; color: #388e3c;">cli-2.png</p>
+                                        <p style="margin: 0; font-size: 0.9rem; color: #555;">Registro de pedido</p>
+                                    </div>
+                                    
+                                    <!-- Paso 3 -->
+                                    <div style="text-align: center; padding: 15px; background: #fff3e0; border-radius: 8px; border: 2px solid #ff9800;">
+                                        <div style="background: #ff9800; color: white; padding: 8px; border-radius: 6px; margin-bottom: 10px;">
+                                            <h6 style="margin: 0; font-size: 1rem;">🧮 Paso 3</h6>
+                                        </div>
+                                        <img src="cli-3.png" alt="Cálculo y descuentos" style="width: 100%; max-width: 400px; border: 2px solid #ff9800; border-radius: 8px; margin: 10px 0;">
+                                        <p style="margin: 5px 0; font-weight: bold; color: #f57c00;">cli-3.png</p>
+                                        <p style="margin: 0; font-size: 0.9rem; color: #555;">Cálculo y descuentos</p>
+                                    </div>
+                                    
+                                    <!-- Paso 4 -->
+                                    <div style="text-align: center; padding: 15px; background: #f3e5f5; border-radius: 8px; border: 2px solid #9c27b0;">
+                                        <div style="background: #9c27b0; color: white; padding: 8px; border-radius: 6px; margin-bottom: 10px;">
+                                            <h6 style="margin: 0; font-size: 1rem;">🧾 Paso 4</h6>
+                                        </div>
+                                        <img src="cli-4.png" alt="Factura generada" style="width: 100%; max-width: 400px; border: 2px solid #9c27b0; border-radius: 8px; margin: 10px 0;">
+                                        <p style="margin: 5px 0; font-weight: bold; color: #7b1fa2;">cli-4.png</p>
+                                        <p style="margin: 0; font-size: 0.9rem; color: #555;">Factura generada</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="background: #e1f5fe; padding: 15px; border-radius: 8px; border-left: 4px solid #03a9f4; margin: 20px 0;">
+                                <h6 style="color: #01579b; margin-bottom: 10px;">💡 Instrucciones para las pruebas:</h6>
+                                <ol style="margin: 0; padding-left: 20px; color: #0277bd;">
+                                    <li><strong>Paso 1 (cli-1.png):</strong> Ejecuta RestauranteCLI.java y observa el menú inicial</li>
+                                    <li><strong>Paso 2 (cli-2.png):</strong> Ingresa los datos del cliente y selecciona un plato del menú</li>
+                                    <li><strong>Paso 3 (cli-3.png):</strong> Verifica que los cálculos y descuentos se apliquen correctamente</li>
+                                    <li><strong>Paso 4 (cli-4.png):</strong> Confirma que la factura se genere con todos los detalles</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="instruction-box" style="background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);">
+                            <h4>🎯 Objetivo de las pruebas manuales:</h4>
+                            <ul style="margin-top: 10px;">
+                                <li>Verificar que la interfaz funciona correctamente</li>
+                                <li>Probar diferentes escenarios de pedidos</li>
+                                <li>Validar que las facturas se generan apropiadamente</li>
+                                <li>Confirmar que los descuentos se aplican según las reglas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Validación Final -->
+                <div class="highlight-box" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-left: 4px solid #ff9800; margin: 40px 0;">
+                    <h4 style="color: #e65100; margin-bottom: 15px;">🏆 Criterios de Completitud</h4>
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                        <h6 style="color: #ff6f00; margin-bottom: 10px;">Tu implementación está completa cuando:</h6>
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 4px solid #4caf50; margin: 10px 0;">
+                            <h7 style="color: #2e7d32; font-weight: bold;">✅ Validación Completa:</h7>
+                            <ul style="margin: 5px 0 0 15px; font-size: 0.9rem; color: #388e3c;">
+                                <li><strong>Codespaces:</strong> Todas las pruebas unitarias pasan (runtest.png)</li>
+                                <li><strong>CLI:</strong> El programa ejecuta correctamente (runjava1.png, runjava2.png)</li>
+                                <li><strong>Git:</strong> Commits realizados apropiadamente (commit1-3.png)</li>
+                                <li><strong>Funcionalidad:</strong> Todos los escenarios del enunciado funcionan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nota final para estudiantes -->
+            <div class="section">
+                <div class="highlight-box">
+                    <h3 style="color: #ff6b6b; margin-bottom: 15px;">📚 Nota para los Estudiantes</h3>
+                    <p>Este ejercicio está diseñado para que practiquen:</p>
+                    <ul style="margin-top: 10px;">
+                        <li>El registro de un pedido sencillo (un solo plato con cantidad)</li>
+                        <li>El cálculo de totales con condiciones</li>
+                        <li>La acumulación de puntos y el cambio automático de categorías</li>
+                        <li>La generación de una salida entendible (la factura)</li>
+                        <li>La concatenación de cadenas en Java</li>
+                        <li>La validación mediante pruebas unitarias y manuales</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>El reto está en organizar la información correctamente y aplicar las condiciones de negocio según la categoría del cliente.</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configurar Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            themeVariables: {
+                fontSize: '16px',
+                fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
+            }
+        });
+        
+        // Renderizar diagramas después de cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+vamos a tomar este ejercicio par hacer una actividad didactica con los estudiantes.
+
+1. vamos a generar una pagina html con el enunciado tal y como esta en el @enunciado.md, una pagina bonita.
+
+despues de eso vamos a agregar una seccion con la actividad que haran los estudiantes
+
+1. impelementar el menu
+para esto vas a pone el diagrama de flujo de como se determina el precio del plato dado el menu
+
+aqui debes decir que se debe implementar en el proyecto de classroom (ya despues complementamos esta parte)
+
+
+2. Acumulación de puntos y categorías
+para este vamos a poner el diagrama de clase y loes estudiantes van a completar la el codigo en la asignacion en classroom.
+
+3. explica como se haria la generacion de la factura, la concateniacion de cadenas y pon el codigo para que ellos lo pasen a la tarea de classroom github.
+
+recuerda que las referencias a los recursos de github classroom la pongo despues. por ahora trabajemos en la pagina.
+
+que los diagramas de flujo san bonito y el codigo java que se muestre tambien. 
