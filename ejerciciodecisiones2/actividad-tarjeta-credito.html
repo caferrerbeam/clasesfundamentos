@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control de Tarjeta de Crédito - Banco Confianza Total</title>
+    <!-- Mermaid JS para renderizar diagramas de flujo -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .emoji {
+            font-size: 3rem;
+            margin: 0 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #764ba2;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin: 20px 0 15px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .tipo-transaccion {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tipo-transaccion h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .categoria-cliente {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .categoria-cliente h4 {
+            color: #7b1fa2;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .ejemplo-card {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ejemplo-card h4 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .situacion-inicial {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .proceso-calculo {
+            background: #fff3e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .resultado {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+            font-weight: bold;
+        }
+
+        .escenario-card {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .escenario-card h4 {
+            color: #f57c00;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .activity-section {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-section h2 {
+            color: #c2185b;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #e91e63;
+            padding-bottom: 15px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .formula {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        ul li {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff6e5 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .calculation-step {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .badge-basico {
+            background: #6c757d;
+        }
+
+        .badge-frecuente {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-premium {
+            background: #28a745;
+        }
+
+        .badge-activa {
+            background: #28a745;
+        }
+
+        .badge-alerta {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-bloqueada {
+            background: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .activity-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>
+                <span class="emoji">💳</span>
+                Sistema de Control de Tarjeta de Crédito
+                <span class="emoji">🏦</span>
+            </h1>
+            <p class="subtitle">Banco Confianza Total - Ejercicio de Decisiones Simples, Múltiples y Anidadas</p>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="content">
+            <!-- Contexto del Negocio -->
+            <section class="section">
+                <h2>🏢 Contexto del Negocio</h2>
+                <div class="card">
+                    <p>El banco <strong>"Confianza Total"</strong> necesita un sistema para administrar las tarjetas de crédito de sus clientes. Una tarjeta de crédito es un medio de pago que permite a los clientes hacer compras sin tener el dinero en ese momento, pero con el compromiso de pagarlo después al banco.</p>
+                    
+                    <p class="mt-20">Cuando un cliente obtiene una tarjeta, el banco le asigna un <strong>límite máximo</strong> de dinero que puede usar. Cada vez que el cliente hace una compra, el banco le "presta" ese dinero y el cliente queda debiendo esa cantidad. El cliente puede hacer pagos para reducir su deuda y así tener más dinero disponible para usar nuevamente.</p>
+                </div>
+            </section>
+
+            <!-- Reglas del Negocio -->
+            <section class="section">
+                <h2>📋 Reglas del Negocio</h2>
+
+                <!-- Límites y Saldos -->
+                <h3>1. Límite de Crédito y Saldo</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>Límite de crédito</strong>: Máximo que el banco le presta al cliente</li>
+                        <li><strong>Saldo actual</strong>: Cuánto dinero debe actualmente el cliente al banco</li>
+                        <li><strong>Cupo disponible</strong>: Cuánto más puede gastar el cliente</li>
+                    </ul>
+                    <div class="formula">
+                        Cupo Disponible = Límite de Crédito - Saldo Actual
+                    </div>
+                    <div class="highlight-box">
+                        <strong>Ejemplo:</strong> Si el límite es $5,000,000 y debe $2,000,000, entonces puede gastar hasta $3,000,000 más.
+                    </div>
+                </div>
+
+                <!-- Tipos de Transacciones -->
+                <h3>2. Tipos de Transacciones</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                                <th>Recargo/Comisión</th>
+                                <th>Ejemplo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Compra Nacional</strong></td>
+                                <td>Compra en Colombia</td>
+                                <td>Sin recargo</td>
+                                <td>$1,000,000 → se cargan $1,000,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Compra Internacional</strong></td>
+                                <td>Compra en el exterior</td>
+                                <td>5% adicional</td>
+                                <td>$1,000,000 → se cargan $1,050,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Avance en Efectivo</strong></td>
+                                <td>Retiro del cajero</td>
+                                <td>$50,000 + 3% del monto</td>
+                                <td>$1,000,000 → se cargan $1,080,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pago/Abono</strong></td>
+                                <td>Reducir deuda</td>
+                                <td>2.5% interés antes del pago</td>
+                                <td>Reduce saldo y aumenta cupo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Categorías de Cliente -->
+                <h3>3. Categorías de Cliente según Uso Mensual</h3>
+                <div class="categoria-cliente">
+                    <h4><span class="badge badge-basico">BÁSICO</span></h4>
+                    <p>Cliente que usa poco la tarjeta (menos de 5 transacciones en el mes)</p>
+                    <p><strong>Beneficio:</strong> No recibe descuentos</p>
+                </div>
+                <div class="categoria-cliente">
+                    <h4><span class="badge badge-frecuente">FRECUENTE</span></h4>
+                    <p>Cliente que usa moderadamente la tarjeta (entre 5 y 15 transacciones en el mes)</p>
+                    <p><strong>Beneficio:</strong> Si paga más del 50% del saldo, se le perdonan $20,000 de intereses</p>
+                </div>
+                <div class="categoria-cliente">
+                    <h4><span class="badge badge-premium">PREMIUM</span></h4>
+                    <p>Cliente que usa mucho la tarjeta (más de 15 transacciones en el mes)</p>
+                    <p><strong>Beneficio:</strong> Si paga al menos el 30% del saldo, se le perdonan $50,000 de intereses</p>
+                </div>
+
+                <!-- Estados de la Tarjeta -->
+                <h3>4. Estado de la Tarjeta</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Estado</th>
+                                <th>Condición del Cupo</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-activa">ACTIVA</span></td>
+                                <td>Más de $100,000</td>
+                                <td>La tarjeta funciona normalmente</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-alerta">ALERTA</span></td>
+                                <td>Entre $1 y $100,000</td>
+                                <td>Cerca del límite, hay que tener cuidado</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-bloqueada">BLOQUEADA</span></td>
+                                <td>$0 o negativo</td>
+                                <td>No puede hacer más compras</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Conceptos Importantes -->
+            <section class="section">
+                <h2>💡 Conceptos Importantes para Entender el Problema</h2>
+                
+                <div class="card">
+                    <h3>¿Qué significa USAR la tarjeta?</h3>
+                    <p>Usar la tarjeta significa hacer compras o retirar efectivo. Cuando un cliente usa su tarjeta:</p>
+                    <ul>
+                        <li>El banco le está prestando dinero que deberá pagar después</li>
+                        <li>Su deuda (saldo) aumenta</li>
+                        <li>Su capacidad de gastar (cupo disponible) disminuye</li>
+                        <li>Cada uso cuenta como una transacción para determinar su categoría</li>
+                        <li>El banco debe verificar que el cliente no exceda su límite permitido</li>
+                        <li>Según el tipo de uso, pueden aplicarse costos adicionales</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>¿Qué significa PAGAR?</h3>
+                    <p>Pagar significa que el cliente le devuelve dinero al banco para reducir su deuda. Cuando un cliente paga:</p>
+                    <ul>
+                        <li>Su deuda (saldo) disminuye</li>
+                        <li>Su capacidad de gastar (cupo disponible) aumenta</li>
+                        <li>El banco cobra intereses sobre lo que debía antes del pago</li>
+                        <li>Según qué tan buen cliente sea y cuánto pague, puede recibir beneficios</li>
+                        <li>Los pagos NO cuentan como transacciones para la categoría</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>La diferencia clave:</h3>
+                    <ul>
+                        <li><strong>Usar la tarjeta</strong> = Aumentar la deuda, el banco verifica que no exceda límites</li>
+                        <li><strong>Pagar</strong> = Reducir la deuda, pero primero se cobran intereses por el dinero prestado</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Ejemplos Resueltos -->
+            <section class="section">
+                <h2>📚 Ejemplos Resueltos</h2>
+                <p>Para entender mejor cómo funciona el sistema, veamos varios casos reales:</p>
+
+                <!-- Ejemplo 1 -->
+                <div class="ejemplo-card">
+                    <h4>Ejemplo 1: Compra Internacional con Tarjeta Frecuente</h4>
+                    
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: María González<br>
+                        • Límite de crédito: $3,000,000<br>
+                        • Saldo actual: $1,200,000<br>
+                        • Transacciones del mes: 8<br>
+                        • Categoría: <span class="badge badge-frecuente">FRECUENTE</span>
+                    </div>
+
+                    <p><strong>Operación:</strong> María realiza una compra internacional de $500,000</p>
+
+                    <div class="proceso-calculo">
+                        <strong>Proceso de decisión paso a paso:</strong><br>
+                        <div class="calculation-step">
+                            <span class="step-number">1</span>Calcular cupo disponible: $3,000,000 - $1,200,000 = $1,800,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">2</span>Como es compra internacional, calcular el recargo del 5%: $500,000 × 5% = $25,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">3</span>Monto total a cargar: $500,000 + $25,000 = $525,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">4</span>¿Hay cupo suficiente? ¿$525,000 ≤ $1,800,000? <strong>SÍ ✓</strong>
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">5</span>Actualizar saldo: $1,200,000 + $525,000 = $1,725,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">6</span>Nuevo cupo disponible: $3,000,000 - $1,725,000 = $1,275,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">7</span>Determinar estado: Como $1,275,000 > $100,000 → Estado: <span class="badge badge-activa">ACTIVA</span>
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">8</span>Actualizar contador: 8 + 1 = 9 transacciones
+                        </div>
+                    </div>
+
+                    <div class="resultado">
+                        <strong>Resultado:</strong> Compra aprobada. María ahora debe $1,725,000 al banco
+                    </div>
+                </div>
+
+                <!-- Ejemplo 2 -->
+                <div class="ejemplo-card">
+                    <h4>Ejemplo 2: Pago con Beneficio Premium</h4>
+                    
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Carlos Ruiz<br>
+                        • Límite de crédito: $5,000,000<br>
+                        • Saldo actual: $3,500,000<br>
+                        • Transacciones del mes: 18<br>
+                        • Categoría: <span class="badge badge-premium">PREMIUM</span>
+                    </div>
+
+                    <p><strong>Operación:</strong> Carlos realiza un pago de $1,500,000</p>
+
+                    <div class="proceso-calculo">
+                        <strong>Paso 1 - Al momento de pagar, se calculan intereses:</strong><br>
+                        • Carlos debe $3,500,000<br>
+                        • Como va a pagar, se cobran intereses del 2.5%: $3,500,000 × 2.5% = $87,500<br>
+                        • Saldo actualizado con intereses: $3,500,000 + $87,500 = $3,587,500<br><br>
+
+                        <strong>Paso 2 - Aplicar el pago y verificar beneficios:</strong><br>
+                        • Monto del pago: $1,500,000<br>
+                        • ¿Qué porcentaje del saldo está pagando? $1,500,000 ÷ $3,587,500 = 41.8%<br>
+                        • Como Carlos es Premium y pagó más del 30%, tiene derecho al beneficio de $50,000<br><br>
+
+                        <strong>Paso 3 - Calcular el nuevo saldo:</strong><br>
+                        • Saldo con intereses: $3,587,500<br>
+                        • Menos el pago: $3,587,500 - $1,500,000 = $2,087,500<br>
+                        • Menos el beneficio: $2,087,500 - $50,000 = $2,037,500<br><br>
+
+                        <strong>Paso 4 - Actualizar cupo y estado:</strong><br>
+                        • Nuevo cupo disponible: $5,000,000 - $2,037,500 = $2,962,500<br>
+                        • Estado: <span class="badge badge-activa">ACTIVA</span> (porque $2,962,500 > $100,000)
+                    </div>
+
+                    <div class="resultado">
+                        <strong>Resultado:</strong> Carlos redujo su deuda a $2,037,500. Se le cobraron $87,500 de intereses pero recibió un descuento de $50,000 por ser buen cliente
+                    </div>
+                </div>
+
+                <!-- Ejemplo 3 -->
+                <div class="ejemplo-card">
+                    <h4>Ejemplo 3: Avance en Efectivo cerca del Límite</h4>
+                    
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Ana López<br>
+                        • Límite de crédito: $2,000,000<br>
+                        • Saldo actual: $1,850,000<br>
+                        • Transacciones del mes: 3<br>
+                        • Categoría: <span class="badge badge-basico">BÁSICO</span>
+                    </div>
+
+                    <p><strong>Operación:</strong> Ana solicita un avance en efectivo de $100,000</p>
+
+                    <div class="proceso-calculo">
+                        <strong>Cálculo paso a paso:</strong><br>
+                        <div class="calculation-step">
+                            <span class="step-number">1</span>Cupo disponible actual: $2,000,000 - $1,850,000 = $150,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">2</span>Costo total del avance:<br>
+                            • Monto a retirar: $100,000<br>
+                            • Comisión fija: $50,000<br>
+                            • Comisión variable (3% de $100,000): $3,000<br>
+                            • Total a cargar al saldo: $100,000 + $50,000 + $3,000 = $153,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">3</span>Verificar si hay cupo suficiente: ¿$153,000 ≤ $150,000? <strong>NO ✗</strong>
+                        </div>
+                    </div>
+
+                    <div class="resultado">
+                        <strong>Resultado:</strong> Transacción rechazada. Ana no puede retirar porque el costo total ($153,000) supera su cupo disponible ($150,000)
+                    </div>
+                </div>
+
+                <!-- Ejemplo 4 -->
+                <div class="ejemplo-card">
+                    <h4>Ejemplo 4: Compra Nacional que Cambia Estado</h4>
+                    
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Luis Pérez<br>
+                        • Límite de crédito: $4,000,000<br>
+                        • Saldo actual: $3,920,000<br>
+                        • Transacciones del mes: 7<br>
+                        • Categoría: <span class="badge badge-frecuente">FRECUENTE</span>
+                    </div>
+
+                    <p><strong>Operación:</strong> Luis hace una compra nacional de $75,000 en un supermercado</p>
+
+                    <div class="proceso-calculo">
+                        <strong>Análisis de la situación:</strong><br>
+                        <div class="calculation-step">
+                            <span class="step-number">1</span>Calcular cupo antes de la compra: $4,000,000 - $3,920,000 = $80,000 (muy poco cupo)
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">2</span>Verificar si puede hacer la compra:<br>
+                            • Compra nacional: no tiene recargos, son $75,000 exactos<br>
+                            • ¿$75,000 ≤ $80,000? SÍ, apenas alcanza ✓
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">3</span>Actualizar el saldo: $3,920,000 + $75,000 = $3,995,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">4</span>Calcular nuevo cupo: $4,000,000 - $3,995,000 = $5,000 (¡quedó con muy poco cupo!)
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">5</span>Determinar nuevo estado:<br>
+                            • ¿$5,000 > $100,000? NO<br>
+                            • ¿$5,000 está entre $1 y $100,000? SÍ → Estado: <span class="badge badge-alerta">ALERTA</span>
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">6</span>Actualizar transacciones: 7 + 1 = 8 transacciones
+                        </div>
+                    </div>
+
+                    <div class="resultado">
+                        <strong>Resultado:</strong> La compra fue aprobada pero la tarjeta pasó a estado de <span class="badge badge-alerta">ALERTA</span>. Luis solo puede gastar $5,000 más antes de que se bloquee
+                    </div>
+                </div>
+            </section>
+
+            <!-- Escenarios de Práctica -->
+            <section class="section">
+                <h2>🧮 Escenarios de Práctica para Resolver</h2>
+
+                <div class="escenario-card">
+                    <h4>Escenario 1: Cliente con múltiples operaciones</h4>
+                    
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Pedro Martínez<br>
+                        • Límite de crédito: $2,500,000<br>
+                        • Saldo actual: $800,000<br>
+                        • Transacciones del mes: 4<br>
+                        • Categoría: <span class="badge badge-basico">BÁSICO</span>
+                    </div>
+
+                    <p><strong>Secuencia de operaciones a procesar:</strong></p>
+                    <ol>
+                        <li>Pedro hace una compra nacional de $300,000</li>
+                        <li>Pedro retira $200,000 del cajero (avance en efectivo)</li>
+                        <li>Pedro hace una compra internacional de $600,000</li>
+                        <li>Pedro realiza un pago de $700,000</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <strong>Preguntas:</strong>
+                        <ul>
+                            <li>¿Cuál es el saldo final de Pedro?</li>
+                            <li>¿Cuál es su categoría final?</li>
+                            <li>¿Cuál es el estado final de su tarjeta?</li>
+                            <li>¿Cuáles operaciones fueron aprobadas y cuáles rechazadas?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="escenario-card">
+                    <h4>Escenario 2: Cliente cerca del límite</h4>
+                    
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Sofia Ramírez<br>
+                        • Límite de crédito: $1,500,000<br>
+                        • Saldo actual: $1,380,000<br>
+                        • Transacciones del mes: 12<br>
+                        • Categoría: <span class="badge badge-frecuente">FRECUENTE</span>
+                    </div>
+
+                    <p><strong>Secuencia de operaciones a procesar:</strong></p>
+                    <ol>
+                        <li>Sofia intenta hacer una compra nacional de $50,000</li>
+                        <li>Sofia intenta hacer una compra internacional de $100,000</li>
+                        <li>Sofia realiza un pago de $800,000</li>
+                        <li>Sofia intenta hacer una compra nacional de $50,000</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <strong>Preguntas:</strong>
+                        <ul>
+                            <li>¿Cuál es el saldo final de Sofia?</li>
+                            <li>¿Cuál es su categoría final?</li>
+                            <li>¿Cuál es el estado final de su tarjeta?</li>
+                            <li>¿Recibió algún beneficio? ¿Por qué?</li>
+                            <li>¿Cuáles operaciones fueron aprobadas y cuáles rechazadas?</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actividades a Desarrollar -->
+            <div class="activity-section">
+                <h2>🎯 Actividades a Desarrollar</h2>
+
+                <div class="card">
+                    <h3>🎓 GitHub Classroom</h3>
+                    <p><strong>Instrucciones:</strong> Este ejercicio se debe realizar a través de GitHub Classroom para evaluación automática.</p>
+                    
+                    <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 10px; padding: 20px; margin: 15px 0;">
+                        <h4 style="color: #1976d2; margin-bottom: 15px;">📋 Pasos para iniciar:</h4>
+                        
+                        <div style="background: #1976d2; color: white; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                            <h5 style="margin: 0 0 10px 0; font-size: 1.1rem;">🔗 Enlace de GitHub Classroom</h5>
+                            <a href="https://classroom.github.com/a/A4ZBie36" target="_blank" style="color: #bbdefb; font-weight: bold; text-decoration: underline; font-size: 1rem;">
+                                https://classroom.github.com/a/A4ZBie36
+                            </a>
+                            <p style="margin: 10px 0 0 0; font-size: 0.9rem; opacity: 0.9;">👆 Haz clic aquí para aceptar la asignación</p>
+                        </div>
+                        
+                        <ol style="margin-left: 20px;">
+                            <li><strong>Aceptar la asignación:</strong> Haz clic en el enlace de arriba para aceptar la asignación en GitHub Classroom</li>
+                            <li><strong>Clonar el repositorio:</strong> GitHub creará automáticamente un repositorio personal para usted</li>
+                            <li><strong>Estructura del proyecto:</strong> El repositorio incluye:
+                                <ul style="margin-top: 10px;">
+                                    <li>Clase <code>TarjetaCredito.java</code> con métodos vacíos para implementar</li>
+                                    <li>Pruebas automáticas que verificarán su implementación</li>
+                                    <li>Configuración de Maven para compilación y testing</li>
+                                    <li>GitHub Actions para autoevaluación en tiempo real</li>
+                                </ul>
+                            </li>
+                            <li><strong>Implementar los métodos:</strong> Complete los métodos siguiendo las especificaciones</li>
+                            <li><strong>Verificar resultados:</strong> Cada commit activará las pruebas automáticas</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 10px; padding: 20px; margin: 15px 0;">
+                        <h4 style="color: #f57c00; margin-bottom: 15px;">⚠️ Requisitos importantes:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>NO modificar</strong> las firmas de los métodos existentes</li>
+                            <li><strong>NO usar excepciones</strong> - manejar casos inválidos retornando valores por defecto</li>
+                            <li><strong>Usar exactamente</strong> las estructuras de decisión especificadas en cada método</li>
+                            <li><strong>Seguir</strong> los diagramas de flujo proporcionados</li>
+                            <li><strong>Todas las pruebas</strong> deben pasar para obtener calificación completa</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>1. Identificación de Atributos y Métodos</h3>
+                    <p><strong>Instrucciones:</strong> Basándose en el contexto del negocio y los ejemplos proporcionados, identifique:</p>
+                    
+                    <h4>a) Atributos necesarios para la clase TarjetaCredito (mínimo 5 atributos)</h4>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Atributo</th>
+                                    <th>Tipo de Dato</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>b) Métodos necesarios para implementar todas las operaciones descritas (mínimo 6 métodos)</h4>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Método</th>
+                                    <th>Parámetros</th>
+                                    <th>Retorno</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                                <tr>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                    <td>_____________</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DISEÑO DE LA CLASE -->
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%); border-left: 4px solid #3f51b5; margin-bottom: 40px;">
+                    <h3 style="color: #1a237e; margin-bottom: 15px;">🏗️ DISEÑO DE LA CLASE TARJETACREDITO</h3>
+                    <p>Antes de implementar las actividades, analicemos la estructura completa de la clase que vamos a desarrollar:</p>
+                    <p><strong>📍 Ubicación en GitHub Classroom:</strong> <code>src/main/java/edu/eam/ingesoft/fundamentos/tarjetacredito/logica/TarjetaCredito.java</code></p>
+                </div>
+
+                <div class="class-diagram" style="margin-bottom: 40px;">
+                    <div class="class-box">
+                        <div class="class-title">TarjetaCredito</div>
+                        <div class="class-attributes" style="background: #f1f8e9;">
+                            <p><strong>📋 ATRIBUTOS (Datos de la tarjeta):</strong></p>
+                            <p style="color: #2e7d32;">- String titular</p>
+                            <p style="color: #2e7d32;">- double limiteCredito</p>
+                            <p style="color: #2e7d32;">- double saldoActual</p>
+                            <p style="color: #2e7d32;">- int transaccionesMes</p>
+                            <p style="margin-top: 10px; font-size: 0.9rem; color: #666;"><em>↑ Estado actual del cliente y su tarjeta</em></p>
+                        </div>
+                        <div class="class-methods" style="background: #fff3e0;">
+                            <p><strong>⚙️ MÉTODOS (Operaciones del sistema):</strong></p>
+                            <p style="color: #e65100;">+ TarjetaCredito(String titular, double limite)</p>
+                            <p style="color: #1976d2;"><strong>+ boolean realizarCompra(double monto, String tipo)</strong></p>
+                            <p style="color: #1976d2;"><strong>+ double realizarPago(double monto)</strong></p>
+                            <p style="color: #f57c00;">+ double obtenerCupoDisponible()</p>
+                            <p style="color: #f57c00;">+ String obtenerCategoria()</p>
+                            <p style="color: #f57c00;">+ String obtenerEstado()</p>
+                            <p style="color: #1976d2;">+ String mostrarResumenCuenta()</p>
+                            <p style="color: #666;">+ getters y setters...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 4px solid #2196f3; margin-bottom: 40px;">
+                    <h4 style="color: #0d47a1; margin-bottom: 15px;">🔍 ¿Qué hace cada método?</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                        <div class="note-card" style="background: #f3e5f5; border-left: 5px solid #9c27b0;">
+                            <h5 style="color: #4a148c;">🎯 MÉTODOS PRINCIPALES</h5>
+                            <p><strong>realizarCompra(double monto, String tipo)</strong></p>
+                            <ul style="font-size: 0.9rem; margin: 5px 0 0 15px;">
+                                <li>Maneja NACIONAL, INTERNACIONAL, AVANCE_EFECTIVO</li>
+                                <li>Usa <strong>switch</strong> con <strong>if anidados</strong></li>
+                                <li>Valida cupo disponible</li>
+                                <li>Actualiza saldo y transacciones</li>
+                            </ul>
+                            <p><strong>realizarPago(double monto)</strong></p>
+                            <ul style="font-size: 0.9rem; margin: 5px 0 0 15px;">
+                                <li>Calcula intereses automáticamente</li>
+                                <li>Usa <strong>if anidados</strong> para beneficios</li>
+                                <li>Aplica descuentos por categoría</li>
+                            </ul>
+                        </div>
+
+                        <div class="note-card" style="background: #e1f5fe; border-left: 5px solid #03a9f4;">
+                            <h5 style="color: #01579b;">📄 MÉTODOS DE CONSULTA</h5>
+                            <p><strong>obtenerCategoria()</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ BÁSICO, FRECUENTE o PREMIUM</p>
+                            <p><strong>obtenerEstado()</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ ACTIVA, ALERTA o BLOQUEADA</p>
+                            <p><strong>obtenerCupoDisponible()</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ límite - saldo</p>
+                            <p><strong>mostrarResumenCuenta()</strong></p>
+                            <p style="font-size: 0.9rem; margin: 5px 0;">→ Resumen completo formateado</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejecutar Pruebas Unitarias -->
+                <div class="activity-card" style="background: white; color: #333; margin-bottom: 40px;">
+                    <h3>
+                        <span class="activity-number" style="background: linear-gradient(135deg, #d73a49 0%, #cb2431 100%); color: white; padding: 8px 15px; border-radius: 50px; margin-right: 15px;">2</span>
+                        Ejecutar Pruebas Unitarias
+                    </h3>
+                    
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #ffeef0 0%, #ffdce0 100%); border-left: 4px solid #d73a49;">
+                        <h4 style="color: #d73a49; margin-bottom: 15px;">🧪 Validación Automática</h4>
+                        <p>Antes de hacer commit, asegúrate de que todas las pruebas unitarias pasen:</p>
+                        
+                        <div class="note-card" style="background: #fff8f0; border-left: 5px solid #f66a0a; margin: 20px 0;">
+                            <h5 style="color: #e65100;">📁 Ubicación de las pruebas:</h5>
+                            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; margin: 10px 0; font-size: 0.9rem;"><code>src/test/java/edu/eam/ingesoft/fundamentos/tarjetacredito/TarjetaCreditoTest.java</code></pre>
+                            <p style="margin: 10px 0; color: #bf360c;"><strong>💡 Nota:</strong> Las pruebas validan tu implementación de la clase TarjetaCredito.</p>
+                        </div>
+                        
+                        <div class="instruction-box" style="background: linear-gradient(135deg, #d73a49 0%, #cb2431 100%); border-radius: 10px; padding: 20px; margin: 20px 0;">
+                            <h4 style="color: white; margin-bottom: 15px;">⚡ Comando para las pruebas:</h4>
+                            <div style="background: #24292e; color: #f6f8fa; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace;">
+                                <code># Ejecutar todas las pruebas unitarias<br>
+                                mvn test<br><br>
+                                # Ejecutar solo las pruebas de la tarjeta de crédito<br>
+                                mvn test -Dtest=TarjetaCreditoTest</code>
+                            </div>
+                            <p style="color: white; margin: 10px 0;"><strong>⚠️ IMPORTANTE:</strong> TODAS las pruebas en TarjetaCreditoTest.java deben pasar antes de continuar.</p>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 4px solid #4caf50;">
+                            <h5 style="color: #2e7d32; margin-bottom: 15px;">✅ Las pruebas verifican:</h5>
+                            <ul style="margin-left: 20px; color: #2e7d32;">
+                                <li><strong>Compras nacionales:</strong> Procesamiento sin recargos</li>
+                                <li><strong>Compras internacionales:</strong> Aplicación del 5% de recargo</li>
+                                <li><strong>Avances en efectivo:</strong> Comisiones fijas y porcentuales</li>
+                                <li><strong>Sistema de pagos:</strong> Cálculo de intereses del 2.5%</li>
+                                <li><strong>Categorización:</strong> BÁSICO, FRECUENTE, PREMIUM</li>
+                                <li><strong>Estados de tarjeta:</strong> ACTIVA, ALERTA, BLOQUEADA</li>
+                                <li><strong>Beneficios:</strong> Descuentos por categoría en pagos</li>
+                                <li><strong>Validaciones:</strong> Límites de crédito y cupo disponible</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proceso de Entrega con Git -->
+                <div class="activity-card" style="background: white; color: #333; margin-bottom: 40px;">
+                    <h3>
+                        <span class="activity-number" style="background: linear-gradient(135deg, #f66a0a 0%, #e36209 100%); color: white; padding: 8px 15px; border-radius: 50px; margin-right: 15px;">3</span>
+                        Proceso de Entrega con Git
+                    </h3>
+                    
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #fff8f0 0%, #ffebda 100%); border-left: 4px solid #f66a0a;">
+                        <h4 style="color: #f66a0a; margin-bottom: 15px;">📦 Commits paso a paso</h4>
+                        <p>Sigue este proceso para entregar tu tarea correctamente en GitHub Classroom:</p>
+                        
+                        <div class="instruction-box" style="background: linear-gradient(135deg, #f66a0a 0%, #e36209 100%); border-radius: 10px; padding: 20px; margin: 20px 0;">
+                            <h4 style="color: white; margin-bottom: 15px;">🔄 Comandos Git completos:</h4>
+                            <div style="background: #24292e; color: #f6f8fa; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; line-height: 1.6;">
+                                <code># 1. Agregar todos los cambios<br>
+                                git add .<br><br>
+                                
+                                # 2. Crear commit con mensaje descriptivo<br>
+                                git commit -m "Implementación sistema de tarjeta de crédito con decisiones anidadas"<br><br>
+                                
+                                # 3. Subir cambios al repositorio remoto<br>
+                                git push origin main</code>
+                            </div>
+                            <p style="color: white; margin: 10px 0;"><strong>📋 Checklist antes del push:</strong></p>
+                            <ul style="color: white; margin: 10px 0 0 20px;">
+                                <li>✅ Todas las pruebas unitarias pasan</li>
+                                <li>✅ Método realizarCompra() usa switch con if anidados</li>
+                                <li>✅ Método realizarPago() usa if anidados para beneficios</li>
+                                <li>✅ Todos los métodos implementados correctamente</li>
+                                <li>✅ Sin errores de compilación</li>
+                                <li>✅ Código sigue las reglas de negocio</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 4px solid #2196f3;">
+                            <h5 style="color: #0d47a1; margin-bottom: 15px;">🎯 Flujo de trabajo recomendado:</h5>
+                            <ol style="margin-left: 20px; color: #1976d2;">
+                                <li><strong>Implementar un método a la vez</strong> siguiendo los diagramas de flujo</li>
+                                <li><strong>Ejecutar pruebas</strong> después de cada implementación: <code>mvn test</code></li>
+                                <li><strong>Corregir errores</strong> hasta que todas las pruebas pasen</li>
+                                <li><strong>Hacer commit</strong> cuando toda la funcionalidad esté completa</li>
+                                <li><strong>Verificar en GitHub</strong> que el autograding pase correctamente</li>
+                            </ol>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 4px solid #ff9800;">
+                            <h5 style="color: #e65100; margin-bottom: 15px;">⚠️ Recordatorios importantes:</h5>
+                            <ul style="margin-left: 20px; color: #e65100;">
+                                <li><strong>NO modificar</strong> las firmas de los métodos existentes</li>
+                                <li><strong>NO usar excepciones</strong> - retornar valores por defecto para casos inválidos</li>
+                                <li><strong>Seguir exactamente</strong> los diagramas de flujo proporcionados</li>
+                                <li><strong>El autograding</strong> verifica que uses las estructuras de decisión correctas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>4. Método realizarCompra() - Switch con Decisiones Anidadas</h3>
+                    <p><strong>Objetivo:</strong> Implementar el método central que maneja todos los tipos de transacciones usando <code>switch</code> con <code>if</code> anidados.</p>
+                    
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio: realizarCompra monto, tipoCompra] --> B[Obtener cupo disponible]
+                            B --> C{Switch tipoCompra}
+                            
+                            C -->|NACIONAL| D[montoFinal = monto]
+                            C -->|INTERNACIONAL| E[montoFinal = monto + monto * 0.05]
+                            C -->|AVANCE_EFECTIVO| F[montoFinal = monto + 50000 + monto * 0.03]
+                            
+                            D --> H{montoFinal <= cupoDisponible?}
+                            E --> I{montoFinal <= cupoDisponible?}
+                            F --> J{montoFinal <= cupoDisponible?}
+                            
+                            H -->|Sí| K[saldoActual += montoFinal<br/>transaccionesMes++<br/>return true]
+                            H -->|No| L[return false]
+                            
+                            I -->|Sí| M[saldoActual += montoFinal<br/>transaccionesMes++<br/>return true]
+                            I -->|No| N[return false]
+                            
+                            J -->|Sí| O[saldoActual += montoFinal<br/>transaccionesMes++<br/>return true]
+                            J -->|No| P[return false]
+                            
+                            K --> R[Fin: true]
+                            L --> S[Fin: false]
+                            M --> T[Fin: true]
+                            N --> U[Fin: false]
+                            O --> V[Fin: true]
+                            P --> W[Fin: false]
+                    </div>
+
+                    <div class="highlight-box">
+                        <h4>📋 Puntos Clave:</h4>
+                        <ul>
+                            <li><strong>Switch:</strong> Para manejar los 3 tipos de transacción</li>
+                            <li><strong>If anidado:</strong> Dentro de cada case, validar cupo disponible</li>
+                            <li><strong>Calcular monto final:</strong> Aplicar recargos según el tipo</li>
+                            <li><strong>Actualizar estado:</strong> Solo si la transacción es aprobada</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>5. Método realizarPago() - If Anidados para Beneficios</h3>
+                    <p><strong>Objetivo:</strong> Procesar pagos con cálculo de intereses y aplicación de beneficios usando <code>if</code> anidados.</p>
+                    
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio: realizarPago monto] --> B{saldoActual > 0?}
+                            B -->|Sí| C[intereses = saldoActual * 0.025<br/>saldoActual += intereses]
+                            B -->|No| D[intereses = 0]
+                            
+                            C --> E[Calcular porcentajePago = monto / saldoActual]
+                            D --> E
+                            
+                            E --> F[saldoActual -= monto]
+                            F --> G{saldoActual < 0?}
+                            G -->|Sí| H[saldoActual = 0]
+                            G -->|No| I[Obtener categoría]
+                            H --> I
+                            
+                            I --> J{categoria == FRECUENTE?}
+                            J -->|Sí| K{porcentajePago > 0.5?}
+                            J -->|No| L{categoria == PREMIUM?}
+                            
+                            K -->|Sí| M[saldoActual -= 20000<br/>Si saldoActual < 0: saldoActual = 0]
+                            K -->|No| N[return saldoActual]
+                            
+                            L -->|Sí| O{porcentajePago > 0.3?}
+                            L -->|No| P[return saldoActual]
+                            
+                            O -->|Sí| Q[saldoActual -= 50000<br/>Si saldoActual < 0: saldoActual = 0]
+                            O -->|No| R[return saldoActual]
+                            
+                            M --> S[return saldoActual]
+                            N --> T[return saldoActual]
+                            P --> U[return saldoActual]
+                            Q --> V[return saldoActual]
+                            R --> W[return saldoActual]
+                    </div>
+
+                    <div class="highlight-box">
+                        <h4>📋 Puntos Clave:</h4>
+                        <ul>
+                            <li><strong>Calcular intereses:</strong> Solo si hay saldo pendiente</li>
+                            <li><strong>Aplicar pago:</strong> Restar del saldo con intereses</li>
+                            <li><strong>If anidados:</strong> Para verificar categoría y porcentaje de pago</li>
+                            <li><strong>Beneficios:</strong> Aplicar descuentos según condiciones</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>6. Método obtenerCategoria() - If-Else Múltiple</h3>
+                    <p><strong>Objetivo:</strong> Clasificar al cliente según el número de transacciones usando <code>if-else</code> múltiple.</p>
+                    
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio: obtenerCategoria] --> B{transaccionesMes < 5?}
+                            B -->|Sí| C[return BASICO]
+                            B -->|No| D{transaccionesMes <= 15?}
+                            D -->|Sí| E[return FRECUENTE]
+                            D -->|No| F[return PREMIUM]
+                            
+                            C --> G[Fin]
+                            E --> H[Fin]
+                            F --> I[Fin]
+                    </div>
+
+                    <div class="highlight-box">
+                        <h4>📋 Puntos Clave:</h4>
+                        <ul>
+                            <li><strong>If-else en cadena:</strong> Para los 3 rangos de transacciones</li>
+                            <li><strong>Orden importante:</strong> Evaluar de menor a mayor</li>
+                            <li><strong>Retorno directo:</strong> En cada condición</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>7. Método obtenerEstado() - If-Else Anidado</h3>
+                    <p><strong>Objetivo:</strong> Determinar el estado de la tarjeta según el cupo disponible usando <code>if-else</code> anidado.</p>
+                    
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio: obtenerEstado] --> B[cupoDisponible = obtenerCupoDisponible]
+                            B --> C{cupoDisponible > 100000?}
+                            C -->|Sí| D[return ACTIVA]
+                            C -->|No| E{cupoDisponible > 0?}
+                            E -->|Sí| F[return ALERTA]
+                            E -->|No| G[return BLOQUEADA]
+                            
+                            D --> H[Fin]
+                            F --> I[Fin]
+                            G --> J[Fin]
+                    </div>
+
+                    <div class="highlight-box">
+                        <h4>📋 Puntos Clave:</h4>
+                        <ul>
+                            <li><strong>If-else anidado:</strong> Decisiones dependientes</li>
+                            <li><strong>Obtener cupo:</strong> Llamar al método auxiliar</li>
+                            <li><strong>Tres estados:</strong> ACTIVA, ALERTA, BLOQUEADA</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>8. Método obtenerCupoDisponible() - Cálculo Simple</h3>
+                    <p><strong>Objetivo:</strong> Calcular el cupo disponible con una fórmula simple.</p>
+                    
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio: obtenerCupoDisponible] --> B[cupo = limiteCredito - saldoActual]
+                            B --> C[return cupo]
+                            C --> D[Fin]
+                    </div>
+
+                    <div class="highlight-box">
+                        <h4>📋 Puntos Clave:</h4>
+                        <ul>
+                            <li><strong>Fórmula simple:</strong> límite - saldo</li>
+                            <li><strong>Sin decisiones:</strong> Solo cálculo aritmético</li>
+                            <li><strong>Método auxiliar:</strong> Usado por otros métodos</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Criterios de Evaluación -->
+            <section class="section">
+                <h2>📊 Criterios de Evaluación</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criterio</th>
+                                <th>Porcentaje</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Identificación correcta de atributos</strong></td>
+                                <td>20%</td>
+                                <td>Completitud y relevancia de los atributos</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Identificación correcta de métodos</strong></td>
+                                <td>20%</td>
+                                <td>Coherencia con las operaciones del negocio</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Diagramas de flujo</strong></td>
+                                <td>30%</td>
+                                <td>Correcta representación de la lógica y uso apropiado de decisiones simples, múltiples y anidadas</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Implementación en Java</strong></td>
+                                <td>30%</td>
+                                <td>Sintaxis correcta, lógica completa y funcional, manejo adecuado de todas las reglas del negocio</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Notas Finales -->
+            <section class="section">
+                <h2>📝 Notas Finales</h2>
+                <div class="card">
+                    <ul>
+                        <li>Este ejercicio está diseñado para practicar decisiones en múltiples niveles</li>
+                        <li>Preste atención a las validaciones antes de realizar operaciones</li>
+                        <li>Recuerde que algunas decisiones dependen de otras (decisiones anidadas)</li>
+                        <li>El orden de las validaciones puede afectar el resultado final</li>
+                        <li>Es importante manejar todos los casos posibles: aprobación, rechazo, cambios de estado</li>
+                        <li>Los beneficios solo se aplican en pagos, no en uso de la tarjeta</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Inicializar Mermaid para renderizar diagramas de flujo
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+
+        // Añadir interactividad a las tarjetas
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card, .ejemplo-card, .escenario-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.transition = 'transform 0.3s ease';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
