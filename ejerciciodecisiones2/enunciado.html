@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enunciado del Ejercicio - Sistema de Control de Tarjeta de Crédito</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .emoji {
+            font-size: 3rem;
+            margin: 0 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #764ba2;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin: 20px 0 15px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .ejemplo-card {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ejemplo-card h4 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .situacion-inicial {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .proceso-calculo {
+            background: #fff3e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .resultado {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+            font-weight: bold;
+        }
+
+        .escenario-card {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .escenario-card h4 {
+            color: #f57c00;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff6e5 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .calculation-step {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .formula {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        ul li {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .badge-basico {
+            background: #6c757d;
+        }
+
+        .badge-frecuente {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-premium {
+            background: #28a745;
+        }
+
+        .badge-activa {
+            background: #28a745;
+        }
+
+        .badge-alerta {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-bloqueada {
+            background: #dc3545;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>
+                <span class="emoji">💳</span>
+                Sistema de Control de Tarjeta de Crédito
+                <span class="emoji">🏦</span>
+            </h1>
+            <p class="subtitle">Banco Confianza Total - Enunciado del Ejercicio</p>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="content">
+            <!-- Contexto del Negocio -->
+            <section class="section">
+                <h2>🏢 Contexto del Negocio</h2>
+                <div class="card">
+                    <p>El banco <strong>"Confianza Total"</strong> necesita un sistema para administrar las tarjetas de crédito de sus clientes. Una tarjeta de crédito es un medio de pago que permite a los clientes hacer compras sin tener el dinero en ese momento, pero con el compromiso de pagarlo después al banco.</p>
+
+                    <p class="mt-20">Cuando un cliente obtiene una tarjeta, el banco le asigna un <strong>límite máximo</strong> de dinero que puede usar. Cada vez que el cliente hace una compra, el banco le "presta" ese dinero y el cliente queda debiendo esa cantidad. El cliente puede hacer pagos para reducir su deuda y así tener más dinero disponible para usar nuevamente.</p>
+                </div>
+            </section>
+
+            <!-- Reglas del Negocio -->
+            <section class="section">
+                <h2>📋 Reglas del Negocio</h2>
+
+                <!-- Límites y Saldos -->
+                <h3>1. Límite de Crédito y Saldo</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>Límite de crédito</strong>: Máximo que el banco le presta al cliente</li>
+                        <li><strong>Saldo actual</strong>: Cuánto dinero debe actualmente el cliente al banco</li>
+                        <li><strong>Cupo disponible</strong>: Cuánto más puede gastar el cliente</li>
+                    </ul>
+                    <div class="formula">
+                        Cupo Disponible = Límite de Crédito - Saldo Actual
+                    </div>
+                    <div class="highlight-box">
+                        <strong>Ejemplo:</strong> Si el límite es $5,000,000 y debe $2,000,000, entonces puede gastar hasta $3,000,000 más.
+                    </div>
+                </div>
+
+                <!-- Tipos de Transacciones -->
+                <h3>2. Tipos de Transacciones</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                                <th>Recargo/Comisión</th>
+                                <th>Ejemplo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Compra Nacional</strong></td>
+                                <td>Compra en Colombia</td>
+                                <td>Sin recargo</td>
+                                <td>$1,000,000 → se cargan $1,000,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Compra Internacional</strong></td>
+                                <td>Compra en el exterior</td>
+                                <td>5% adicional</td>
+                                <td>$1,000,000 → se cargan $1,050,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Avance en Efectivo</strong></td>
+                                <td>Retiro del cajero</td>
+                                <td>$50,000 + 3% del monto</td>
+                                <td>$1,000,000 → se cargan $1,080,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pago/Abono</strong></td>
+                                <td>Reducir deuda</td>
+                                <td>2.5% interés antes del pago</td>
+                                <td>Reduce saldo y aumenta cupo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Categorías de Cliente -->
+                <h3>3. Categorías de Cliente según Uso Mensual</h3>
+                <div class="card">
+                    <p><span class="badge badge-basico">BÁSICO</span> - Cliente que usa poco la tarjeta (menos de 5 transacciones en el mes)</p>
+                    <p><strong>Beneficio:</strong> No recibe descuentos</p>
+                </div>
+                <div class="card">
+                    <p><span class="badge badge-frecuente">FRECUENTE</span> - Cliente que usa moderadamente la tarjeta (entre 5 y 15 transacciones en el mes)</p>
+                    <p><strong>Beneficio:</strong> Si paga más del 50% del saldo, se le perdonan $20,000 de intereses</p>
+                </div>
+                <div class="card">
+                    <p><span class="badge badge-premium">PREMIUM</span> - Cliente que usa mucho la tarjeta (más de 15 transacciones en el mes)</p>
+                    <p><strong>Beneficio:</strong> Si paga al menos el 30% del saldo, se le perdonan $50,000 de intereses</p>
+                </div>
+
+                <!-- Cálculo de Intereses -->
+                <h3>4. Cálculo de Intereses</h3>
+                <div class="card">
+                    <ul>
+                        <li>Cuando el cliente va a hacer un pago y tiene saldo > $0, el banco cobra un interés del 2.5% sobre lo que debe</li>
+                        <li>Este interés se calcula y se suma al saldo justo antes de aplicar el pago</li>
+                        <li><strong>Ejemplo:</strong> Si debe $1,000,000 y va a pagar, primero se cobran intereses de $25,000 (el 2.5% de $1,000,000), quedando un saldo de $1,025,000, y luego se aplica el pago</li>
+                        <li>Los intereses SOLO se cobran cuando se hace un pago, no en las compras</li>
+                    </ul>
+                </div>
+
+                <!-- Estado de la Tarjeta -->
+                <h3>5. Estado de la Tarjeta</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Estado</th>
+                                <th>Condición del Cupo</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-activa">ACTIVA</span></td>
+                                <td>Más de $100,000</td>
+                                <td>La tarjeta funciona normalmente</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-alerta">ALERTA</span></td>
+                                <td>Entre $1 y $100,000</td>
+                                <td>Cerca del límite, hay que tener cuidado</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-bloqueada">BLOQUEADA</span></td>
+                                <td>$0 o negativo</td>
+                                <td>No puede hacer más compras</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Conceptos Importantes -->
+            <section class="section">
+                <h2>💡 Conceptos Importantes para Entender el Problema</h2>
+
+                <div class="card">
+                    <h3>¿Qué significa USAR la tarjeta?</h3>
+                    <p>Usar la tarjeta significa hacer compras o retirar efectivo. Cuando un cliente usa su tarjeta:</p>
+                    <ul>
+                        <li>El banco le está prestando dinero que deberá pagar después</li>
+                        <li>Su deuda (saldo) aumenta</li>
+                        <li>Su capacidad de gastar (cupo disponible) disminuye</li>
+                        <li>Cada uso cuenta como una transacción para determinar su categoría</li>
+                        <li>El banco debe verificar que el cliente no exceda su límite permitido</li>
+                        <li>Según el tipo de uso, pueden aplicarse costos adicionales</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>¿Qué significa PAGAR?</h3>
+                    <p>Pagar significa que el cliente le devuelve dinero al banco para reducir su deuda. Cuando un cliente paga:</p>
+                    <ul>
+                        <li>Su deuda (saldo) disminuye</li>
+                        <li>Su capacidad de gastar (cupo disponible) aumenta</li>
+                        <li>El banco cobra intereses sobre lo que debía antes del pago</li>
+                        <li>Según qué tan buen cliente sea y cuánto pague, puede recibir beneficios</li>
+                        <li>Los pagos NO cuentan como transacciones para la categoría</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>La diferencia clave:</h3>
+                    <ul>
+                        <li><strong>Usar la tarjeta</strong> = Aumentar la deuda, el banco verifica que no exceda límites</li>
+                        <li><strong>Pagar</strong> = Reducir la deuda, pero primero se cobran intereses por el dinero prestado</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Ejemplos Resueltos -->
+            <section class="section">
+                <h2>📚 Ejemplos Resueltos</h2>
+                <p>Para entender mejor cómo funciona el sistema, veamos varios casos reales:</p>
+
+                <!-- Ejemplo 1 -->
+                <div class="ejemplo-card">
+                    <h4>Ejemplo 1: Compra Internacional con Tarjeta Frecuente</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: María González<br>
+                        • Límite de crédito: $3,000,000<br>
+                        • Saldo actual: $1,200,000<br>
+                        • Transacciones del mes: 8<br>
+                        • Categoría: <span class="badge badge-frecuente">FRECUENTE</span>
+                    </div>
+
+                    <p><strong>Operación:</strong> María realiza una compra internacional de $500,000</p>
+
+                    <div class="proceso-calculo">
+                        <strong>Proceso de decisión paso a paso:</strong><br>
+                        <div class="calculation-step">
+                            <span class="step-number">1</span>Calcular cupo disponible: $3,000,000 - $1,200,000 = $1,800,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">2</span>Como es compra internacional, calcular el recargo del 5%: $500,000 × 5% = $25,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">3</span>Monto total a cargar: $500,000 + $25,000 = $525,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">4</span>¿Hay cupo suficiente? ¿$525,000 ≤ $1,800,000? <strong>SÍ ✓</strong>
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">5</span>Actualizar saldo: $1,200,000 + $525,000 = $1,725,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">6</span>Nuevo cupo disponible: $3,000,000 - $1,725,000 = $1,275,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">7</span>Determinar estado: Como $1,275,000 > $100,000 → Estado: <span class="badge badge-activa">ACTIVA</span>
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">8</span>Actualizar contador: 8 + 1 = 9 transacciones
+                        </div>
+                    </div>
+
+                    <div class="resultado">
+                        <strong>Resultado:</strong> Compra aprobada. María ahora debe $1,725,000 al banco
+                    </div>
+                </div>
+
+                <!-- Ejemplo 2 -->
+                <div class="ejemplo-card">
+                    <h4>Ejemplo 2: Pago con Beneficio Premium</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Carlos Ruiz<br>
+                        • Límite de crédito: $5,000,000<br>
+                        • Saldo actual: $3,500,000<br>
+                        • Transacciones del mes: 18<br>
+                        • Categoría: <span class="badge badge-premium">PREMIUM</span>
+                    </div>
+
+                    <p><strong>Operación:</strong> Carlos realiza un pago de $1,500,000</p>
+
+                    <div class="proceso-calculo">
+                        <strong>Paso 1 - Al momento de pagar, se calculan intereses:</strong><br>
+                        • Carlos debe $3,500,000<br>
+                        • Como va a pagar, se cobran intereses del 2.5%: $3,500,000 × 2.5% = $87,500<br>
+                        • Saldo actualizado con intereses: $3,500,000 + $87,500 = $3,587,500<br><br>
+
+                        <strong>Paso 2 - Aplicar el pago y verificar beneficios:</strong><br>
+                        • Monto del pago: $1,500,000<br>
+                        • ¿Qué porcentaje del saldo está pagando? $1,500,000 ÷ $3,587,500 = 41.8%<br>
+                        • Como Carlos es Premium y pagó más del 30%, tiene derecho al beneficio de $50,000<br><br>
+
+                        <strong>Paso 3 - Calcular el nuevo saldo:</strong><br>
+                        • Saldo con intereses: $3,587,500<br>
+                        • Menos el pago: $3,587,500 - $1,500,000 = $2,087,500<br>
+                        • Menos el beneficio: $2,087,500 - $50,000 = $2,037,500<br><br>
+
+                        <strong>Paso 4 - Actualizar cupo y estado:</strong><br>
+                        • Nuevo cupo disponible: $5,000,000 - $2,037,500 = $2,962,500<br>
+                        • Estado: <span class="badge badge-activa">ACTIVA</span> (porque $2,962,500 > $100,000)
+                    </div>
+
+                    <div class="resultado">
+                        <strong>Resultado:</strong> Carlos redujo su deuda a $2,037,500. Se le cobraron $87,500 de intereses pero recibió un descuento de $50,000 por ser buen cliente
+                    </div>
+                </div>
+
+                <!-- Ejemplo 3 -->
+                <div class="ejemplo-card">
+                    <h4>Ejemplo 3: Avance en Efectivo cerca del Límite</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Ana López<br>
+                        • Límite de crédito: $2,000,000<br>
+                        • Saldo actual: $1,850,000<br>
+                        • Transacciones del mes: 3<br>
+                        • Categoría: <span class="badge badge-basico">BÁSICO</span>
+                    </div>
+
+                    <p><strong>Operación:</strong> Ana solicita un avance en efectivo de $100,000</p>
+
+                    <div class="proceso-calculo">
+                        <strong>Cálculo paso a paso:</strong><br>
+                        <div class="calculation-step">
+                            <span class="step-number">1</span>Cupo disponible actual: $2,000,000 - $1,850,000 = $150,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">2</span>Costo total del avance:<br>
+                            • Monto a retirar: $100,000<br>
+                            • Comisión fija: $50,000<br>
+                            • Comisión variable (3% de $100,000): $3,000<br>
+                            • Total a cargar al saldo: $100,000 + $50,000 + $3,000 = $153,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">3</span>Verificar si hay cupo suficiente: ¿$153,000 ≤ $150,000? <strong>NO ✗</strong>
+                        </div>
+                    </div>
+
+                    <div class="resultado">
+                        <strong>Resultado:</strong> Transacción rechazada. Ana no puede retirar porque el costo total ($153,000) supera su cupo disponible ($150,000)
+                    </div>
+                </div>
+
+                <!-- Ejemplo 4 -->
+                <div class="ejemplo-card">
+                    <h4>Ejemplo 4: Compra Nacional que Cambia Estado</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Luis Pérez<br>
+                        • Límite de crédito: $4,000,000<br>
+                        • Saldo actual: $3,920,000<br>
+                        • Transacciones del mes: 7<br>
+                        • Categoría: <span class="badge badge-frecuente">FRECUENTE</span>
+                    </div>
+
+                    <p><strong>Operación:</strong> Luis hace una compra nacional de $75,000 en un supermercado</p>
+
+                    <div class="proceso-calculo">
+                        <strong>Análisis de la situación:</strong><br>
+                        <div class="calculation-step">
+                            <span class="step-number">1</span>Calcular cupo antes de la compra: $4,000,000 - $3,920,000 = $80,000 (muy poco cupo)
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">2</span>Verificar si puede hacer la compra:<br>
+                            • Compra nacional: no tiene recargos, son $75,000 exactos<br>
+                            • ¿$75,000 ≤ $80,000? SÍ, apenas alcanza ✓
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">3</span>Actualizar el saldo: $3,920,000 + $75,000 = $3,995,000
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">4</span>Calcular nuevo cupo: $4,000,000 - $3,995,000 = $5,000 (¡quedó con muy poco cupo!)
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">5</span>Determinar nuevo estado:<br>
+                            • ¿$5,000 > $100,000? NO<br>
+                            • ¿$5,000 está entre $1 y $100,000? SÍ → Estado: <span class="badge badge-alerta">ALERTA</span>
+                        </div>
+                        <div class="calculation-step">
+                            <span class="step-number">6</span>Actualizar transacciones: 7 + 1 = 8 transacciones
+                        </div>
+                    </div>
+
+                    <div class="resultado">
+                        <strong>Resultado:</strong> La compra fue aprobada pero la tarjeta pasó a estado de <span class="badge badge-alerta">ALERTA</span>. Luis solo puede gastar $5,000 más antes de que se bloquee
+                    </div>
+                </div>
+            </section>
+
+            <!-- Escenarios de Práctica -->
+            <section class="section">
+                <h2>🧮 Escenarios de Práctica para Resolver</h2>
+                <p style="font-size: 1.1rem; color: #555; margin-bottom: 30px;">A continuación encontrarás 5 escenarios completos que cubren todas las posibles situaciones del sistema. Resuélvelos paso a paso siguiendo el modelo de los ejemplos anteriores.</p>
+
+                <!-- Escenario 1 -->
+                <div class="escenario-card">
+                    <h4>📝 Escenario 1: Cliente Básico con Múltiples Operaciones</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Pedro Martínez<br>
+                        • Límite de crédito: $2,500,000<br>
+                        • Saldo actual: $800,000<br>
+                        • Transacciones del mes: 4<br>
+                        • Categoría: <span class="badge badge-basico">BÁSICO</span>
+                    </div>
+
+                    <p><strong>Secuencia de operaciones a procesar:</strong></p>
+                    <ol>
+                        <li>Pedro hace una compra nacional de $300,000</li>
+                        <li>Pedro retira $200,000 del cajero (avance en efectivo)</li>
+                        <li>Pedro hace una compra internacional de $600,000</li>
+                        <li>Pedro realiza un pago de $700,000</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <strong>Preguntas a resolver:</strong>
+                        <ul>
+                            <li>¿Cuáles operaciones fueron aprobadas y cuáles rechazadas? Explica por qué.</li>
+                            <li>Después de cada operación aprobada, ¿cuál es el nuevo saldo?</li>
+                            <li>¿Cuál es el saldo final de Pedro?</li>
+                            <li>¿Cuál es su categoría final?</li>
+                            <li>¿Cuál es el estado final de su tarjeta?</li>
+                            <li>¿Recibió algún beneficio en el pago? ¿Por qué sí o por qué no?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Escenario 2 -->
+                <div class="escenario-card">
+                    <h4>📝 Escenario 2: Cliente Frecuente cerca del Límite</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Sofia Ramírez<br>
+                        • Límite de crédito: $1,500,000<br>
+                        • Saldo actual: $1,380,000<br>
+                        • Transacciones del mes: 12<br>
+                        • Categoría: <span class="badge badge-frecuente">FRECUENTE</span>
+                    </div>
+
+                    <p><strong>Secuencia de operaciones a procesar:</strong></p>
+                    <ol>
+                        <li>Sofia intenta hacer una compra nacional de $50,000</li>
+                        <li>Sofia intenta hacer una compra internacional de $100,000</li>
+                        <li>Sofia realiza un pago de $800,000</li>
+                        <li>Sofia hace una compra nacional de $50,000</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <strong>Preguntas a resolver:</strong>
+                        <ul>
+                            <li>¿Cuáles operaciones fueron aprobadas y cuáles rechazadas? Explica por qué.</li>
+                            <li>En el pago, ¿cuánto se cobró de intereses?</li>
+                            <li>¿Recibió beneficio en el pago? ¿De cuánto? ¿Por qué?</li>
+                            <li>¿Cuál es el saldo final de Sofia?</li>
+                            <li>¿Cuál es su categoría final?</li>
+                            <li>¿Cuál es el estado final de su tarjeta?</li>
+                            <li>¿En qué momento cambió el estado de la tarjeta (si cambió)?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Escenario 3 -->
+                <div class="escenario-card">
+                    <h4>📝 Escenario 3: Cliente Premium con Transacciones Internacionales</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Roberto Mendoza<br>
+                        • Límite de crédito: $6,000,000<br>
+                        • Saldo actual: $4,200,000<br>
+                        • Transacciones del mes: 17<br>
+                        • Categoría: <span class="badge badge-premium">PREMIUM</span>
+                    </div>
+
+                    <p><strong>Secuencia de operaciones a procesar:</strong></p>
+                    <ol>
+                        <li>Roberto hace una compra internacional de $800,000</li>
+                        <li>Roberto hace otra compra internacional de $500,000</li>
+                        <li>Roberto intenta hacer un avance en efectivo de $300,000</li>
+                        <li>Roberto realiza un pago de $1,800,000</li>
+                        <li>Roberto hace una compra nacional de $200,000</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <strong>Preguntas a resolver:</strong>
+                        <ul>
+                            <li>¿Cuáles operaciones fueron aprobadas y cuáles rechazadas? Explica por qué.</li>
+                            <li>Para cada compra internacional, calcula el recargo aplicado.</li>
+                            <li>Si el avance en efectivo fue rechazado, ¿cuánto faltaba de cupo?</li>
+                            <li>En el pago, ¿cuánto se cobró de intereses?</li>
+                            <li>¿Qué porcentaje del saldo (con intereses) pagó Roberto?</li>
+                            <li>¿Recibió beneficio Premium? ¿De cuánto?</li>
+                            <li>¿Cuál es el saldo final y el estado de la tarjeta?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Escenario 4 -->
+                <div class="escenario-card">
+                    <h4>📝 Escenario 4: Cliente que Transita entre Categorías</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Laura Torres<br>
+                        • Límite de crédito: $3,000,000<br>
+                        • Saldo actual: $500,000<br>
+                        • Transacciones del mes: 4<br>
+                        • Categoría: <span class="badge badge-basico">BÁSICO</span>
+                    </div>
+
+                    <p><strong>Secuencia de operaciones a procesar:</strong></p>
+                    <ol>
+                        <li>Laura hace una compra nacional de $200,000</li>
+                        <li>Laura hace una compra internacional de $150,000</li>
+                        <li>Laura hace una compra nacional de $100,000</li>
+                        <li>Laura realiza un pago de $400,000 (ahora tiene 7 transacciones)</li>
+                        <li>Laura hace compras nacionales por: $50,000, $80,000, $120,000, $90,000 (4 compras más)</li>
+                        <li>Laura hace una compra internacional de $300,000</li>
+                        <li>Laura realiza un pago de $600,000 (ahora tiene 12 transacciones)</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <strong>Preguntas a resolver:</strong>
+                        <ul>
+                            <li>Después de cada operación, indica cuántas transacciones lleva y su categoría.</li>
+                            <li>En el primer pago (con 7 transacciones), ¿qué categoría tenía? ¿Recibió beneficio?</li>
+                            <li>En el segundo pago (con 12 transacciones), ¿qué categoría tenía? ¿Recibió beneficio?</li>
+                            <li>¿Cuál es el saldo final de Laura?</li>
+                            <li>¿Cuál es el estado final de su tarjeta?</li>
+                            <li>Explica cómo cambió su categoría a lo largo de las operaciones.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Escenario 5 -->
+                <div class="escenario-card">
+                    <h4>📝 Escenario 5: Cliente con Tarjeta Bloqueada y Recuperación</h4>
+
+                    <div class="situacion-inicial">
+                        <strong>Situación Inicial:</strong><br>
+                        • Cliente: Daniel Vargas<br>
+                        • Límite de crédito: $2,000,000<br>
+                        • Saldo actual: $1,950,000<br>
+                        • Transacciones del mes: 14<br>
+                        • Categoría: <span class="badge badge-frecuente">FRECUENTE</span><br>
+                        • Estado actual: <span class="badge badge-alerta">ALERTA</span> (cupo: $50,000)
+                    </div>
+
+                    <p><strong>Secuencia de operaciones a procesar:</strong></p>
+                    <ol>
+                        <li>Daniel intenta hacer una compra nacional de $60,000</li>
+                        <li>Daniel hace una compra nacional de $40,000</li>
+                        <li>Daniel intenta hacer una compra nacional de $20,000</li>
+                        <li>Daniel intenta hacer un avance en efectivo de $5,000</li>
+                        <li>Daniel realiza un pago de $1,200,000</li>
+                        <li>Daniel hace una compra internacional de $400,000</li>
+                        <li>Daniel realiza un pago de $500,000</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <strong>Preguntas a resolver:</strong>
+                        <ul>
+                            <li>¿Cuáles operaciones fueron aprobadas y cuáles rechazadas? Explica detalladamente por qué.</li>
+                            <li>¿En qué momento la tarjeta pasó a estado BLOQUEADA?</li>
+                            <li>Después del primer pago, ¿qué porcentaje del saldo pagó Daniel?</li>
+                            <li>¿Recibió beneficio en el primer pago? ¿De cuánto? Justifica tu respuesta.</li>
+                            <li>¿Recibió beneficio en el segundo pago? ¿Por qué sí o por qué no?</li>
+                            <li>¿Cuál es el saldo final y el estado final de la tarjeta?</li>
+                            <li>Explica cómo el estado de la tarjeta cambió a lo largo de todas las operaciones.</li>
+                            <li>¿Cuál es su categoría final? ¿Cambió durante el proceso?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Instrucciones Finales -->
+                <div class="card" style="background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%); border-left: 5px solid #3f51b5;">
+                    <h3 style="color: #1a237e;">📝 Instrucciones para Resolver los Escenarios</h3>
+                    <p style="margin-bottom: 15px;"><strong>Para cada escenario, debes:</strong></p>
+                    <ol style="line-height: 2;">
+                        <li><strong>Procesar cada operación en orden</strong>, mostrando todos los cálculos paso a paso</li>
+                        <li><strong>Identificar si la operación es aprobada o rechazada</strong> y explicar por qué</li>
+                        <li><strong>Calcular el nuevo saldo</strong> después de cada operación aprobada</li>
+                        <li><strong>Determinar la categoría</strong> del cliente en cada momento relevante</li>
+                        <li><strong>Determinar el estado</strong> de la tarjeta después de cada operación</li>
+                        <li><strong>En los pagos</strong>:
+                            <ul style="margin-top: 10px;">
+                                <li>Calcular los intereses (2.5% del saldo actual)</li>
+                                <li>Sumar los intereses al saldo</li>
+                                <li>Calcular el porcentaje que representa el pago</li>
+                                <li>Verificar si aplica beneficio según la categoría</li>
+                                <li>Calcular el saldo final después del pago y beneficio</li>
+                            </ul>
+                        </li>
+                        <li><strong>Presentar los resultados finales</strong>: saldo, categoría, estado, transacciones totales</li>
+                    </ol>
+                    <p style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px; border-left: 4px solid #ff9800;">
+                        <strong>💡 Consejo:</strong> Usa una hoja de cálculo o una tabla para llevar el control de cada operación. Esto te ayudará a no perder información y a verificar tus cálculos.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Notas Finales -->
+            <section class="section">
+                <h2>📝 Notas Importantes</h2>
+                <div class="card">
+                    <ul>
+                        <li>Recuerda que las <strong>compras y retiros</strong> incrementan el contador de transacciones, pero los <strong>pagos NO</strong></li>
+                        <li>Los <strong>intereses solo se cobran al hacer un pago</strong>, no en las compras</li>
+                        <li>Los <strong>beneficios solo se aplican en pagos</strong>, nunca en compras</li>
+                        <li>Una operación se rechaza si el monto final (incluyendo recargos) <strong>supera el cupo disponible</strong></li>
+                        <li>El <strong>estado de la tarjeta</strong> puede cambiar con cada operación</li>
+                        <li>La <strong>categoría del cliente</strong> depende del número de transacciones del mes</li>
+                        <li>Para <strong>compras internacionales</strong>: agregar 5% al monto</li>
+                        <li>Para <strong>avances en efectivo</strong>: agregar $50,000 + 3% del monto</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
