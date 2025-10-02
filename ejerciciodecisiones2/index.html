@@ -1040,15 +1040,25 @@
                             </div>
 
                             <div>
-                                <p style="margin: 0 0 8px 0; font-weight: bold; color: #6a1b9a;">🔄 Flujo de trabajo:</p>
+                                <p style="margin: 0 0 8px 0; font-weight: bold; color: #6a1b9a;">🔄 Flujo de trabajo OPTIMIZADO:</p>
                                 <div style="background: #263238; color: #aed581; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; line-height: 1.8;">
                                     1. Recibo: monto ($500,000) y tipo ("INTERNACIONAL")<br>
-                                    2. Calculo: cupo disponible (llamando a obtenerCupoDisponible())<br>
-                                    3. Determino: recargo según tipo (switch)<br>
-                                    &nbsp;&nbsp;&nbsp;→ INTERNACIONAL: monto + monto * 0.05<br>
-                                    4. Valido: ¿montoFinal <= cupoDisponible? (if)<br>
-                                    5a. Si SÍ: actualizo saldoActual y transaccionesMes, retorno true<br>
+                                    2. Determino: recargo según tipo (switch)<br>
+                                    &nbsp;&nbsp;&nbsp;→ Si tipo inválido: retorno false inmediatamente<br>
+                                    &nbsp;&nbsp;&nbsp;→ NACIONAL: recargo = 0<br>
+                                    &nbsp;&nbsp;&nbsp;→ INTERNACIONAL: recargo = 0.05<br>
+                                    &nbsp;&nbsp;&nbsp;→ AVANCE_EFECTIVO: recargo = 0.10<br>
+                                    3. Calculo: montoFinal = monto + (monto * recargo)<br>
+                                    4. Valido: ¿montoFinal <= (limiteCredito - saldoActual)? (if)<br>
+                                    &nbsp;&nbsp;&nbsp;→ Evito llamar a obtenerCupoDisponible(), cálculo directo<br>
+                                    5a. Si SÍ: saldoActual += montoFinal, transaccionesMes++, retorno true<br>
                                     5b. Si NO: no modifico nada, retorno false
+                                </div>
+                                <div style="background: #1b5e20; color: #a5d6a7; padding: 10px; border-radius: 6px; margin-top: 10px; font-size: 0.8rem;">
+                                    <strong>⚡ MEJORAS DE EFICIENCIA:</strong><br>
+                                    • Valida tipo ANTES de calcular cupo (salida temprana si es inválido)<br>
+                                    • Cálculo directo sin llamar a obtenerCupoDisponible()<br>
+                                    • Orden lógico: validar entrada → calcular → verificar → ejecutar
                                 </div>
                             </div>
                         </div>
@@ -1057,7 +1067,7 @@
                     <!-- Método 2 -->
                     <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
                         <div style="background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%); color: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                            <h4 style="margin: 0; font-family: monospace;">double realizarPago(double monto)</h4>
+                            <h4 style="margin: 0; font-family: monospace;">boolean realizarPago(double monto)</h4>
                         </div>
 
                         <div style="display: grid; gap: 15px;">
@@ -1076,29 +1086,33 @@
                             <div>
                                 <p style="margin: 0 0 8px 0; font-weight: bold; color: #1565c0;">📤 ¿Por qué este RETORNO?</p>
                                 <div style="background: #e3f2fd; padding: 12px; border-radius: 6px; border-left: 4px solid #2196f3;">
-                                    <p style="margin: 0 0 8px 0; font-size: 0.9rem;"><code><strong>double</strong></code> (el nuevo saldo)</p>
+                                    <p style="margin: 0 0 8px 0; font-size: 0.9rem;"><code><strong>boolean</strong></code> (verdadero/falso)</p>
                                     <ul style="margin: 0 0 0 20px; font-size: 0.85rem; color: #0d47a1;">
-                                        <li>💰 Retorna el saldo actualizado después del pago (con intereses y beneficios aplicados)</li>
-                                        <li>💡 El usuario puede ver inmediatamente cuánto debe ahora</li>
-                                        <li>🔧 El método internamente modifica saldoActual y aplica todos los cálculos</li>
-                                        <li>📊 Permite al usuario verificar que el pago se procesó correctamente</li>
+                                        <li>✅ <strong>true</strong> → El pago fue procesado exitosamente</li>
+                                        <li>❌ <strong>false</strong> → El pago fue rechazado (no hay deuda o monto excede la deuda)</li>
+                                        <li>💡 Permite al usuario saber si la operación fue exitosa</li>
+                                        <li>🔧 El método internamente modifica saldoActual solo si el pago es válido</li>
                                     </ul>
                                 </div>
                             </div>
 
                             <div>
-                                <p style="margin: 0 0 8px 0; font-weight: bold; color: #1565c0;">🔄 Flujo de trabajo:</p>
+                                <p style="margin: 0 0 8px 0; font-weight: bold; color: #1565c0;">🔄 Flujo de trabajo OPTIMIZADO:</p>
                                 <div style="background: #263238; color: #81c784; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; line-height: 1.8;">
-                                    1. Recibo: monto del pago ($1,500,000)<br>
-                                    2. Calculo: intereses (saldoActual * 0.025)<br>
-                                    3. Sumo: intereses al saldoActual<br>
-                                    4. Calculo: porcentaje pagado (monto / saldoActual)<br>
-                                    5. Resto: el pago del saldoActual<br>
-                                    6. Verifico: categoría (llamando a obtenerCategoria())<br>
-                                    7. Aplico: beneficio si corresponde (if anidados)<br>
-                                    &nbsp;&nbsp;&nbsp;→ FRECUENTE + >50%: -$20,000<br>
-                                    &nbsp;&nbsp;&nbsp;→ PREMIUM + >30%: -$50,000<br>
-                                    8. Retorno: el nuevo saldoActual
+                                    1. Valido: ¿saldoActual > 0? → Si NO: return false<br>
+                                    2. Calculo: intereses = saldoActual * 0.025<br>
+                                    3. Calculo: saldoConIntereses = saldoActual + intereses<br>
+                                    4. Valido: ¿monto > saldoConIntereses? → Si SÍ: return false<br>
+                                    5. Aplico: saldoActual = saldoConIntereses<br>
+                                    6. Calculo: porcentajePago = monto / saldoActual<br>
+                                    7. Resto: saldoActual -= monto<br>
+                                    8. Obtengo: categoria = obtenerCategoria()<br>
+                                    9. Switch categoria (con if anidados):<br>
+                                    &nbsp;&nbsp;&nbsp;→ FRECUENTE: if porcentajePago > 0.5 → descuento $20,000<br>
+                                    &nbsp;&nbsp;&nbsp;→ PREMIUM: if porcentajePago > 0.3 → descuento $50,000<br>
+                                    &nbsp;&nbsp;&nbsp;→ BASICO: sin beneficio<br>
+                                    10. Aplico descuento protegido (no excede saldo)<br>
+                                    11. Retorno: true (pago procesado)
                                 </div>
                             </div>
                         </div>
@@ -1229,10 +1243,10 @@
 
                         <div style="background: rgba(33, 150, 243, 0.2); padding: 20px; border-radius: 10px; border-left: 4px solid #2196f3;">
                             <h4 style="color: #90caf9; margin-bottom: 15px;">🔨 MÉTODOS QUE MODIFICAN</h4>
-                            <p style="color: #bbdefb; font-size: 0.9rem; margin-bottom: 10px;"><strong>Lo que HAGO:</strong></p>
+                            <p style="color: #bbdefb; font-size: 0.9rem; margin-bottom: 10px;"><strong>Lo que HAGO (retornan boolean):</strong></p>
                             <ul style="color: #bbdefb; font-size: 0.85rem; margin: 0 0 0 15px; line-height: 1.8;">
-                                <li>realizarCompra()</li>
-                                <li>realizarPago()</li>
+                                <li>realizarCompra() → true si aprobada, false si rechazada</li>
+                                <li>realizarPago() → true si procesado, false si rechazado</li>
                             </ul>
                         </div>
 
@@ -1424,7 +1438,7 @@
                             <p><strong>⚙️ MÉTODOS (Operaciones del sistema):</strong></p>
                             <p style="color: #e65100;">+ TarjetaCredito(String titular, double limite)</p>
                             <p style="color: #1976d2;"><strong>+ boolean realizarCompra(double monto, String tipo)</strong></p>
-                            <p style="color: #1976d2;"><strong>+ double realizarPago(double monto)</strong></p>
+                            <p style="color: #1976d2;"><strong>+ boolean realizarPago(double monto)</strong></p>
                             <p style="color: #f57c00;">+ double obtenerCupoDisponible()</p>
                             <p style="color: #f57c00;">+ String obtenerCategoria()</p>
                             <p style="color: #f57c00;">+ String obtenerEstado()</p>
@@ -1571,96 +1585,127 @@
                 </div>
 
                 <div class="card">
-                    <h3>4. Método realizarCompra() - Switch con Decisiones Anidadas</h3>
-                    <p><strong>Objetivo:</strong> Implementar el método central que maneja todos los tipos de transacciones usando <code>switch</code> con <code>if</code> anidados.</p>
-                    
+                    <h3>4. Método realizarCompra() - Switch con Decisiones Anidadas (OPTIMIZADO)</h3>
+                    <p><strong>Objetivo:</strong> Implementar el método central que maneja todos los tipos de transacciones usando <code>switch</code> con <code>if</code> anidados de forma eficiente.</p>
+
                     <div class="mermaid">
                         flowchart TD
-                            A[Inicio: realizarCompra monto, tipoCompra] --> B[Obtener cupo disponible]
-                            B --> C{Switch tipoCompra}
-                            
-                            C -->|NACIONAL| D[montoFinal = monto]
-                            C -->|INTERNACIONAL| E[montoFinal = monto + monto * 0.05]
-                            C -->|AVANCE_EFECTIVO| F[montoFinal = monto + 50000 + monto * 0.03]
-                            
-                            D --> H{montoFinal <= cupoDisponible?}
-                            E --> I{montoFinal <= cupoDisponible?}
-                            F --> J{montoFinal <= cupoDisponible?}
-                            
+                            A[Inicio: realizarCompra monto, tipoCompra] --> C{Switch tipoCompra}
+
+                            C -->|NACIONAL| D[recargo = 0.0]
+                            C -->|INTERNACIONAL| E[recargo = 0.05]
+                            C -->|AVANCE_EFECTIVO| F[recargo = 0.10<br/>comisionFija = 50000]
+                            C -->|default| G[return false<br/>tipo inválido]
+
+                            D --> D2[montoFinal = monto]
+                            E --> E2[montoFinal = monto + monto * recargo]
+                            F --> F2[montoFinal = monto + comisionFija + monto * recargo]
+
+                            D2 --> H{montoFinal <= limiteCredito - saldoActual?}
+                            E2 --> H
+                            F2 --> H
+
                             H -->|Sí| K[saldoActual += montoFinal<br/>transaccionesMes++<br/>return true]
                             H -->|No| L[return false]
-                            
-                            I -->|Sí| M[saldoActual += montoFinal<br/>transaccionesMes++<br/>return true]
-                            I -->|No| N[return false]
-                            
-                            J -->|Sí| O[saldoActual += montoFinal<br/>transaccionesMes++<br/>return true]
-                            J -->|No| P[return false]
-                            
+
                             K --> R[Fin: true]
                             L --> S[Fin: false]
-                            M --> T[Fin: true]
-                            N --> U[Fin: false]
-                            O --> V[Fin: true]
-                            P --> W[Fin: false]
+                            G --> T[Fin: false]
+                    </div>
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 4px solid #4caf50;">
+                        <h4 style="color: #2e7d32;">⚡ Optimizaciones Aplicadas:</h4>
+                        <ul style="color: #1b5e20;">
+                            <li><strong>✅ Validación temprana:</strong> Retorna false inmediatamente si el tipo es inválido (default case)</li>
+                            <li><strong>✅ Sin llamadas innecesarias:</strong> Calcula <code>limiteCredito - saldoActual</code> directamente en lugar de llamar a obtenerCupoDisponible()</li>
+                            <li><strong>✅ Código reutilizable:</strong> Toda la validación de cupo se hace una sola vez después del switch</li>
+                            <li><strong>✅ Menos duplicación:</strong> La lógica de aprobación (saldoActual += montoFinal, transaccionesMes++) solo aparece una vez</li>
+                        </ul>
                     </div>
 
                     <div class="highlight-box">
                         <h4>📋 Puntos Clave:</h4>
                         <ul>
-                            <li><strong>Switch:</strong> Para manejar los 3 tipos de transacción</li>
-                            <li><strong>If anidado:</strong> Dentro de cada case, validar cupo disponible</li>
-                            <li><strong>Calcular monto final:</strong> Aplicar recargos según el tipo</li>
+                            <li><strong>Switch:</strong> Para determinar el recargo según tipo (NACIONAL=0%, INTERNACIONAL=5%, AVANCE_EFECTIVO=10%+$50k)</li>
+                            <li><strong>Default case:</strong> Maneja tipos inválidos retornando false</li>
+                            <li><strong>If único:</strong> Validación de cupo unificada después del switch</li>
+                            <li><strong>Cálculo directo:</strong> Evita llamadas a métodos innecesarias</li>
                             <li><strong>Actualizar estado:</strong> Solo si la transacción es aprobada</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>5. Método realizarPago() - If Anidados para Beneficios</h3>
-                    <p><strong>Objetivo:</strong> Procesar pagos con cálculo de intereses y aplicación de beneficios usando <code>if</code> anidados.</p>
-                    
+                    <h3>5. Método realizarPago() - Switch para Categorías con If Anidados</h3>
+                    <p><strong>Objetivo:</strong> Procesar pagos con cálculo de intereses y aplicación de beneficios usando <code>switch</code> para categorías e <code>if</code> anidados para validaciones.</p>
+
                     <div class="mermaid">
                         flowchart TD
                             A[Inicio: realizarPago monto] --> B{saldoActual > 0?}
-                            B -->|Sí| C[intereses = saldoActual * 0.025<br/>saldoActual += intereses]
-                            B -->|No| D[intereses = 0]
-                            
-                            C --> E[Calcular porcentajePago = monto / saldoActual]
-                            D --> E
-                            
+                            B -->|No| Z[return false<br/>No hay deuda]
+                            B -->|Sí| C[intereses = saldoActual * 0.025]
+
+                            C --> C1[saldoConIntereses = saldoActual + intereses]
+                            C1 --> C2{monto > saldoConIntereses?}
+                            C2 -->|Sí| C3[return false<br/>Pago rechazado: excede la deuda]
+                            C2 -->|No| C4[saldoActual = saldoConIntereses]
+
+                            C4 --> E[porcentajePago = monto / saldoActual]
                             E --> F[saldoActual -= monto]
-                            F --> G{saldoActual < 0?}
-                            G -->|Sí| H[saldoActual = 0]
-                            G -->|No| I[Obtener categoría]
-                            H --> I
-                            
-                            I --> J{categoria == FRECUENTE?}
-                            J -->|Sí| K{porcentajePago > 0.5?}
-                            J -->|No| L{categoria == PREMIUM?}
-                            
-                            K -->|Sí| M[saldoActual -= 20000<br/>Si saldoActual < 0: saldoActual = 0]
-                            K -->|No| N[return saldoActual]
-                            
-                            L -->|Sí| O{porcentajePago > 0.3?}
-                            L -->|No| P[return saldoActual]
-                            
-                            O -->|Sí| Q[saldoActual -= 50000<br/>Si saldoActual < 0: saldoActual = 0]
-                            O -->|No| R[return saldoActual]
-                            
-                            M --> S[return saldoActual]
-                            N --> T[return saldoActual]
-                            P --> U[return saldoActual]
-                            Q --> V[return saldoActual]
-                            R --> W[return saldoActual]
+                            F --> I[categoria = obtenerCategoria]
+
+                            I --> SW{Switch categoria}
+
+                            SW -->|FRECUENTE| J{porcentajePago > 0.5?}
+                            SW -->|PREMIUM| K{porcentajePago > 0.3?}
+                            SW -->|BASICO| L[No hay beneficio<br/>return true]
+
+                            J -->|Sí| M1{BENEFICIO_FRECUENTE > saldoActual?}
+                            J -->|No| N[return true]
+
+                            M1 -->|Sí| M2[saldoActual = 0]
+                            M1 -->|No| M3[saldoActual -= BENEFICIO_FRECUENTE]
+
+                            K -->|Sí| O1{BENEFICIO_PREMIUM > saldoActual?}
+                            K -->|No| P[return true]
+
+                            O1 -->|Sí| O2[saldoActual = 0]
+                            O1 -->|No| O3[saldoActual -= BENEFICIO_PREMIUM]
+
+                            M2 --> S[return true]
+                            M3 --> S
+                            N --> T[return true]
+                            O2 --> U[return true]
+                            O3 --> U
+                            P --> V[return true]
+                            L --> W[return true]
+                            Z --> Y[Fin: false]
+                            C3 --> X[Fin: false]
+                    </div>
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 4px solid #4caf50;">
+                        <h4 style="color: #2e7d32;">⚡ Optimizaciones Aplicadas:</h4>
+                        <ul style="color: #1b5e20;">
+                            <li><strong>✅ Validación de saldo inicial:</strong> Si no hay saldo (≤0), retorna 0 inmediatamente - no se puede pagar si no se debe</li>
+                            <li><strong>✅ Validación ANTES de aplicar:</strong> Calcula intereses primero, luego valida si monto > saldoConIntereses. Si excede, rechaza sin modificar nada</li>
+                            <li><strong>✅ Orden correcto:</strong> 1) Calcular intereses, 2) Validar monto, 3) Aplicar al saldoActual, 4) Restar pago, 5) Aplicar beneficios</li>
+                            <li><strong>✅ Switch para categorías:</strong> Más eficiente y claro que if-else anidados para evaluar la categoría</li>
+                            <li><strong>✅ Protección en descuentos:</strong> El descuento nunca puede exceder el saldo restante</li>
+                        </ul>
                     </div>
 
                     <div class="highlight-box">
                         <h4>📋 Puntos Clave:</h4>
                         <ul>
-                            <li><strong>Calcular intereses:</strong> Solo si hay saldo pendiente</li>
-                            <li><strong>Aplicar pago:</strong> Restar del saldo con intereses</li>
-                            <li><strong>If anidados:</strong> Para verificar categoría y porcentaje de pago</li>
-                            <li><strong>Beneficios:</strong> Aplicar descuentos según condiciones</li>
+                            <li><strong>Retorno boolean:</strong> true si el pago fue procesado exitosamente, false si fue rechazado</li>
+                            <li><strong>Validación 1:</strong> No procesar pago si saldoActual ≤ 0 → return false (no hay deuda)</li>
+                            <li><strong>Validación 2:</strong> Calcular intereses primero, luego validar que monto ≤ saldoConIntereses → return false si excede</li>
+                            <li><strong>Calcular intereses:</strong> 2.5% sobre el saldo actual ANTES de validar el monto</li>
+                            <li><strong>Aplicar intereses:</strong> Solo si el pago es válido, actualizar saldoActual = saldoConIntereses</li>
+                            <li><strong>Switch para categoría:</strong> BASICO (sin beneficio), FRECUENTE (>50%: -$20k), PREMIUM (>30%: -$50k)</li>
+                            <li><strong>If anidados:</strong> Dentro de cada case del switch para validar porcentaje de pago y ajustar descuento</li>
+                            <li><strong>Protección de descuentos:</strong> El descuento se limita al saldo disponible para evitar valores negativos</li>
+                            <li><strong>Retorno exitoso:</strong> Todos los caminos que procesan el pago retornan true</li>
                         </ul>
                     </div>
                 </div>
