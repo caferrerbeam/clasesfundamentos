@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪙 Sistema de Gestión de Portafolio de Criptomonedas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .crypto-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .crypto-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .crypto-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .crypto-card h3 {
+            color: white;
+            margin: 10px 0;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .formula-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .formula-box h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .formula {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .example-box {
+            background: #d1ecf1;
+            border: 2px solid #0c5460;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .example-box h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .alert-box {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .period-timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .period {
+            text-align: center;
+            flex: 1;
+            padding: 15px;
+            margin: 0 10px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .period:hover {
+            transform: scale(1.05);
+        }
+
+        .morning {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+        }
+
+        .afternoon {
+            background: linear-gradient(135deg, #fab1a0, #e17055);
+        }
+
+        .night {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+        }
+
+        .step-by-step {
+            background: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .step-by-step h4 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .calculation {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 3px solid #2196F3;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+        }
+
+        .commission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .commission-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .commission-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .problem-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+        }
+
+        .problem-card h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .crypto-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .period-timeline {
+                flex-direction: column;
+            }
+
+            .period {
+                margin: 10px 0;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🪙 Sistema de Gestión de Portafolio de Criptomonedas</h1>
+            <p>Aprende a calcular comisiones, ganancias y rentabilidad en trading de criptomonedas</p>
+        </header>
+
+        <div class="content">
+            <section>
+                <h2>📊 Contexto del Problema</h2>
+                <div class="info-box">
+                    <p>Eres un <strong>trader de criptomonedas</strong> que necesita llevar el control de tus operaciones de compra y venta. Trabajarás únicamente con <span class="highlight">5 criptomonedas específicas</span> que consideras las más prometedoras del mercado.</p>
+                    <br>
+                    <p>Tu sistema registra <span class="highlight">UNA operación a la vez</span> (ya sea compra o venta) y mantiene el control actualizado de tu portafolio, mostrando estadísticas y análisis después de cada operación.</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>💎 Las 5 Criptomonedas Disponibles</h2>
+                <div class="crypto-cards">
+                    <div class="crypto-card">
+                        <div style="font-size: 3em;">₿</div>
+                        <h3>Bitcoin</h3>
+                        <p>BTC</p>
+                    </div>
+                    <div class="crypto-card">
+                        <div style="font-size: 3em;">Ξ</div>
+                        <h3>Ethereum</h3>
+                        <p>ETH</p>
+                    </div>
+                    <div class="crypto-card">
+                        <div style="font-size: 3em;">₳</div>
+                        <h3>Cardano</h3>
+                        <p>ADA</p>
+                    </div>
+                    <div class="crypto-card">
+                        <div style="font-size: 3em;">◎</div>
+                        <h3>Solana</h3>
+                        <p>SOL</p>
+                    </div>
+                    <div class="crypto-card">
+                        <div style="font-size: 3em;">✕</div>
+                        <h3>Ripple</h3>
+                        <p>XRP</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>📝 Información de Cada Operación</h2>
+                <p>Cuando realizas una operación, debes registrar:</p>
+                <table>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Tipo de operación</strong></td>
+                        <td>Compra o Venta</td>
+                        <td>Compra</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Criptomoneda</strong></td>
+                        <td>Una de las 5 disponibles</td>
+                        <td>Bitcoin (BTC)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cantidad</strong></td>
+                        <td>Unidades a comprar/vender</td>
+                        <td>0.5 BTC</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Precio unitario</strong></td>
+                        <td>Precio en USD por unidad</td>
+                        <td>$45,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Día de la semana</strong></td>
+                        <td>Lunes a Domingo</td>
+                        <td>Lunes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hora del día</strong></td>
+                        <td>0 a 23 (formato 24h)</td>
+                        <td>9</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section>
+                <h2>🕐 Determinación del Período del Día</h2>
+                <p>El sistema debe determinar <strong>automáticamente</strong> el período según la hora ingresada:</p>
+
+                <div class="period-timeline">
+                    <div class="period morning">
+                        <h3>☀️ Mañana</h3>
+                        <p><strong>Horas: 6-11</strong></p>
+                        <p>6:00 AM - 11:59 AM</p>
+                    </div>
+                    <div class="period afternoon">
+                        <h3>🌤️ Tarde</h3>
+                        <p><strong>Horas: 12-17</strong></p>
+                        <p>12:00 PM - 5:59 PM</p>
+                    </div>
+                    <div class="period night">
+                        <h3>🌙 Noche</h3>
+                        <p><strong>Horas: 18-23, 0-5</strong></p>
+                        <p>6:00 PM - 5:59 AM</p>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📌 Ejemplos de determinación de período:</h4>
+                    <ul>
+                        <li>Hora = <code>8</code> → Está entre 6 y 11 → <strong>Mañana</strong></li>
+                        <li>Hora = <code>14</code> → Está entre 12 y 17 → <strong>Tarde</strong></li>
+                        <li>Hora = <code>20</code> → Está entre 18 y 23 → <strong>Noche</strong></li>
+                        <li>Hora = <code>3</code> → Está entre 0 y 5 → <strong>Noche</strong></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>💰 Cálculos Financieros Fundamentales</h2>
+
+                <div class="formula-box">
+                    <h4>📐 Fórmulas Básicas de Operaciones</h4>
+
+                    <div class="formula">
+                        <strong>Monto de la operación:</strong><br>
+                        Monto = Cantidad × Precio unitario
+                    </div>
+
+                    <div class="formula">
+                        <strong>Comisión en dólares:</strong><br>
+                        Comisión $ = Monto × (Porcentaje de comisión / 100)
+                    </div>
+
+                    <div class="formula">
+                        <strong>Costo total de compra:</strong><br>
+                        Costo Total = Monto + Comisión
+                    </div>
+
+                    <div class="formula">
+                        <strong>Ingreso neto de venta:</strong><br>
+                        Ingreso Neto = Monto - Comisión
+                    </div>
+                </div>
+
+                <div class="step-by-step">
+                    <h4>🔢 Ejemplo práctico de cálculo:</h4>
+                    <div class="calculation">
+                        <strong>Compra de 0.5 BTC a $45,000</strong><br><br>
+                        <strong>Paso 1:</strong> Calcular monto<br>
+                        Monto = 0.5 × $45,000 = <span class="highlight">$22,500</span><br><br>
+
+                        <strong>Paso 2:</strong> Calcular comisión (supongamos 0.5%)<br>
+                        Comisión = $22,500 × 0.005 = <span class="highlight">$112.50</span><br><br>
+
+                        <strong>Paso 3:</strong> Calcular costo total<br>
+                        Costo Total = $22,500 + $112.50 = <span class="highlight">$22,612.50</span>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>📊 Estado del Portafolio (Por cada Criptomoneda)</h2>
+                <p>Tu sistema debe mantener y calcular para <strong>CADA</strong> una de las 5 criptomonedas:</p>
+
+                <div class="formula-box">
+                    <h4>📈 Variables y Cálculos por Criptomoneda</h4>
+
+                    <div class="formula">
+                        <strong>Cantidad actual en portafolio:</strong><br>
+                        Cantidad Actual = Cantidad Comprada - Cantidad Vendida
+                    </div>
+
+                    <div class="formula">
+                        <strong>Precio promedio de compra:</strong><br>
+                        Precio Promedio Compra = Dinero Total Invertido / Cantidad Total Comprada
+                    </div>
+
+                    <div class="formula">
+                        <strong>Precio promedio de venta:</strong><br>
+                        Precio Promedio Venta = Dinero Total Recuperado / Cantidad Total Vendida
+                    </div>
+
+                    <div class="formula">
+                        <strong>Ganancia/Pérdida realizada:</strong><br>
+                        Ganancia = Dinero Recuperado - (Cantidad Vendida × Precio Promedio Compra)
+                    </div>
+
+                    <div class="formula">
+                        <strong>Rentabilidad porcentual:</strong><br>
+                        Rentabilidad % = ((Precio Promedio Venta - Precio Promedio Compra) / Precio Promedio Compra) × 100
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Importante:</strong> Las comisiones <strong>NO</strong> se incluyen en el dinero invertido ni en el dinero recuperado. Se llevan por separado.
+                </div>
+            </section>
+
+            <section>
+                <h2>💸 Sistema de Comisiones Especiales</h2>
+                <p>Las comisiones varían según el <strong>día de la semana</strong> Y el <strong>período del día</strong>:</p>
+
+                <h3>📅 Comisión Base por Día de la Semana</h3>
+                <table>
+                    <tr>
+                        <th>Día</th>
+                        <th>Comisión Base</th>
+                        <th>Razón</th>
+                    </tr>
+                    <tr>
+                        <td>Lunes a Viernes</td>
+                        <td><strong>0.5%</strong></td>
+                        <td>Días laborales - Alta liquidez</td>
+                    </tr>
+                    <tr>
+                        <td>Sábado</td>
+                        <td><strong>0.8%</strong></td>
+                        <td>Fin de semana - Menor liquidez</td>
+                    </tr>
+                    <tr>
+                        <td>Domingo</td>
+                        <td><strong>1.0%</strong></td>
+                        <td>Domingo - Mínima liquidez</td>
+                    </tr>
+                </table>
+
+                <h3>⏰ Ajuste Adicional por Período del Día</h3>
+                <table>
+                    <tr>
+                        <th>Período</th>
+                        <th>Ajuste Adicional</th>
+                        <th>Razón</th>
+                    </tr>
+                    <tr>
+                        <td>Mañana (6-11)</td>
+                        <td><strong>+0%</strong></td>
+                        <td>Horario óptimo</td>
+                    </tr>
+                    <tr>
+                        <td>Tarde (12-17)</td>
+                        <td><strong>+0.2%</strong></td>
+                        <td>Alta volatilidad</td>
+                    </tr>
+                    <tr>
+                        <td>Noche (18-23, 0-5)</td>
+                        <td><strong>+0.5%</strong></td>
+                        <td>Baja liquidez</td>
+                    </tr>
+                </table>
+
+                <div class="formula-box">
+                    <h4>🧮 Fórmula de Comisión Total</h4>
+                    <div class="formula">
+                        <strong>Comisión Total % = Comisión Base (por día) + Ajuste Adicional (por período)</strong>
+                    </div>
+                </div>
+
+                <div class="commission-grid">
+                    <div class="commission-card">
+                        <h4 class="emoji">📈 Ejemplo 1: Mejor Horario</h4>
+                        <p><strong>Martes a las 9 AM (Mañana)</strong></p>
+                        <hr style="margin: 10px 0;">
+                        <p>Base: 0.5% (día laboral)</p>
+                        <p>Ajuste: +0% (mañana)</p>
+                        <p><strong>Total: 0.5%</strong> ✅</p>
+                    </div>
+
+                    <div class="commission-card">
+                        <h4 class="emoji">⚠️ Ejemplo 2: Horario Regular</h4>
+                        <p><strong>Viernes a las 3 PM (Tarde)</strong></p>
+                        <hr style="margin: 10px 0;">
+                        <p>Base: 0.5% (día laboral)</p>
+                        <p>Ajuste: +0.2% (tarde)</p>
+                        <p><strong>Total: 0.7%</strong></p>
+                    </div>
+
+                    <div class="commission-card">
+                        <h4 class="emoji">🚨 Ejemplo 3: Peor Horario</h4>
+                        <p><strong>Sábado a las 9 PM (Noche)</strong></p>
+                        <hr style="margin: 10px 0;">
+                        <p>Base: 0.8% (sábado)</p>
+                        <p>Ajuste: +0.5% (noche)</p>
+                        <p><strong>Total: 1.3%</strong> ❌</p>
+                    </div>
+                </div>
+
+                <div class="step-by-step">
+                    <h4>💡 Ejemplo Completo de Cálculo de Comisión:</h4>
+                    <div class="calculation">
+                        <strong>Operación: Venta de 3000 ADA a $0.45 - Lunes a las 10 AM</strong><br><br>
+
+                        <strong>Paso 1:</strong> Determinar el período<br>
+                        Hora = 10 → Entre 6 y 11 → <span class="highlight">Mañana</span><br><br>
+
+                        <strong>Paso 2:</strong> Determinar comisión base por día<br>
+                        Día = Lunes (laboral) → <span class="highlight">0.5%</span><br><br>
+
+                        <strong>Paso 3:</strong> Determinar ajuste por período<br>
+                        Período = Mañana → <span class="highlight">+0%</span><br><br>
+
+                        <strong>Paso 4:</strong> Calcular comisión total<br>
+                        Comisión Total = 0.5% + 0% = <span class="highlight">0.5%</span><br><br>
+
+                        <strong>Paso 5:</strong> Calcular monto de operación<br>
+                        Monto = 3000 × $0.45 = <span class="highlight">$1,350</span><br><br>
+
+                        <strong>Paso 6:</strong> Calcular comisión en dólares<br>
+                        Comisión $ = $1,350 × 0.005 = <span class="highlight">$6.75</span><br><br>
+
+                        <strong>Paso 7:</strong> Calcular ingreso neto<br>
+                        Ingreso Neto = $1,350 - $6.75 = <span class="highlight">$1,343.25</span>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>🔔 Alertas Específicas por Criptomoneda</h2>
+                <p>Según la criptomoneda específica, el sistema debe mostrar alertas automáticas:</p>
+
+                <div class="crypto-cards">
+                    <div style="background: white; border: 2px solid #667eea; color: #333; padding: 20px; border-radius: 15px;">
+                        <h3 style="color: #667eea;">₿ Bitcoin (BTC)</h3>
+                        <ul style="text-align: left; margin-top: 15px;">
+                            <li>Precio compra > $60,000<br>→ "⚠️ ALERTA: BTC en precio histórico alto"</li>
+                            <li>Precio venta < $30,000<br>→ "⚠️ ALERTA: Posible venta en pérdida de BTC"</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; border: 2px solid #667eea; color: #333; padding: 20px; border-radius: 15px;">
+                        <h3 style="color: #667eea;">Ξ Ethereum (ETH)</h3>
+                        <ul style="text-align: left; margin-top: 15px;">
+                            <li>Precio compra > $3,500<br>→ "⚠️ ALERTA: ETH cerca de máximo histórico"</li>
+                            <li>Compras > 10 ETH<br>→ "💎 Compra grande de ETH detectada"</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; border: 2px solid #667eea; color: #333; padding: 20px; border-radius: 15px;">
+                        <h3 style="color: #667eea;">₳ Cardano (ADA)</h3>
+                        <ul style="text-align: left; margin-top: 15px;">
+                            <li>Precio < $0.30<br>→ "🔥 OPORTUNIDAD: ADA en precio bajo"</li>
+                            <li>Ganancia > 50%<br>→ "🎉 Excelente operación con ADA"</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; border: 2px solid #667eea; color: #333; padding: 20px; border-radius: 15px;">
+                        <h3 style="color: #667eea;">◎ Solana (SOL)</h3>
+                        <ul style="text-align: left; margin-top: 15px;">
+                            <li>Precio > $150<br>→ "⚠️ PRECAUCIÓN: SOL en zona de resistencia"</li>
+                            <li>Compra en Sábado/Domingo<br>→ "⏰ Compra de SOL en fin de semana - Mayor volatilidad"</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; border: 2px solid #667eea; color: #333; padding: 20px; border-radius: 15px;">
+                        <h3 style="color: #667eea;">✕ Ripple (XRP)</h3>
+                        <ul style="text-align: left; margin-top: 15px;">
+                            <li>Precio < $0.50<br>→ "💰 Precio atractivo de XRP"</li>
+                            <li>Venta > 1000 XRP<br>→ "📊 Venta significativa de XRP"</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>💡 Recomendaciones de Estrategia por Horario</h2>
+                <p>Basado en el <strong>período del día</strong> y el <strong>día de la semana</strong>, mostrar recomendación:</p>
+
+                <div class="success-box">
+                    <h4>☀️ Si es Mañana (hora 6-11):</h4>
+                    <ul>
+                        <li><strong>Y es Lunes a Viernes:</strong> "✅ Horario óptimo para operar - Buena liquidez"</li>
+                        <li><strong>Y es fin de semana:</strong> "⚠️ Liquidez moderada en fin de semana"</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>🌤️ Si es Tarde (hora 12-17):</h4>
+                    <ul>
+                        <li><strong>Y es Lunes a Viernes:</strong> "📊 Alta volatilidad esperada - Oportunidades y riesgos"</li>
+                        <li><strong>Y es fin de semana:</strong> "⚠️ Comisiones más altas en fin de semana"</li>
+                    </ul>
+                </div>
+
+                <div class="alert-box">
+                    <h4>🌙 Si es Noche (hora 18-23 o 0-5):</h4>
+                    <ul>
+                        <li><strong>Para cualquier día:</strong> "🌙 Comisión alta por baja liquidez - Considere operar en la mañana"</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>📚 Ejemplo Paso a Paso: Comprando Cardano</h2>
+                <div class="step-by-step">
+                    <h4>Operación: Compra de 2000 ADA a $0.28 - Miércoles a las 2 PM</h4>
+
+                    <div class="calculation">
+                        <strong>PASO 1: Determinar el período del día</strong><br>
+                        Hora = 14 → Está entre 12 y 17 → <span class="highlight">Tarde</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 2: Calcular el monto de la operación</strong><br>
+                        Monto = Cantidad × Precio<br>
+                        Monto = 2000 × $0.28 = <span class="highlight">$560</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 3: Calcular la comisión</strong><br>
+                        • Día: Miércoles (laboral) → 0.5% base<br>
+                        • Período: Tarde → +0.2% adicional<br>
+                        • Comisión total: 0.5% + 0.2% = <span class="highlight">0.7%</span><br>
+                        • Comisión en dólares: $560 × 0.007 = <span class="highlight">$3.92</span><br>
+                        • Costo total: $560 + $3.92 = <span class="highlight">$563.92</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 4: Actualizar el estado del portafolio de ADA</strong><br>
+                        • Cantidad comprada: 0 + 2000 = <span class="highlight">2000 ADA</span><br>
+                        • Cantidad actual: 2000 - 0 = <span class="highlight">2000 ADA</span><br>
+                        • Dinero invertido: $0 + $560 = <span class="highlight">$560</span><br>
+                        • Precio promedio compra: $560 / 2000 = <span class="highlight">$0.28</span><br>
+                        • Comisiones pagadas en ADA: $0 + $3.92 = <span class="highlight">$3.92</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 5: Evaluar alertas específicas de Cardano</strong><br>
+                        • Precio: $0.28 (es menor a $0.30) ✓<br>
+                        • Alerta: <span class="highlight">"🔥 OPORTUNIDAD: ADA en precio bajo"</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 6: Mostrar recomendación de estrategia</strong><br>
+                        • Período: Tarde<br>
+                        • Día: Miércoles (laboral)<br>
+                        • Recomendación: <span class="highlight">"📊 Alta volatilidad esperada - Oportunidades y riesgos"</span>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>📈 Ejemplo de Venta: Calculando Ganancias</h2>
+                <div class="step-by-step">
+                    <h4>Contexto: Ya tienes 5000 ADA compradas a precio promedio de $0.262</h4>
+                    <h4>Operación: Venta de 3000 ADA a $0.45 - Lunes a las 10 AM</h4>
+
+                    <div class="calculation">
+                        <strong>PASO 1: Calcular monto y comisión</strong><br>
+                        • Monto = 3000 × $0.45 = <span class="highlight">$1,350</span><br>
+                        • Período: Mañana (hora 10)<br>
+                        • Comisión: 0.5% (Lunes) + 0% (Mañana) = <span class="highlight">0.5%</span><br>
+                        • Comisión $: $1,350 × 0.005 = <span class="highlight">$6.75</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 2: Actualizar estado del portafolio</strong><br>
+                        • Cantidad vendida: 0 + 3000 = <span class="highlight">3000 ADA</span><br>
+                        • Cantidad actual: 5000 - 3000 = <span class="highlight">2000 ADA</span><br>
+                        • Dinero recuperado: $0 + $1,350 = <span class="highlight">$1,350</span><br>
+                        • Precio promedio venta: $1,350 / 3000 = <span class="highlight">$0.45</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 3: Calcular ganancia realizada</strong><br>
+                        • Costo de las 3000 vendidas: 3000 × $0.262 = <span class="highlight">$786</span><br>
+                        • Ganancia = Dinero recuperado - Costo<br>
+                        • Ganancia = $1,350 - $786 = <span class="highlight">$564</span> ✅
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 4: Calcular rentabilidad porcentual</strong><br>
+                        • Rentabilidad = ((Precio venta - Precio compra) / Precio compra) × 100<br>
+                        • Rentabilidad = (($0.45 - $0.262) / $0.262) × 100<br>
+                        • Rentabilidad = <span class="highlight">71.76%</span> 🎉
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PASO 5: Evaluar alertas</strong><br>
+                        • Rentabilidad: 71.76% (es mayor a 50%) ✓<br>
+                        • Alerta: <span class="highlight">"🎉 Excelente operación con ADA"</span>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>📊 Cálculo de Precio Promedio al Comprar Múltiples Veces</h2>
+                <div class="formula-box">
+                    <h4>🔄 Cuando compras más de una cripto que ya tienes:</h4>
+
+                    <div class="formula">
+                        <strong>Nuevo Precio Promedio = Total Invertido / Total Comprado</strong>
+                    </div>
+
+                    <div class="example-box" style="background: white; margin-top: 15px;">
+                        <h4 style="color: #667eea;">Ejemplo práctico:</h4>
+                        <p><strong>Primera compra:</strong> 2000 ADA a $0.28</p>
+                        <ul>
+                            <li>Dinero invertido: $560</li>
+                            <li>Precio promedio: $0.28</li>
+                        </ul>
+                        <br>
+                        <p><strong>Segunda compra:</strong> 3000 ADA a $0.25</p>
+                        <ul>
+                            <li>Dinero invertido adicional: $750</li>
+                            <li>Total invertido: $560 + $750 = <span class="highlight">$1,310</span></li>
+                            <li>Total comprado: 2000 + 3000 = <span class="highlight">5000 ADA</span></li>
+                            <li><strong>Nuevo precio promedio: $1,310 / 5000 = $0.262</strong> ← ¡Bajó!</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>📖 Historia de Trading: Ejemplos Completos Paso a Paso</h2>
+                <p>A continuación se presentan ejemplos encadenados que muestran cómo evoluciona el portafolio con cada operación:</p>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); border-left: 5px solid #00acc1;">
+                    <h3 style="color: #00838f;">📅 LUNES - Operación 1: Iniciando el Portafolio con Bitcoin</h3>
+                    <p><strong>Contexto:</strong> Es tu primera operación. Decides comenzar comprando Bitcoin en un horario óptimo.</p>
+                    <p><strong>Operación:</strong> Compra de 0.5 BTC a $45,000 - Lunes a las 9 AM</p>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Determinar el período del día</strong><br>
+                        Hora = 9, está entre 6 y 11 → <span class="highlight">Mañana</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Calcular el monto de la operación</strong><br>
+                        Monto de operación: 0.5 × $45,000 = <span class="highlight">$22,500</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Calcular la comisión</strong><br>
+                        • Día: Lunes (día laboral) → 0.5% base<br>
+                        • Período: Mañana → +0% adicional<br>
+                        • Comisión total: 0.5% + 0% = <span class="highlight">0.5%</span><br>
+                        • Comisión en dólares: $22,500 × 0.005 = <span class="highlight">$112.50</span><br>
+                        • Costo total: $22,500 + $112.50 = <span class="highlight">$22,612.50</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Actualizar el estado del portafolio de BTC</strong><br>
+                        • Cantidad comprada: 0 + 0.5 = <span class="highlight">0.5 BTC</span><br>
+                        • Cantidad vendida: 0 BTC<br>
+                        • Cantidad actual: 0.5 - 0 = <span class="highlight">0.5 BTC</span><br>
+                        • Dinero invertido: $0 + $22,500 = <span class="highlight">$22,500</span><br>
+                        • Precio promedio compra: $22,500 / 0.5 = <span class="highlight">$45,000</span><br>
+                        • Comisiones pagadas en BTC: $0 + $112.50 = <span class="highlight">$112.50</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Resumen General del Portafolio</strong><br>
+                        • Valor total invertido: <span class="highlight">$22,500</span> (solo BTC)<br>
+                        • Valor total recuperado: $0<br>
+                        • Comisiones totales pagadas: <span class="highlight">$112.50</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 6: Alertas y Recomendación</strong><br>
+                        • Alertas BTC: Ninguna (precio $45,000 no supera $60,000)<br>
+                        • Recomendación: <span class="highlight">"✅ Horario óptimo para operar - Buena liquidez"</span>
+                    </div>
+                </div>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-left: 5px solid #8e24aa; margin-top: 30px;">
+                    <h3 style="color: #6a1b9a;">📅 MIÉRCOLES - Operación 2: Diversificando con Cardano</h3>
+                    <p><strong>Contexto:</strong> Dos días después, ves que Cardano está a buen precio. Decides diversificar tu portafolio.</p>
+                    <p><strong>Estado previo:</strong> BTC: 0.5 BTC, invertido $22,500, comisiones $112.50</p>
+                    <p><strong>Operación:</strong> Compra de 2000 ADA a $0.28 - Miércoles a las 2 PM</p>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Determinar el período</strong><br>
+                        Hora = 14, está entre 12 y 17 → <span class="highlight">Tarde</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Calcular monto</strong><br>
+                        Monto: 2000 × $0.28 = <span class="highlight">$560</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Calcular comisión</strong><br>
+                        • Miércoles (laboral) → 0.5% base<br>
+                        • Tarde → +0.2% adicional<br>
+                        • Comisión total: 0.5% + 0.2% = <span class="highlight">0.7%</span><br>
+                        • Comisión $: $560 × 0.007 = <span class="highlight">$3.92</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Estado del Portafolio ADA</strong><br>
+                        • Cantidad comprada: 0 + 2000 = <span class="highlight">2000 ADA</span><br>
+                        • Cantidad actual: <span class="highlight">2000 ADA</span><br>
+                        • Dinero invertido: <span class="highlight">$560</span><br>
+                        • Precio promedio: $560 / 2000 = <span class="highlight">$0.28</span><br>
+                        • Comisiones ADA: <span class="highlight">$3.92</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Resumen General Actualizado</strong><br>
+                        • Valor total invertido: $22,500 (BTC) + $560 (ADA) = <span class="highlight">$23,060</span><br>
+                        • Comisiones totales: $112.50 + $3.92 = <span class="highlight">$116.42</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 6: Alertas</strong><br>
+                        • Precio $0.28 < $0.30 ✓<br>
+                        • Alerta: <span class="highlight">"🔥 OPORTUNIDAD: ADA en precio bajo"</span><br>
+                        • Recomendación: "📊 Alta volatilidad esperada - Oportunidades y riesgos"
+                    </div>
+                </div>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%); border-left: 5px solid #f9a825; margin-top: 30px;">
+                    <h3 style="color: #f57f17;">📅 VIERNES - Operación 3: Comprando más Cardano en horario nocturno</h3>
+                    <p><strong>Contexto:</strong> El precio de Cardano sigue bajando. Decides comprar más para promediar tu precio, pero es tarde en la noche.</p>
+                    <p><strong>Estado previo ADA:</strong> 2000 ADA (precio promedio $0.28), invertido $560, comisiones $3.92</p>
+                    <p><strong>Operación:</strong> Compra de 3000 ADA a $0.25 - Viernes a las 9 PM</p>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Determinar período</strong><br>
+                        Hora = 21, está entre 18 y 23 → <span class="highlight">Noche</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Calcular monto</strong><br>
+                        Monto: 3000 × $0.25 = <span class="highlight">$750</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Calcular comisión</strong><br>
+                        • Viernes (laboral) → 0.5% base<br>
+                        • Noche → +0.5% adicional<br>
+                        • Comisión total: 0.5% + 0.5% = <span class="highlight">1.0%</span><br>
+                        • Comisión $: $750 × 0.01 = <span class="highlight">$7.50</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Actualizar ADA (¡importante: SUMAR a lo existente!)</strong><br>
+                        • Cantidad comprada: 2000 + 3000 = <span class="highlight">5000 ADA</span><br>
+                        • Cantidad actual: 5000 - 0 = <span class="highlight">5000 ADA</span><br>
+                        • Dinero invertido: $560 + $750 = <span class="highlight">$1,310</span><br>
+                        • <strong>Precio promedio compra: $1,310 / 5000 = $0.262</strong> ← ¡Cambió!<br>
+                        • Comisiones ADA: $3.92 + $7.50 = <span class="highlight">$11.42</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Resumen General</strong><br>
+                        • Valor total invertido: $22,500 + $1,310 = <span class="highlight">$23,810</span><br>
+                        • Comisiones totales: $112.50 + $11.42 = <span class="highlight">$123.92</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 6: Alertas y Recomendación</strong><br>
+                        • Precio $0.25 < $0.30 ✓ → "🔥 OPORTUNIDAD: ADA en precio bajo"<br>
+                        • Recomendación: <span class="highlight">"🌙 Comisión alta por baja liquidez - Considere operar en la mañana"</span>
+                    </div>
+                </div>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 5px solid #43a047; margin-top: 30px;">
+                    <h3 style="color: #2e7d32;">📅 LUNES SIGUIENTE - Operación 4: Primera Venta - Tomando Ganancias en Cardano</h3>
+                    <p><strong>Contexto:</strong> Una semana después, Cardano subió significativamente. Decides tomar ganancias vendiendo parte de tu posición en horario óptimo.</p>
+                    <p><strong>Estado previo ADA:</strong> 5000 ADA (precio promedio $0.262), invertido $1,310, comisiones $11.42</p>
+                    <p><strong>Operación:</strong> Venta de 3000 ADA a $0.45 - Lunes a las 10 AM</p>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Determinar período</strong><br>
+                        Hora = 10 → <span class="highlight">Mañana</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Calcular monto</strong><br>
+                        Monto: 3000 × $0.45 = <span class="highlight">$1,350</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Calcular comisión</strong><br>
+                        • Lunes (laboral) → 0.5% base<br>
+                        • Mañana → +0% adicional<br>
+                        • Comisión: 0.5%<br>
+                        • Comisión $: $1,350 × 0.005 = <span class="highlight">$6.75</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Actualizar ADA tras la VENTA</strong><br>
+                        • Cantidad comprada: 5000 ADA (sin cambio)<br>
+                        • Cantidad vendida: 0 + 3000 = <span class="highlight">3000 ADA</span><br>
+                        • Cantidad actual: 5000 - 3000 = <span class="highlight">2000 ADA</span><br>
+                        • Dinero invertido: $1,310 (sin cambio)<br>
+                        • Dinero recuperado: $0 + $1,350 = <span class="highlight">$1,350</span><br>
+                        • Precio promedio venta: $1,350 / 3000 = <span class="highlight">$0.45</span><br>
+                        • Comisiones ADA: $11.42 + $6.75 = <span class="highlight">$18.17</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Calcular GANANCIA realizada</strong><br>
+                        • Costo de las 3000 vendidas: 3000 × $0.262 = <span class="highlight">$786</span><br>
+                        • <strong>Ganancia = $1,350 - $786 = $564</strong> ← ¡Primera ganancia!<br>
+                        • <strong>Rentabilidad = (($0.45 - $0.262) / $0.262) × 100 = 71.76%</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 6: Resumen General</strong><br>
+                        • Valor total invertido: $23,810<br>
+                        • Valor total recuperado: <span class="highlight">$1,350</span><br>
+                        • <strong>Ganancia/Pérdida total: $564</strong> (solo de ADA)<br>
+                        • Comisiones totales: $112.50 + $18.17 = <span class="highlight">$130.67</span><br>
+                        • <strong>Cripto con mejor rentabilidad: Cardano (ADA) con 71.76%</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 7: Alertas</strong><br>
+                        • Rentabilidad 71.76% > 50% ✓<br>
+                        • Alerta: <span class="highlight">"🎉 Excelente operación con ADA"</span><br>
+                        • Recomendación: "✅ Horario óptimo para operar - Buena liquidez"<br>
+                        • <strong>Nota:</strong> Has ganado $564 pero has pagado $130.67 en comisiones totales (23.17% de tus ganancias)
+                    </div>
+                </div>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 5px solid #1976d2; margin-top: 30px;">
+                    <h3 style="color: #0d47a1;">📅 MIÉRCOLES - Operación 5: Agregando Ethereum al Portafolio</h3>
+                    <p><strong>Contexto:</strong> Con las ganancias de Cardano, decides diversificar más comprando Ethereum en la tarde.</p>
+                    <p><strong>Operación:</strong> Compra de 12 ETH a $3,100 - Miércoles a las 3 PM</p>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Período</strong><br>
+                        Hora = 15 → <span class="highlight">Tarde</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Monto</strong><br>
+                        12 × $3,100 = <span class="highlight">$37,200</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Comisión</strong><br>
+                        • Miércoles (laboral): 0.5%<br>
+                        • Tarde: +0.2%<br>
+                        • Total: 0.7%<br>
+                        • Comisión $: $37,200 × 0.007 = <span class="highlight">$260.40</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Estado ETH (primera operación)</strong><br>
+                        • Cantidad comprada: <span class="highlight">12 ETH</span><br>
+                        • Cantidad actual: <span class="highlight">12 ETH</span><br>
+                        • Dinero invertido: <span class="highlight">$37,200</span><br>
+                        • Precio promedio: $37,200 / 12 = <span class="highlight">$3,100</span><br>
+                        • Comisiones ETH: <span class="highlight">$260.40</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Resumen General</strong><br>
+                        • Valor total invertido: $22,500 + $1,310 + $37,200 = <span class="highlight">$61,010</span><br>
+                        • Comisiones totales: $112.50 + $18.17 + $260.40 = <span class="highlight">$391.07</span><br>
+                        • Ganancia total: <span class="highlight">$564</span> (solo ADA)
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 6: Alertas ETH</strong><br>
+                        • Precio $3,100 (no > $3,500) → Sin alerta de precio alto<br>
+                        • Cantidad 12 ETH > 10 ✓<br>
+                        • Alerta: <span class="highlight">"💎 Compra grande de ETH detectada"</span><br>
+                        • Recomendación: "📊 Alta volatilidad esperada - Oportunidades y riesgos"<br>
+                        • <strong>Nota crítica:</strong> Las comisiones totales ($391.07) representan 69.34% de tus ganancias totales ($564)
+                    </div>
+                </div>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); border-left: 5px solid #c2185b; margin-top: 30px;">
+                    <h3 style="color: #880e4f;">📅 SÁBADO - Operación 6: Venta de Bitcoin en Fin de Semana</h3>
+                    <p><strong>Contexto:</strong> Bitcoin subió de precio y decides tomar ganancias, aunque sea fin de semana por la noche (peor horario para comisiones).</p>
+                    <p><strong>Estado previo BTC:</strong> 0.5 BTC (precio promedio $45,000), invertido $22,500, comisiones $112.50</p>
+                    <p><strong>Operación:</strong> Venta de 0.3 BTC a $52,000 - Sábado a las 10 PM</p>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Período</strong><br>
+                        Hora = 22 → <span class="highlight">Noche</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Monto</strong><br>
+                        0.3 × $52,000 = <span class="highlight">$15,600</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Comisión</strong><br>
+                        • Sábado (fin de semana) → 0.8% base<br>
+                        • Noche → +0.5% adicional<br>
+                        • <strong>Comisión total: 0.8% + 0.5% = 1.3%</strong> ← ¡La más alta!<br>
+                        • Comisión $: $15,600 × 0.013 = <span class="highlight">$202.80</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Actualizar BTC tras venta</strong><br>
+                        • Cantidad comprada: 0.5 BTC (sin cambio)<br>
+                        • Cantidad vendida: 0 + 0.3 = <span class="highlight">0.3 BTC</span><br>
+                        • Cantidad actual: 0.5 - 0.3 = <span class="highlight">0.2 BTC</span><br>
+                        • Dinero recuperado: $0 + $15,600 = <span class="highlight">$15,600</span><br>
+                        • Precio promedio venta: $15,600 / 0.3 = <span class="highlight">$52,000</span><br>
+                        • Comisiones BTC: $112.50 + $202.80 = <span class="highlight">$315.30</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Calcular ganancia BTC</strong><br>
+                        • Costo de 0.3 BTC vendidas: 0.3 × $45,000 = <span class="highlight">$13,500</span><br>
+                        • <strong>Ganancia: $15,600 - $13,500 = $2,100</strong><br>
+                        • <strong>Rentabilidad: (($52,000 - $45,000) / $45,000) × 100 = 15.56%</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 6: Resumen General</strong><br>
+                        • Valor total recuperado: $1,350 (ADA) + $15,600 (BTC) = <span class="highlight">$16,950</span><br>
+                        • <strong>Ganancia total: $564 (ADA) + $2,100 (BTC) = $2,664</strong><br>
+                        • Comisiones totales: $315.30 + $260.40 + $18.17 = <span class="highlight">$593.87</span><br>
+                        • <strong>Cripto con mejor rentabilidad: Cardano (ADA) con 71.76%</strong><br>
+                        • <strong>Cripto con peor rentabilidad: Bitcoin (BTC) con 15.56%</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 7: Análisis crítico</strong><br>
+                        • Recomendación: "🌙 Comisión alta por baja liquidez - Considere operar en la mañana"<br>
+                        • <strong>Dato alarmante:</strong> Si hubieras operado un lunes en la mañana, la comisión hubiera sido solo $78 (0.5%) en lugar de $202.80 (1.3%). <strong>Perdiste $124.80 extra por operar en mal horario.</strong><br>
+                        • <strong>Análisis de impacto:</strong> Las comisiones totales ($593.87) representan el <span class="highlight">22.29% de tus ganancias totales ($2,664)</span>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>🎯 Los 3 Problemas para Resolver</h2>
+
+                <div class="problem-card">
+                    <h3>🚀 Problema 1: Comprando Solana el Domingo de Madrugada</h3>
+                    <p><strong>Operación:</strong> Compra de 20 SOL a $155 - Domingo a las 3 AM</p>
+                    <br>
+                    <p><strong>Debes calcular:</strong></p>
+                    <ul>
+                        <li>Período del día según la hora 3</li>
+                        <li>Comisión porcentual total (día + período)</li>
+                        <li>Comisión en dólares y costo total</li>
+                        <li>Estado completo del portafolio de SOL</li>
+                        <li>Alertas específicas de Solana</li>
+                        <li>Comisiones totales acumuladas</li>
+                        <li>Recomendación de estrategia</li>
+                    </ul>
+                </div>
+
+                <div class="problem-card">
+                    <h3>💎 Problema 2: Vendiendo Ethereum con Ganancias</h3>
+                    <p><strong>Operación:</strong> Venta de 6 ETH a $3,700 (de 12 totales compradas a $3,100) - Martes a las 11 AM</p>
+                    <br>
+                    <p><strong>Debes calcular:</strong></p>
+                    <ul>
+                        <li>Ganancia realizada en la venta</li>
+                        <li>Rentabilidad porcentual de ETH</li>
+                        <li>Cuántos ETH quedan en portafolio</li>
+                        <li>Nueva ganancia total del portafolio</li>
+                        <li>Cripto con mejor y peor rentabilidad</li>
+                        <li>Porcentaje que representan las comisiones sobre las ganancias</li>
+                    </ul>
+                </div>
+
+                <div class="problem-card">
+                    <h3>📊 Problema 3: Análisis Completo Final + Compra de XRP</h3>
+                    <p><strong>Nueva operación:</strong> Compra de 4000 XRP a $0.48 - Jueves a las 4 PM</p>
+                    <br>
+                    <p><strong>Debes generar:</strong></p>
+                    <ul>
+                        <li><strong>Reporte completo</strong> del estado de todas las criptos</li>
+                        <li>Ranking de rentabilidades</li>
+                        <li>Desglose total de comisiones por cripto</li>
+                        <li>Análisis comparativo: ¿Cuánto habrías ahorrado operando siempre en el mejor horario?</li>
+                        <li>Recomendación final de estrategia de horarios</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>🎯 Tareas a Desarrollar</h2>
+                <div class="info-box">
+                    <p>Para implementar este sistema de gestión de portafolio de criptomonedas, debes realizar las siguientes actividades:</p>
+                </div>
+
+                <div class="commission-grid">
+                    <div class="commission-card" style="border-color: #667eea; border-width: 3px;">
+                        <h4>📝 1. Definir Atributos</h4>
+                        <p>Identifica todos los datos que el sistema necesita almacenar y que NO dependen de cálculos.</p>
+                        <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Recuerda: Los atributos son información base que se guarda directamente.</p>
+                    </div>
+
+                    <div class="commission-card" style="border-color: #764ba2; border-width: 3px;">
+                        <h4>⚙️ 2. Definir Métodos</h4>
+                        <p>Identifica todas las acciones, cálculos y procesos que el sistema debe realizar.</p>
+                        <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Recuerda: Los métodos son las funciones que ejecuta la clase.</p>
+                    </div>
+
+                    <div class="commission-card" style="border-color: #f093fb; border-width: 3px;">
+                        <h4>🔄 3. Definir Operaciones</h4>
+                        <p>Identifica los datos calculados que dependen de otros datos del sistema.</p>
+                        <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Recuerda: Las operaciones se derivan de atributos u otras operaciones.</p>
+                    </div>
+
+                    <div class="commission-card" style="border-color: #28a745; border-width: 3px;">
+                        <h4>📐 4. Diagrama de Clases</h4>
+                        <p>Diseña el diagrama UML que incluya:</p>
+                        <ul style="text-align: left; margin-top: 10px;">
+                            <li>Todas las clases del sistema</li>
+                            <li>Atributos y métodos de cada clase</li>
+                            <li>Relaciones entre clases</li>
+                            <li>Tipos de datos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert-box">
+                    <h4>⚠️ Importante:</h4>
+                    <p>Antes de programar, asegúrate de:</p>
+                    <ul>
+                        <li>Comprender completamente todas las fórmulas y cálculos</li>
+                        <li>Identificar todas las estructuras de decisión necesarias (if, switch/case)</li>
+                        <li>Planificar cómo almacenar y actualizar la información de cada criptomoneda</li>
+                        <li>Diseñar la lógica para las alertas específicas por criptomoneda</li>
+                        <li>Definir cómo se calcularán las comisiones según día y período</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 40px;">📋 Guía para Identificar Atributos, Operaciones y Métodos</h3>
+
+                <div class="info-box">
+                    <h4>🤔 ¿Cómo distinguir entre Atributo, Operación y Método?</h4>
+
+                    <div style="margin: 20px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+                        <strong>📦 ATRIBUTO:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Son <strong>datos que NO dependen de nada</strong></li>
+                            <li>Se almacenan directamente sin necesidad de calcularlos</li>
+                            <li>Representan información base del sistema</li>
+                            <li>Pertenecen a la clase y persisten durante toda la ejecución</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin: 20px 0; padding: 15px; background: #fff3cd; border-radius: 8px;">
+                        <strong>🔄 OPERACIÓN:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Son <strong>datos que dependen de otros datos</strong></li>
+                            <li>Se calculan o derivan a partir de atributos u otras operaciones</li>
+                            <li>Requieren de información previa para obtener su valor</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin: 20px 0; padding: 15px; background: #f3e5f5; border-radius: 8px;">
+                        <strong>⚙️ MÉTODO:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Son <strong>las cosas que debe hacer la clase</strong></li>
+                            <li>Acciones, procesos, cálculos o funcionalidades</li>
+                            <li>Representan el comportamiento del sistema</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">🔍 Diferencia CLAVE: Atributos vs Parámetros de un Método</h3>
+
+                <div class="warning-box">
+                    <h4>⚠️ ¡Importante! No confundir Atributos con Parámetros:</h4>
+
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="background: white; padding: 15px; border-radius: 8px; border: 3px solid #2196F3;">
+                            <h4 style="color: #1565C0; margin-bottom: 10px;">📦 ATRIBUTOS de la Clase</h4>
+                            <ul style="margin-top: 10px;">
+                                <li><strong>Alcance:</strong> Toda la clase</li>
+                                <li><strong>Vida:</strong> Durante toda la ejecución del programa</li>
+                                <li><strong>Visibilidad:</strong> Accesibles desde cualquier método de la clase</li>
+                                <li><strong>Uso:</strong> Guardan el ESTADO del objeto</li>
+                                <li><strong>Dónde se definen:</strong> Al inicio de la clase</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: white; padding: 15px; border-radius: 8px; border: 3px solid #9C27B0;">
+                            <h4 style="color: #7B1FA2; margin-bottom: 10px;">🎯 PARÁMETROS de un Método</h4>
+                            <ul style="margin-top: 10px;">
+                                <li><strong>Alcance:</strong> Solo dentro del método</li>
+                                <li><strong>Vida:</strong> Solo mientras se ejecuta el método</li>
+                                <li><strong>Visibilidad:</strong> Solo dentro de ese método específico</li>
+                                <li><strong>Uso:</strong> Reciben DATOS de entrada para el método</li>
+                                <li><strong>Dónde se definen:</strong> Entre paréntesis del método</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px;">
+                        <h4 style="color: #2e7d32;">💡 Ejemplo Conceptual (NO del sistema):</h4>
+                        <div style="background: #f4f4f4; padding: 15px; border-radius: 5px; margin-top: 10px; font-family: monospace;">
+                            <strong>Clase Calculadora:</strong><br><br>
+
+                            <span style="color: #1565C0;">// ATRIBUTO - pertenece a la clase, persiste</span><br>
+                            resultadoAcumulado = 0<br><br>
+
+                            <span style="color: #7B1FA2;">// MÉTODO con PARÁMETROS - solo existen durante la ejecución del método</span><br>
+                            sumar(<strong style="color: #7B1FA2;">numero1, numero2</strong>) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;// numero1 y numero2 son PARÁMETROS (temporales)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;// resultadoAcumulado es ATRIBUTO (permanente)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;resultadoAcumulado = numero1 + numero2<br>
+                            }
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 8px;">
+                        <h4 style="color: #f57f17;">📋 ¿Cómo decidir si algo es Atributo o Parámetro?</h4>
+                        <table style="margin-top: 10px; width: 100%;">
+                            <tr>
+                                <td style="padding: 10px; background: #e3f2fd;"><strong>Pregunta:</strong></td>
+                                <td style="padding: 10px;"><strong>Respuesta:</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; background: white;">¿Este dato debe recordarse entre diferentes operaciones?</td>
+                                <td style="padding: 10px;"><strong>SÍ → ATRIBUTO</strong><br>NO → PARÁMETRO</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; background: white;">¿Este dato cambia solo durante una operación específica?</td>
+                                <td style="padding: 10px;"><strong>SÍ → PARÁMETRO</strong><br>NO → ATRIBUTO</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; background: white;">¿Este dato se usa en varios métodos de la clase?</td>
+                                <td style="padding: 10px;"><strong>SÍ → ATRIBUTO</strong><br>NO → puede ser PARÁMETRO</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px; background: white;">¿Este dato se recibe desde fuera para hacer un cálculo?</td>
+                                <td style="padding: 10px;"><strong>SÍ → PARÁMETRO</strong><br>NO → ATRIBUTO</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 15px; background: #fce4ec; border-radius: 8px;">
+                        <h4 style="color: #c2185b;">🎯 Para tu Sistema de Criptomonedas:</h4>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Ejemplo de ATRIBUTO:</strong> Datos acumulados que deben persistir entre operaciones (cantidades totales, montos acumulados, etc.)</li>
+                            <li><strong>Ejemplo de PARÁMETRO:</strong> Datos de entrada temporal para un cálculo específico (valores que se reciben para una operación puntual)</li>
+                            <li><strong>Piensa bien:</strong> ¿Este dato debe recordarse después de terminar una operación? Si SÍ → ATRIBUTO. Si NO → puede ser PARÁMETRO</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">📊 Tabla de Análisis: Completa con los Elementos del Sistema</h3>
+                <p>Analiza el problema y completa la siguiente tabla identificando cada elemento del sistema:</p>
+
+                <table style="margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Nombre del Elemento</th>
+                            <th style="width: 15%;">Tipo de Dato</th>
+                            <th style="width: 20%;">Clasificación</th>
+                            <th style="width: 40%;">Justificación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="warning-box" style="margin-top: 20px;">
+                    <h4>💡 Instrucciones para completar la tabla:</h4>
+                    <ul>
+                        <li><strong>Nombre del Elemento:</strong> Identifica todos los elementos necesarios del sistema (datos de entrada, cálculos, procesos, etc.)</li>
+                        <li><strong>Tipo de Dato:</strong> Indica el tipo (entero, decimal, texto, booleano, etc.)</li>
+                        <li><strong>Clasificación:</strong> Especifica si es ATRIBUTO, OPERACIÓN o MÉTODO según las definiciones arriba</li>
+                        <li><strong>Justificación:</strong> Explica POR QUÉ clasificaste ese elemento de esa manera basándote en si depende de otros datos o no, y qué función cumple</li>
+                    </ul>
+                </div>
+
+                <div class="alert-box" style="margin-top: 20px;">
+                    <h4>⚠️ Recuerda:</h4>
+                    <ul>
+                        <li><strong>ATRIBUTOS:</strong> Datos base que NO dependen de nada y deben persistir (ej: cantidades acumuladas, totales guardados)</li>
+                        <li><strong>OPERACIONES:</strong> Datos calculados que SÍ dependen de otros datos (ej: promedios, totales derivados, porcentajes)</li>
+                        <li><strong>MÉTODOS:</strong> Acciones que la clase debe realizar (ej: calcular, determinar, verificar, mostrar, procesar)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>🔑 Puntos Clave para Recordar</h2>
+                <div class="success-box">
+                    <ul>
+                        <li>✅ Cada operación afecta SOLO una cripto, las demás mantienen sus valores</li>
+                        <li>✅ Al comprar más de una cripto que ya tienes, el precio promedio cambia</li>
+                        <li>✅ Las comisiones NUNCA se suman al dinero invertido/recuperado</li>
+                        <li>✅ Solo puedes vender si tienes cantidad disponible</li>
+                        <li>✅ La ganancia se calcula: Dinero recuperado - (Cantidad vendida × Precio promedio compra)</li>
+                        <li>✅ La comisión depende del DÍA (lunes-domingo) Y del PERÍODO (mañana/tarde/noche)</li>
+                        <li>✅ El período se determina automáticamente según la hora (0-23)</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="footer">
+            <h3>🚀 ¡Éxito construyendo tu sistema de trading de criptomonedas!</h3>
+            <p style="margin-top: 15px; opacity: 0.8;">Recuerda: Comprende bien las fórmulas y la lógica antes de programar</p>
+        </div>
+    </div>
+</body>
+</html>

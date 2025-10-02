@@ -1,0 +1,10 @@
+eres profesor del curso de fundamnetos de programacion y estas ensenando ejericios 
+con decisiones, decisiones simples, anidadas, multiples y debes generar un ejercicio con las siguietnes carcterisiticas:
+1. se debe poder resolver en una sola clase
+2. debe tener mucho contexto de negocio sin ambiguedades para que los estudiantes identifiquen atributos y operaciones de esa unica clase
+3. no debes dar la solucion, pero debe ser lo suficientemente claro para que los estudiantes no se frustren
+4. los estudiantes aun no saben arreglos.
+5. debes generar 4 situaciones de ejemplo para que entiendadnn el prboelam con algo concreto.
+6. debes colocarles 3 situaciones problema para que ellos resuelvan por si solos y asi saber si entendieron el problema
+
+el ejercicio quiero que sea del dominio de las inversiones, debes generar un markdown con la estreuctura.
