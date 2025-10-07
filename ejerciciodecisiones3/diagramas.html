@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagramas de Flujo - Sistema Cripto</title>
+    <!-- Mermaid JS para renderizar diagramas de flujo -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .diagram-container {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #667eea;
+        }
+
+        .diagram-title {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff9c4;
+            border-left: 4px solid #fbc02d;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #f57f17;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🪙 Sistema de Gestión de Portafolio de Criptomonedas</h1>
+        <p class="subtitle">Diagramas de Flujo de Operaciones y Métodos</p>
+
+        <div class="nav-menu">
+            <a href="enunciado.md" class="nav-button">📋 Enunciado</a>
+            <a href="analisis.html" class="nav-button">📊 Análisis (Atributos, Operaciones, Métodos)</a>
+            <a href="diagramas.html" class="nav-button active">🔀 Diagramas de Flujo</a>
+        </div>
+
+        <!-- SECCIÓN 1: OPERACIONES CON PARÁMETROS EXTERNOS -->
+        <div class="section">
+            <h2 class="section-title">⚙️ OPERACIONES (Reciben Datos Externos)</h2>
+
+            <!-- Operación 1: determinarPeriodo -->
+            <div class="diagram-container">
+                <div class="diagram-title">determinarPeriodo(hora: Integer): String</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: hora]
+                        B --> C{hora >= 6 AND<br/>hora <= 11?}
+                        C -->|SÍ| D[periodo = Mañana]
+                        C -->|NO| E{hora >= 12 AND<br/>hora <= 17?}
+                        E -->|SÍ| F[periodo = Tarde]
+                        E -->|NO| G[periodo = Noche]
+                        D --> H[Retornar periodo]
+                        F --> H
+                        G --> H
+                        H --> I[Fin]
+                </div>
+            </div>
+
+            <!-- Operación 2: obtenerComisionBase -->
+            <div class="diagram-container">
+                <div class="diagram-title">obtenerComisionBase(diaSemana: String): Double</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: diaSemana]
+                        B --> C{Switch diaSemana}
+                        C -->|Lunes a Viernes| D[comisionBase = 0.5]
+                        C -->|Sábado| E[comisionBase = 0.8]
+                        C -->|Domingo| F[comisionBase = 1.0]
+                        D --> G[Retornar comisionBase]
+                        E --> G
+                        F --> G
+                        G --> H[Fin]
+                </div>
+            </div>
+
+            <!-- Operación 3: obtenerAjustePeriodo -->
+            <div class="diagram-container">
+                <div class="diagram-title">obtenerAjustePeriodo(hora: Integer): Double</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: hora]
+                        B --> C[periodo = determinarPeriodo hora]
+                        C --> D{Switch periodo}
+                        D -->|Mañana| E[ajuste = 0.0]
+                        D -->|Tarde| F[ajuste = 0.2]
+                        D -->|Noche| G[ajuste = 0.5]
+                        E --> H[Retornar ajuste]
+                        F --> H
+                        G --> H
+                        H --> I[Fin]
+                </div>
+            </div>
+
+            <!-- Operación 4: calcularMontoOperacion -->
+            <div class="diagram-container">
+                <div class="diagram-title">calcularMontoOperacion(cantidad: Double, precioUnitario: Double): Double</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: cantidad, precioUnitario]
+                        B --> C[monto = cantidad × precioUnitario]
+                        C --> D[Retornar monto]
+                        D --> E[Fin]
+                </div>
+            </div>
+
+            <!-- Operación 5: calcularComisionPorcentaje -->
+            <div class="diagram-container">
+                <div class="diagram-title">calcularComisionPorcentaje(diaSemana: String, hora: Integer): Double</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: diaSemana, hora]
+                        B --> C[base = obtenerComisionBase diaSemana]
+                        C --> D[ajuste = obtenerAjustePeriodo hora]
+                        D --> E[porcentaje = base + ajuste]
+                        E --> F[Retornar porcentaje]
+                        F --> G[Fin]
+                </div>
+            </div>
+
+            <!-- Operación 6: calcularComisionDolares -->
+            <div class="diagram-container">
+                <div class="diagram-title">calcularComisionDolares(cantidad, precioUnitario, diaSemana, hora): Double</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: cantidad, precioUnitario,<br/>diaSemana, hora]
+                        B --> C[monto = calcularMontoOperacion<br/>cantidad, precioUnitario]
+                        C --> D[porcentaje = calcularComisionPorcentaje<br/>diaSemana, hora]
+                        D --> E[comision = monto × porcentaje / 100]
+                        E --> F[Retornar comision]
+                        F --> G[Fin]
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: OPERACIONES QUE USAN ATRIBUTOS -->
+        <div class="section">
+            <h2 class="section-title">📊 OPERACIONES (Usan Atributos de la Clase)</h2>
+
+            <div class="note">
+                <strong>📝 Nota:</strong> Estas operaciones se repiten para cada criptomoneda (BTC, ETH, ADA, SOL, XRP).
+                Solo mostramos el ejemplo para BTC.
+            </div>
+
+            <div class="grid-2">
+                <!-- Operación: calcularPrecioPromedioBTC -->
+                <div class="diagram-container">
+                    <div class="diagram-title">calcularPrecioPromedioBTC(): Double</div>
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Leer: btcDineroInvertido<br/>Leer: btcCompradas]
+                            B --> C[promedio = btcDineroInvertido / btcCompradas]
+                            C --> D[Retornar promedio]
+                            D --> E[Fin]
+                    </div>
+                </div>
+
+                <!-- Operación: calcularCantidadActualBTC -->
+                <div class="diagram-container">
+                    <div class="diagram-title">calcularCantidadActualBTC(): Double</div>
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Leer: btcCompradas<br/>Leer: btcVendidas]
+                            B --> C[actual = btcCompradas - btcVendidas]
+                            C --> D[Retornar actual]
+                            D --> E[Fin]
+                    </div>
+                </div>
+
+                <!-- Operación: calcularGananciaBTC -->
+                <div class="diagram-container">
+                    <div class="diagram-title">calcularGananciaBTC(): Double</div>
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Leer: btcDineroRecuperado<br/>Leer: btcVendidas<br/>Leer: btcPrecioPromCompra]
+                            B --> C[costo = btcVendidas × btcPrecioPromCompra]
+                            C --> D[ganancia = btcDineroRecuperado - costo]
+                            D --> E[Retornar ganancia]
+                            E --> F[Fin]
+                    </div>
+                </div>
+
+                <!-- Operación: calcularRentabilidadBTC -->
+                <div class="diagram-container">
+                    <div class="diagram-title">calcularRentabilidadBTC(): Double</div>
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Leer: btcPrecioPromVenta<br/>Leer: btcPrecioPromCompra]
+                            B --> C[diferencia = btcPrecioPromVenta - btcPrecioPromCompra]
+                            C --> D[rentabilidad = diferencia / btcPrecioPromCompra × 100]
+                            D --> E[Retornar rentabilidad]
+                            E --> F[Fin]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: MÉTODOS -->
+        <div class="section">
+            <h2 class="section-title">🔧 MÉTODOS (Acciones del Sistema)</h2>
+
+            <!-- Método: registrarOperacion -->
+            <div class="diagram-container">
+                <div class="diagram-title">registrarOperacion(tipoOperacion, criptomoneda, cantidad, precioUnitario, diaSemana, hora): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: tipoOperacion, criptomoneda,<br/>cantidad, precioUnitario, diaSemana, hora]
+                        B --> C[periodo = determinarPeriodo hora]
+                        C --> D[comisionDolares = calcularComisionDolares<br/>cantidad, precioUnitario, diaSemana, hora]
+                        D --> E{tipoOperacion == Compra?}
+                        E -->|SÍ| F[procesarCompra criptomoneda,<br/>cantidad, precioUnitario, comisionDolares]
+                        E -->|NO| G[procesarVenta criptomoneda,<br/>cantidad, precioUnitario, comisionDolares]
+                        F --> H[actualizarTotalesGlobales]
+                        G --> H
+                        H --> I[evaluarAlertas según criptomoneda]
+                        I --> J[mostrarRecomendacion periodo, diaSemana]
+                        J --> K[mostrarResumenOperacion criptomoneda]
+                        K --> L[Fin]
+                </div>
+            </div>
+
+            <!-- Método: procesarCompra -->
+            <div class="diagram-container">
+                <div class="diagram-title">procesarCompra(criptomoneda, cantidad, precioUnitario, comisionDolares): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: criptomoneda, cantidad,<br/>precioUnitario, comisionDolares]
+                        B --> C[monto = calcularMontoOperacion<br/>cantidad, precioUnitario]
+                        C --> D{Switch criptomoneda}
+                        D -->|BTC| E[btcCompradas += cantidad<br/>btcDineroInvertido += monto<br/>btcPrecioPromCompra = calcularPrecioPromedioBTC<br/>btcComisiones += comisionDolares<br/>btcActuales = calcularCantidadActualBTC]
+                        D -->|ETH| F[Similar para ETH]
+                        D -->|ADA| G[Similar para ADA]
+                        D -->|SOL| H[Similar para SOL]
+                        D -->|XRP| I[Similar para XRP]
+                        E --> J[Fin]
+                        F --> J
+                        G --> J
+                        H --> J
+                        I --> J
+                </div>
+            </div>
+
+            <!-- Método: procesarVenta -->
+            <div class="diagram-container">
+                <div class="diagram-title">procesarVenta(criptomoneda, cantidad, precioUnitario, comisionDolares): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: criptomoneda, cantidad,<br/>precioUnitario, comisionDolares]
+                        B --> C[monto = calcularMontoOperacion<br/>cantidad, precioUnitario]
+                        C --> D{Switch criptomoneda}
+                        D -->|BTC| E[btcVendidas += cantidad<br/>btcDineroRecuperado += monto<br/>btcPrecioPromVenta = btcDineroRecuperado / btcVendidas<br/>btcGanancia = calcularGananciaBTC<br/>btcRentabilidad = calcularRentabilidadBTC<br/>btcComisiones += comisionDolares<br/>btcActuales = calcularCantidadActualBTC]
+                        D -->|ETH, ADA, SOL, XRP| F[Similar para otras criptos]
+                        E --> G[Fin]
+                        F --> G
+                </div>
+            </div>
+
+            <!-- Método: actualizarTotalesGlobales -->
+            <div class="diagram-container">
+                <div class="diagram-title">actualizarTotalesGlobales(): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[valorTotalInvertido = suma de<br/>todos los DineroInvertido]
+                        B --> C[valorTotalRecuperado = suma de<br/>todos los DineroRecuperado]
+                        C --> D[gananciaTotal = suma de<br/>todas las Ganancias]
+                        D --> E[comisionesTotales = suma de<br/>todas las Comisiones]
+                        E --> F[Fin]
+                </div>
+            </div>
+
+            <!-- Método: evaluarAlertasBTC -->
+            <div class="diagram-container">
+                <div class="diagram-title">evaluarAlertasBTC(tipoOperacion, precioUnitario): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: tipoOperacion, precioUnitario]
+                        B --> C{tipoOperacion == Compra<br/>AND precioUnitario > 60000?}
+                        C -->|SÍ| D[Mostrar: ALERTA BTC en precio histórico alto]
+                        C -->|NO| E{tipoOperacion == Venta<br/>AND precioUnitario < 30000?}
+                        E -->|SÍ| F[Mostrar: ALERTA Posible venta en pérdida de BTC]
+                        E -->|NO| G[Sin alertas]
+                        D --> H[Fin]
+                        F --> H
+                        G --> H
+                </div>
+            </div>
+
+            <!-- Método: evaluarAlertasETH -->
+            <div class="diagram-container">
+                <div class="diagram-title">evaluarAlertasETH(tipoOperacion, cantidad, precioUnitario): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: tipoOperacion, cantidad, precioUnitario]
+                        B --> C{tipoOperacion == Compra<br/>AND precioUnitario > 3500?}
+                        C -->|SÍ| D[Mostrar: ALERTA ETH cerca de máximo histórico]
+                        C -->|NO| E{tipoOperacion == Compra<br/>AND cantidad > 10?}
+                        E -->|SÍ| F[Mostrar: Compra grande de ETH detectada]
+                        E -->|NO| G[Sin alertas]
+                        D --> H[Fin]
+                        F --> H
+                        G --> H
+                </div>
+            </div>
+
+            <!-- Método: evaluarAlertasADA -->
+            <div class="diagram-container">
+                <div class="diagram-title">evaluarAlertasADA(tipoOperacion, precioUnitario): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: tipoOperacion, precioUnitario]
+                        B --> C{precioUnitario < 0.30?}
+                        C -->|SÍ| D[Mostrar: OPORTUNIDAD ADA en precio bajo]
+                        C -->|NO| E{tipoOperacion == Venta<br/>AND adaRentabilidad > 50?}
+                        E -->|SÍ| F[Mostrar: Excelente operación con ADA]
+                        E -->|NO| G[Sin alertas]
+                        D --> H[Fin]
+                        F --> H
+                        G --> H
+                </div>
+            </div>
+
+            <!-- Método: evaluarAlertasSOL -->
+            <div class="diagram-container">
+                <div class="diagram-title">evaluarAlertasSOL(tipoOperacion, precioUnitario, diaSemana): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: tipoOperacion, precioUnitario, diaSemana]
+                        B --> C{precioUnitario > 150?}
+                        C -->|SÍ| D[Mostrar: PRECAUCIÓN SOL en zona de resistencia]
+                        C -->|NO| E{tipoOperacion == Compra AND<br/>diaSemana == Sábado OR Domingo?}
+                        E -->|SÍ| F[Mostrar: Compra de SOL en fin de semana<br/>- Mayor volatilidad]
+                        E -->|NO| G[Sin alertas]
+                        D --> H[Fin]
+                        F --> H
+                        G --> H
+                </div>
+            </div>
+
+            <!-- Método: evaluarAlertasXRP -->
+            <div class="diagram-container">
+                <div class="diagram-title">evaluarAlertasXRP(tipoOperacion, cantidad, precioUnitario): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: tipoOperacion, cantidad, precioUnitario]
+                        B --> C{precioUnitario < 0.50?}
+                        C -->|SÍ| D[Mostrar: Precio atractivo de XRP]
+                        C -->|NO| E{tipoOperacion == Venta<br/>AND cantidad > 1000?}
+                        E -->|SÍ| F[Mostrar: Venta significativa de XRP]
+                        E -->|NO| G[Sin alertas]
+                        D --> H[Fin]
+                        F --> H
+                        G --> H
+                </div>
+            </div>
+
+            <!-- Método: mostrarRecomendacion -->
+            <div class="diagram-container">
+                <div class="diagram-title">mostrarRecomendacion(periodo, diaSemana): void</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Recibir: periodo, diaSemana]
+                        B --> C{periodo == Noche?}
+                        C -->|SÍ| D[Mostrar: Comisión alta por baja liquidez<br/>- Considere operar en la mañana]
+                        C -->|NO| E{periodo == Mañana AND<br/>diaSemana Lunes-Viernes?}
+                        E -->|SÍ| F[Mostrar: Horario óptimo para operar<br/>- Buena liquidez]
+                        E -->|NO| G{periodo == Mañana AND<br/>diaSemana Sábado-Domingo?}
+                        G -->|SÍ| H[Mostrar: Liquidez moderada en fin de semana]
+                        G -->|NO| I{periodo == Tarde AND<br/>diaSemana Lunes-Viernes?}
+                        I -->|SÍ| J[Mostrar: Alta volatilidad esperada<br/>- Oportunidades y riesgos]
+                        I -->|NO| K[Mostrar: Comisiones más altas en fin de semana]
+                        D --> L[Fin]
+                        F --> L
+                        H --> L
+                        J --> L
+                        K --> L
+                </div>
+            </div>
+
+            <!-- Métodos de consulta -->
+            <div class="grid-2">
+                <div class="diagram-container">
+                    <div class="diagram-title">obtenerMejorCripto(): String</div>
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Leer todas las rentabilidades:<br/>btc, eth, ada, sol, xrp]
+                            B --> C[Encontrar la máxima rentabilidad]
+                            C --> D[Determinar qué cripto tiene la máxima]
+                            D --> E[Retornar nombre de la cripto]
+                            E --> F[Fin]
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">obtenerPeorCripto(): String</div>
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Inicio] --> B[Leer todas las rentabilidades:<br/>btc, eth, ada, sol, xrp]
+                            B --> C[Encontrar la mínima rentabilidad]
+                            C --> D[Determinar qué cripto tiene la mínima]
+                            D --> E[Retornar nombre de la cripto]
+                            E --> F[Fin]
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagram-container">
+                <div class="diagram-title">calcularPorcentajeComisionesGanancias(): Double</div>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Inicio] --> B[Leer: comisionesTotales<br/>Leer: gananciaTotal]
+                        B --> C[porcentaje = comisionesTotales / gananciaTotal × 100]
+                        C --> D[Retornar porcentaje]
+                        D --> E[Fin]
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding: 30px; background: #f8f9ff; border-radius: 15px;">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📚 Material Didáctico</h3>
+            <p style="color: #666;">Sistema de Gestión de Portafolio de Criptomonedas - Fundamentos de Programación</p>
+            <p style="color: #999; margin-top: 10px;">Diagramas de Flujo generados con Mermaid.js</p>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar Mermaid para renderizar diagramas de flujo
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>

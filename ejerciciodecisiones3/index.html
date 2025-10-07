@@ -31,8 +31,39 @@
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px;
+            padding: 40px 40px 20px 40px;
             text-align: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-button.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
         }
 
         header h1 {
@@ -339,6 +370,11 @@
         <header>
             <h1>🪙 Sistema de Gestión de Portafolio de Criptomonedas</h1>
             <p>Aprende a calcular comisiones, ganancias y rentabilidad en trading de criptomonedas</p>
+            <div class="nav-menu">
+                <a href="enunciado.md" class="nav-button">📋 Enunciado</a>
+                <a href="analisis.html" class="nav-button">📊 Análisis (Atributos, Operaciones, Métodos)</a>
+                <a href="diagramas.html" class="nav-button">🔀 Diagramas de Flujo</a>
+            </div>
         </header>
 
         <div class="content">
@@ -1171,45 +1207,426 @@
                     <h3>🚀 Problema 1: Comprando Solana el Domingo de Madrugada</h3>
                     <p><strong>Operación:</strong> Compra de 20 SOL a $155 - Domingo a las 3 AM</p>
                     <br>
-                    <p><strong>Debes calcular:</strong></p>
-                    <ul>
-                        <li>Período del día según la hora 3</li>
-                        <li>Comisión porcentual total (día + período)</li>
-                        <li>Comisión en dólares y costo total</li>
-                        <li>Estado completo del portafolio de SOL</li>
-                        <li>Alertas específicas de Solana</li>
-                        <li>Comisiones totales acumuladas</li>
-                        <li>Recomendación de estrategia</li>
-                    </ul>
+                    <p><strong>SOLUCIÓN:</strong></p>
+                </div>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #fff3cd 0%, #ffe082 100%); border-left: 5px solid #ffa000; margin-top: 20px;">
+                    <h4>📋 Solución Completa - Problema 1</h4>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Determinar el período del día</strong><br>
+                        Hora = 3, está entre 0 y 5 → <span class="highlight">Noche</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Calcular el monto de la operación</strong><br>
+                        Monto = Cantidad × Precio<br>
+                        Monto = 20 × $155 = <span class="highlight">$3,100</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Calcular la comisión</strong><br>
+                        • Día: Domingo → 1.0% base<br>
+                        • Período: Noche → +0.5% adicional<br>
+                        • <strong>Comisión total: 1.0% + 0.5% = 1.5%</strong> ← ¡Peor horario posible!<br>
+                        • Comisión en dólares: $3,100 × 0.015 = <span class="highlight">$46.50</span><br>
+                        • Costo total: $3,100 + $46.50 = <span class="highlight">$3,146.50</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Actualizar el estado del portafolio de SOL</strong><br>
+                        • Cantidad comprada: 0 + 20 = <span class="highlight">20 SOL</span><br>
+                        • Cantidad vendida: 0 SOL<br>
+                        • Cantidad actual: 20 - 0 = <span class="highlight">20 SOL</span><br>
+                        • Dinero invertido: $0 + $3,100 = <span class="highlight">$3,100</span><br>
+                        • Precio promedio compra: $3,100 / 20 = <span class="highlight">$155</span><br>
+                        • Comisiones pagadas en SOL: $0 + $46.50 = <span class="highlight">$46.50</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Evaluar alertas específicas de Solana</strong><br>
+                        • Precio: $155 > $150 ✓<br>
+                        • Alerta 1: <span class="highlight">"⚠️ PRECAUCIÓN: SOL en zona de resistencia"</span><br>
+                        • Es domingo (fin de semana) ✓<br>
+                        • Alerta 2: <span class="highlight">"⏰ Compra de SOL en fin de semana - Mayor volatilidad"</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 6: Comisiones totales acumuladas del portafolio</strong><br>
+                        • Comisiones BTC: $315.30<br>
+                        • Comisiones ETH: $260.40<br>
+                        • Comisiones ADA: $18.17<br>
+                        • Comisiones SOL: $46.50<br>
+                        • <strong>Comisiones totales: $315.30 + $260.40 + $18.17 + $46.50 = $640.37</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 7: Recomendación de estrategia</strong><br>
+                        • Período: Noche<br>
+                        • Día: Domingo<br>
+                        • Recomendación: <span class="highlight">"🌙 Comisión alta por baja liquidez - Considere operar en la mañana"</span><br>
+                        • <strong>Dato crítico:</strong> Si hubieras operado un lunes en la mañana, la comisión sería solo $15.50 (0.5%) en lugar de $46.50 (1.5%). <strong>Perdiste $31 extra por operar en el peor horario posible.</strong>
+                    </div>
                 </div>
 
                 <div class="problem-card">
                     <h3>💎 Problema 2: Vendiendo Ethereum con Ganancias</h3>
                     <p><strong>Operación:</strong> Venta de 6 ETH a $3,700 (de 12 totales compradas a $3,100) - Martes a las 11 AM</p>
                     <br>
-                    <p><strong>Debes calcular:</strong></p>
-                    <ul>
-                        <li>Ganancia realizada en la venta</li>
-                        <li>Rentabilidad porcentual de ETH</li>
-                        <li>Cuántos ETH quedan en portafolio</li>
-                        <li>Nueva ganancia total del portafolio</li>
-                        <li>Cripto con mejor y peor rentabilidad</li>
-                        <li>Porcentaje que representan las comisiones sobre las ganancias</li>
-                    </ul>
+                    <p><strong>SOLUCIÓN:</strong></p>
+                </div>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%); border-left: 5px solid #0277bd; margin-top: 20px;">
+                    <h4>📋 Solución Completa - Problema 2</h4>
+
+                    <div class="calculation">
+                        <strong>Estado previo ETH:</strong><br>
+                        • Cantidad comprada: 12 ETH<br>
+                        • Precio promedio compra: $3,100<br>
+                        • Dinero invertido: $37,200<br>
+                        • Comisiones previas ETH: $260.40
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Determinar el período del día</strong><br>
+                        Hora = 11, está entre 6 y 11 → <span class="highlight">Mañana</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Calcular el monto de la operación</strong><br>
+                        Monto = 6 × $3,700 = <span class="highlight">$22,200</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Calcular la comisión</strong><br>
+                        • Día: Martes (laboral) → 0.5% base<br>
+                        • Período: Mañana → +0% adicional<br>
+                        • Comisión total: 0.5% + 0% = <span class="highlight">0.5%</span><br>
+                        • Comisión en dólares: $22,200 × 0.005 = <span class="highlight">$111</span><br>
+                        • Ingreso neto: $22,200 - $111 = <span class="highlight">$22,089</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Actualizar el estado del portafolio de ETH tras la venta</strong><br>
+                        • Cantidad comprada: 12 ETH (sin cambio)<br>
+                        • Cantidad vendida: 0 + 6 = <span class="highlight">6 ETH</span><br>
+                        • <strong>Cantidad actual: 12 - 6 = 6 ETH</strong> ← Quedan 6 ETH en portafolio<br>
+                        • Dinero invertido: $37,200 (sin cambio)<br>
+                        • Dinero recuperado: $0 + $22,200 = <span class="highlight">$22,200</span><br>
+                        • Precio promedio venta: $22,200 / 6 = <span class="highlight">$3,700</span><br>
+                        • Comisiones ETH: $260.40 + $111 = <span class="highlight">$371.40</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Calcular ganancia realizada en ETH</strong><br>
+                        • Costo de los 6 ETH vendidos: 6 × $3,100 = <span class="highlight">$18,600</span><br>
+                        • <strong>Ganancia ETH = $22,200 - $18,600 = $3,600</strong><br>
+                        • <strong>Rentabilidad ETH = (($3,700 - $3,100) / $3,100) × 100 = 19.35%</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 6: Nueva ganancia total del portafolio</strong><br>
+                        • Ganancia BTC: $2,100 (de operación 6)<br>
+                        • Ganancia ADA: $564 (de operación 4)<br>
+                        • Ganancia ETH: $3,600 (nueva)<br>
+                        • Ganancia SOL: $0 (sin ventas)<br>
+                        • <strong>Ganancia total: $2,100 + $564 + $3,600 = $6,264</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 7: Ranking de rentabilidades</strong><br>
+                        • <strong>1º Mejor rentabilidad: ADA con 71.76%</strong> 🥇<br>
+                        • 2º ETH con 19.35%<br>
+                        • 3º BTC con 15.56%<br>
+                        • <strong>Peor rentabilidad: BTC con 15.56%</strong><br>
+                        • SOL: Sin ventas aún (no se puede calcular rentabilidad)
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 8: Comisiones totales actualizadas</strong><br>
+                        • Comisiones BTC: $315.30<br>
+                        • Comisiones ETH: $371.40<br>
+                        • Comisiones ADA: $18.17<br>
+                        • Comisiones SOL: $46.50<br>
+                        • <strong>Comisiones totales: $315.30 + $371.40 + $18.17 + $46.50 = $751.37</strong><br><br>
+                        • <strong>Porcentaje de comisiones sobre ganancias: ($751.37 / $6,264) × 100 = 11.99%</strong><br>
+                        • Interpretación: <span class="highlight">Las comisiones representan casi el 12% de todas tus ganancias</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 9: Alertas ETH</strong><br>
+                        • Cantidad vendida 6 ETH no supera 10 ETH → Sin alerta de venta grande<br>
+                        • Precio $3,700 > $3,500 ✓<br>
+                        • Alerta: <span class="highlight">"⚠️ ALERTA: ETH cerca de máximo histórico"</span><br>
+                        • Recomendación: "✅ Horario óptimo para operar - Buena liquidez"
+                    </div>
                 </div>
 
                 <div class="problem-card">
                     <h3>📊 Problema 3: Análisis Completo Final + Compra de XRP</h3>
                     <p><strong>Nueva operación:</strong> Compra de 4000 XRP a $0.48 - Jueves a las 4 PM</p>
                     <br>
-                    <p><strong>Debes generar:</strong></p>
-                    <ul>
-                        <li><strong>Reporte completo</strong> del estado de todas las criptos</li>
-                        <li>Ranking de rentabilidades</li>
-                        <li>Desglose total de comisiones por cripto</li>
-                        <li>Análisis comparativo: ¿Cuánto habrías ahorrado operando siempre en el mejor horario?</li>
-                        <li>Recomendación final de estrategia de horarios</li>
-                    </ul>
+                    <p><strong>SOLUCIÓN:</strong></p>
+                </div>
+
+                <div class="step-by-step" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-left: 5px solid #8e24aa; margin-top: 20px;">
+                    <h4>📋 Solución Completa - Problema 3</h4>
+
+                    <div class="calculation">
+                        <strong>PARTE 1: Procesar la nueva operación de XRP</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 1: Determinar el período del día</strong><br>
+                        Hora = 16 (4 PM), está entre 12 y 17 → <span class="highlight">Tarde</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 2: Calcular el monto de la operación</strong><br>
+                        Monto = 4000 × $0.48 = <span class="highlight">$1,920</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 3: Calcular la comisión</strong><br>
+                        • Día: Jueves (laboral) → 0.5% base<br>
+                        • Período: Tarde → +0.2% adicional<br>
+                        • Comisión total: 0.5% + 0.2% = <span class="highlight">0.7%</span><br>
+                        • Comisión en dólares: $1,920 × 0.007 = <span class="highlight">$13.44</span><br>
+                        • Costo total: $1,920 + $13.44 = <span class="highlight">$1,933.44</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 4: Actualizar el estado del portafolio de XRP</strong><br>
+                        • Cantidad comprada: 0 + 4000 = <span class="highlight">4000 XRP</span><br>
+                        • Cantidad vendida: 0 XRP<br>
+                        • Cantidad actual: 4000 - 0 = <span class="highlight">4000 XRP</span><br>
+                        • Dinero invertido: $0 + $1,920 = <span class="highlight">$1,920</span><br>
+                        • Precio promedio compra: $1,920 / 4000 = <span class="highlight">$0.48</span><br>
+                        • Comisiones pagadas en XRP: <span class="highlight">$13.44</span>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>Paso 5: Evaluar alertas específicas de XRP</strong><br>
+                        • Precio: $0.48 < $0.50 ✓<br>
+                        • Alerta: <span class="highlight">"💰 Precio atractivo de XRP"</span><br>
+                        • Recomendación: "📊 Alta volatilidad esperada - Oportunidades y riesgos"
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PARTE 2: REPORTE COMPLETO DEL ESTADO DE TODAS LAS CRIPTOS</strong>
+                    </div>
+
+                    <div class="calculation" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);">
+                        <strong>₿ BITCOIN (BTC) - Estado actual:</strong><br>
+                        • Cantidad actual en portafolio: <span class="highlight">0.2 BTC</span><br>
+                        • Cantidad total comprada: 0.5 BTC<br>
+                        • Cantidad total vendida: 0.3 BTC<br>
+                        • Precio promedio de compra: $45,000<br>
+                        • Precio promedio de venta: $52,000<br>
+                        • Dinero invertido: $22,500<br>
+                        • Dinero recuperado: $15,600<br>
+                        • <strong>Ganancia realizada: $2,100</strong><br>
+                        • <strong>Rentabilidad: 15.56%</strong><br>
+                        • Comisiones pagadas: $315.30
+                    </div>
+
+                    <div class="calculation" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);">
+                        <strong>Ξ ETHEREUM (ETH) - Estado actual:</strong><br>
+                        • Cantidad actual en portafolio: <span class="highlight">6 ETH</span><br>
+                        • Cantidad total comprada: 12 ETH<br>
+                        • Cantidad total vendida: 6 ETH<br>
+                        • Precio promedio de compra: $3,100<br>
+                        • Precio promedio de venta: $3,700<br>
+                        • Dinero invertido: $37,200<br>
+                        • Dinero recuperado: $22,200<br>
+                        • <strong>Ganancia realizada: $3,600</strong><br>
+                        • <strong>Rentabilidad: 19.35%</strong><br>
+                        • Comisiones pagadas: $371.40
+                    </div>
+
+                    <div class="calculation" style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);">
+                        <strong>₳ CARDANO (ADA) - Estado actual:</strong><br>
+                        • Cantidad actual en portafolio: <span class="highlight">2000 ADA</span><br>
+                        • Cantidad total comprada: 5000 ADA<br>
+                        • Cantidad total vendida: 3000 ADA<br>
+                        • Precio promedio de compra: $0.262<br>
+                        • Precio promedio de venta: $0.45<br>
+                        • Dinero invertido: $1,310<br>
+                        • Dinero recuperado: $1,350<br>
+                        • <strong>Ganancia realizada: $564</strong><br>
+                        • <strong>Rentabilidad: 71.76%</strong> 🥇<br>
+                        • Comisiones pagadas: $18.17
+                    </div>
+
+                    <div class="calculation" style="background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);">
+                        <strong>◎ SOLANA (SOL) - Estado actual:</strong><br>
+                        • Cantidad actual en portafolio: <span class="highlight">20 SOL</span><br>
+                        • Cantidad total comprada: 20 SOL<br>
+                        • Cantidad total vendida: 0 SOL<br>
+                        • Precio promedio de compra: $155<br>
+                        • Precio promedio de venta: N/A (sin ventas)<br>
+                        • Dinero invertido: $3,100<br>
+                        • Dinero recuperado: $0<br>
+                        • <strong>Ganancia realizada: $0</strong> (sin ventas)<br>
+                        • <strong>Rentabilidad: N/A</strong> (sin ventas)<br>
+                        • Comisiones pagadas: $46.50
+                    </div>
+
+                    <div class="calculation" style="background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);">
+                        <strong>✕ RIPPLE (XRP) - Estado actual:</strong><br>
+                        • Cantidad actual en portafolio: <span class="highlight">4000 XRP</span><br>
+                        • Cantidad total comprada: 4000 XRP<br>
+                        • Cantidad total vendida: 0 XRP<br>
+                        • Precio promedio de compra: $0.48<br>
+                        • Precio promedio de venta: N/A (sin ventas)<br>
+                        • Dinero invertido: $1,920<br>
+                        • Dinero recuperado: $0<br>
+                        • <strong>Ganancia realizada: $0</strong> (sin ventas)<br>
+                        • <strong>Rentabilidad: N/A</strong> (sin ventas)<br>
+                        • Comisiones pagadas: $13.44
+                    </div>
+
+                    <div class="calculation" style="background: linear-gradient(135deg, #fff3cd 0%, #ffc107 100%); padding: 20px;">
+                        <strong>📊 RESUMEN GENERAL DEL PORTAFOLIO:</strong><br><br>
+                        • <strong>Valor total invertido: $66,030</strong><br>
+                        &nbsp;&nbsp;($22,500 BTC + $37,200 ETH + $1,310 ADA + $3,100 SOL + $1,920 XRP)<br><br>
+                        • <strong>Valor total recuperado: $39,150</strong><br>
+                        &nbsp;&nbsp;($15,600 BTC + $22,200 ETH + $1,350 ADA)<br><br>
+                        • <strong>Ganancia total realizada: $6,264</strong><br>
+                        &nbsp;&nbsp;($2,100 BTC + $3,600 ETH + $564 ADA)<br><br>
+                        • <strong>Comisiones totales pagadas: $764.81</strong><br>
+                        &nbsp;&nbsp;($315.30 BTC + $371.40 ETH + $18.17 ADA + $46.50 SOL + $13.44 XRP)<br><br>
+                        • <strong>Porcentaje de comisiones sobre ganancias: 12.21%</strong>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PARTE 3: RANKING DE RENTABILIDADES</strong><br><br>
+                        🥇 <strong>1º lugar: Cardano (ADA) - 71.76%</strong><br>
+                        🥈 2º lugar: Ethereum (ETH) - 19.35%<br>
+                        🥉 3º lugar: Bitcoin (BTC) - 15.56%<br><br>
+                        Sin rentabilidad calculable (sin ventas):<br>
+                        • Solana (SOL) - Sin ventas<br>
+                        • Ripple (XRP) - Sin ventas
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PARTE 4: DESGLOSE TOTAL DE COMISIONES POR CRIPTO</strong>
+                    </div>
+
+                    <div class="calculation" style="background: #f8f9fa;">
+                        <table style="width: 100%; margin: 0;">
+                            <tr style="background: #667eea;">
+                                <th style="color: white; padding: 10px;">Criptomoneda</th>
+                                <th style="color: white; padding: 10px;">Comisiones Pagadas</th>
+                                <th style="color: white; padding: 10px;">% del Total</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px;">Bitcoin (BTC)</td>
+                                <td style="padding: 8px;"><strong>$315.30</strong></td>
+                                <td style="padding: 8px;">41.23%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px;">Ethereum (ETH)</td>
+                                <td style="padding: 8px;"><strong>$371.40</strong></td>
+                                <td style="padding: 8px;">48.56%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px;">Cardano (ADA)</td>
+                                <td style="padding: 8px;"><strong>$18.17</strong></td>
+                                <td style="padding: 8px;">2.38%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px;">Solana (SOL)</td>
+                                <td style="padding: 8px;"><strong>$46.50</strong></td>
+                                <td style="padding: 8px;">6.08%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px;">Ripple (XRP)</td>
+                                <td style="padding: 8px;"><strong>$13.44</strong></td>
+                                <td style="padding: 8px;">1.76%</td>
+                            </tr>
+                            <tr style="background: #fff3cd; font-weight: bold;">
+                                <td style="padding: 10px;">TOTAL</td>
+                                <td style="padding: 10px;">$764.81</td>
+                                <td style="padding: 10px;">100%</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="calculation">
+                        <strong>PARTE 5: ANÁLISIS COMPARATIVO - ¿Cuánto habrías ahorrado?</strong>
+                    </div>
+
+                    <div class="calculation" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);">
+                        <strong>Operaciones realizadas en horarios NO óptimos:</strong><br><br>
+
+                        <strong>Operación 2 - Compra ADA (Miércoles 2 PM):</strong><br>
+                        • Comisión pagada: $3.92 (0.7%)<br>
+                        • Comisión óptima (Lunes-Viernes mañana): $2.80 (0.5%)<br>
+                        • Pérdida: <span class="highlight">$1.12</span><br><br>
+
+                        <strong>Operación 3 - Compra ADA (Viernes 9 PM):</strong><br>
+                        • Comisión pagada: $7.50 (1.0%)<br>
+                        • Comisión óptima: $3.75 (0.5%)<br>
+                        • Pérdida: <span class="highlight">$3.75</span><br><br>
+
+                        <strong>Operación 5 - Compra ETH (Miércoles 3 PM):</strong><br>
+                        • Comisión pagada: $260.40 (0.7%)<br>
+                        • Comisión óptima: $186 (0.5%)<br>
+                        • Pérdida: <span class="highlight">$74.40</span><br><br>
+
+                        <strong>Operación 6 - Venta BTC (Sábado 10 PM):</strong><br>
+                        • Comisión pagada: $202.80 (1.3%)<br>
+                        • Comisión óptima: $78 (0.5%)<br>
+                        • Pérdida: <span class="highlight">$124.80</span><br><br>
+
+                        <strong>Operación 7 - Compra SOL (Domingo 3 AM):</strong><br>
+                        • Comisión pagada: $46.50 (1.5%)<br>
+                        • Comisión óptima: $15.50 (0.5%)<br>
+                        • Pérdida: <span class="highlight">$31</span><br><br>
+
+                        <strong>Operación 9 - Compra XRP (Jueves 4 PM):</strong><br>
+                        • Comisión pagada: $13.44 (0.7%)<br>
+                        • Comisión óptima: $9.60 (0.5%)<br>
+                        • Pérdida: <span class="highlight">$3.84</span><br><br>
+
+                        <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                            <strong style="font-size: 1.2em; color: #c2185b;">💸 TOTAL PERDIDO POR MAL HORARIO: $238.91</strong><br><br>
+                            • Comisiones totales pagadas: $764.81<br>
+                            • Comisiones si operaras siempre en horario óptimo: $525.90<br>
+                            • <strong>Podrías haber ahorrado $238.91 (31.23% de las comisiones)</strong><br>
+                            • Esto representa <span class="highlight">3.81% de tus ganancias totales ($6,264)</span>
+                        </div>
+                    </div>
+
+                    <div class="calculation" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 20px;">
+                        <strong>PARTE 6: RECOMENDACIÓN FINAL DE ESTRATEGIA DE HORARIOS</strong><br><br>
+
+                        <strong>✅ HORARIOS ÓPTIMOS (Comisión 0.5%):</strong><br>
+                        • <strong>Lunes a Viernes de 6 AM a 11 AM</strong><br>
+                        • Mejor liquidez y menores comisiones<br>
+                        • Ahorro garantizado del 0.2% a 1.0% en comisiones<br><br>
+
+                        <strong>⚠️ HORARIOS ACEPTABLES (Comisión 0.7%):</strong><br>
+                        • <strong>Lunes a Viernes de 12 PM a 5 PM</strong><br>
+                        • Mayor volatilidad pero comisiones moderadas<br>
+                        • Solo 0.2% más que el horario óptimo<br><br>
+
+                        <strong>❌ HORARIOS A EVITAR (Comisión 1.0% - 1.5%):</strong><br>
+                        • <strong>Cualquier día de 6 PM a 5 AM (Noche)</strong><br>
+                        • <strong>Sábados y Domingos (todo el día)</strong><br>
+                        • Pérdidas de hasta 1.0% extra en comisiones<br><br>
+
+                        <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                            <strong style="color: #2e7d32; font-size: 1.1em;">🎯 CONCLUSIÓN:</strong><br>
+                            Si hubieras operado SIEMPRE en horario óptimo (Lunes-Viernes 6-11 AM):<br>
+                            • Habrías pagado $525.90 en lugar de $764.81 en comisiones<br>
+                            • Habrías ahorrado $238.91<br>
+                            • Tu ganancia neta sería $6,502.91 en lugar de $6,264<br>
+                            • <strong>Esto representa un 3.81% más de ganancias por solo elegir mejor el horario</strong><br><br>
+                            <span style="color: #1976d2; font-weight: bold;">💡 Recomendación: Siempre que sea posible, opera entre semana en la mañana para maximizar tus ganancias.</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 

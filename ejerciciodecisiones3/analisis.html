@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Atributos, Operaciones y Métodos - Sistema Cripto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .intro {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .intro h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: #764ba2;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .subsection {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .subsection-title {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .type {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+
+        .variable-name {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .note {
+            background: #fff9c4;
+            border-left: 4px solid #fbc02d;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #f57f17;
+        }
+
+        .important {
+            background: #ffebee;
+            border-left: 4px solid #e53935;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .important strong {
+            color: #c62828;
+        }
+
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .method-signature {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .param {
+            color: #ffab40;
+        }
+
+        .return {
+            color: #4fc3f7;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #667eea;
+        }
+
+        .card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .summary-box h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .count-badge {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🪙 Sistema de Gestión de Portafolio de Criptomonedas</h1>
+        <p class="subtitle">Análisis Completo de Atributos, Operaciones y Métodos</p>
+
+        <div class="nav-menu">
+            <a href="enunciado.md" class="nav-button">📋 Enunciado</a>
+            <a href="analisis.html" class="nav-button active">📊 Análisis (Atributos, Operaciones, Métodos)</a>
+            <a href="diagramas.html" class="nav-button">🔀 Diagramas de Flujo</a>
+        </div>
+
+        <div class="intro">
+            <h2>📚 Conceptos Fundamentales</h2>
+            <p><strong>ATRIBUTO:</strong> Variable que pertenece a la clase y almacena el ESTADO del objeto. Persiste durante toda la vida del objeto.</p>
+            <p><strong>OPERACIÓN:</strong> Cálculo o función que retorna un valor. Sus parámetros SOLO pueden ser datos externos (que vienen de fuera), NO atributos de la clase.</p>
+            <p><strong>MÉTODO:</strong> Función que realiza acciones. Puede usar los atributos de la clase directamente sin recibirlos como parámetros.</p>
+        </div>
+
+        <div class="important">
+            <strong>⚠️ MUY IMPORTANTE:</strong><br>
+            • Los datos de entrada del usuario NO son atributos, son <strong>parámetros de métodos</strong><br>
+            • Las operaciones solo reciben como parámetros datos <strong>externos a la clase</strong><br>
+            • Si una operación necesita un atributo de la clase, lo usa directamente, NO como parámetro<br>
+            • Si una operación necesita el resultado de otra operación, lo usa directamente, NO como parámetro
+        </div>
+
+        <!-- SECCIÓN 1: ATRIBUTOS -->
+        <div class="section">
+            <h2 class="section-title">📊 1. ATRIBUTOS (Estado de la Clase)</h2>
+
+            <div class="note">
+                <strong>💡 ¿Qué es un atributo?</strong><br>
+                Es una variable que pertenece a la clase y almacena información que debe persistir entre operaciones.
+                Los atributos mantienen el ESTADO del objeto.
+            </div>
+
+            <!-- Atributos por criptomoneda -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">💰</span>Atributos por Criptomoneda (50 atributos = 10 × 5 criptos)</h3>
+
+                <div class="note">
+                    <strong>⚠️ Importante:</strong> Los siguientes 10 atributos se repiten para cada una de las 5 criptomonedas (BTC, ETH, ADA, SOL, XRP).
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Atributo</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Ejemplo (BTC)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="variable-name">[cripto]Compradas</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Total de monedas compradas acumuladas</td>
+                            <td>btcCompradas = 0.5</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]Vendidas</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Total de monedas vendidas acumuladas</td>
+                            <td>btcVendidas = 0.3</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]Actuales</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Cantidad actual en portafolio</td>
+                            <td>btcActuales = 0.2</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]DineroInvertido</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Total gastado en compras (sin comisiones)</td>
+                            <td>btcDineroInvertido = 22500</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]DineroRecuperado</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Total recibido en ventas (sin comisiones)</td>
+                            <td>btcDineroRecuperado = 15600</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]PrecioPromCompra</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Precio promedio de compra</td>
+                            <td>btcPrecioPromCompra = 45000</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]PrecioPromVenta</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Precio promedio de venta</td>
+                            <td>btcPrecioPromVenta = 52000</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]Ganancia</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Ganancia o pérdida realizada acumulada</td>
+                            <td>btcGanancia = 2100</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]Rentabilidad</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Rentabilidad porcentual</td>
+                            <td>btcRentabilidad = 15.56</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">[cripto]Comisiones</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Total de comisiones pagadas acumuladas</td>
+                            <td>btcComisiones = 315.30</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="example">
+                    <strong>Lista completa de los 50 atributos:</strong><br><br>
+                    btcCompradas, btcVendidas, btcActuales, btcDineroInvertido, btcDineroRecuperado,
+                    btcPrecioPromCompra, btcPrecioPromVenta, btcGanancia, btcRentabilidad, btcComisiones<br><br>
+
+                    ethCompradas, ethVendidas, ethActuales, ethDineroInvertido, ethDineroRecuperado,
+                    ethPrecioPromCompra, ethPrecioPromVenta, ethGanancia, ethRentabilidad, ethComisiones<br><br>
+
+                    adaCompradas, adaVendidas, adaActuales, adaDineroInvertido, adaDineroRecuperado,
+                    adaPrecioPromCompra, adaPrecioPromVenta, adaGanancia, adaRentabilidad, adaComisiones<br><br>
+
+                    solCompradas, solVendidas, solActuales, solDineroInvertido, solDineroRecuperado,
+                    solPrecioPromCompra, solPrecioPromVenta, solGanancia, solRentabilidad, solComisiones<br><br>
+
+                    xrpCompradas, xrpVendidas, xrpActuales, xrpDineroInvertido, xrpDineroRecuperado,
+                    xrpPrecioPromCompra, xrpPrecioPromVenta, xrpGanancia, xrpRentabilidad, xrpComisiones
+                </div>
+            </div>
+
+            <!-- Atributos globales -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">🌍</span>Atributos Globales del Portafolio (4 atributos)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Atributo</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="variable-name">comisionesTotales</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Suma de todas las comisiones de todas las criptos</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">gananciaTotal</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Suma de todas las ganancias/pérdidas de todas las criptos</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">valorTotalInvertido</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Suma de todo el dinero invertido en todas las criptos</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">valorTotalRecuperado</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Suma de todo el dinero recuperado de todas las criptos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="summary-box">
+                <h3>📊 Resumen de Atributos</h3>
+                <p><span class="count-badge">50</span> Atributos por criptomoneda (10 × 5)</p>
+                <p><span class="count-badge">4</span> Atributos globales</p>
+                <h3 style="margin-top: 20px;">TOTAL: <span class="count-badge">54 ATRIBUTOS</span></h3>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: OPERACIONES -->
+        <div class="section">
+            <h2 class="section-title">⚙️ 2. OPERACIONES (Cálculos que Retornan Valores)</h2>
+
+            <div class="important">
+                <strong>💡 ¿Qué es una operación?</strong><br>
+                Es una función que realiza un cálculo y retorna un valor.<br>
+                <strong>REGLA CLAVE:</strong> Los parámetros de las operaciones SOLO pueden ser datos <strong>externos</strong> (que vienen de fuera de la clase, del usuario).<br>
+                Si necesita un atributo de la clase, lo accede directamente.<br>
+                Si necesita el resultado de otra operación, llama a esa operación directamente, NO la recibe como parámetro.
+            </div>
+
+            <!-- Operaciones básicas -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">🔢</span>Operaciones Básicas de Cálculo</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Parámetros (solo datos externos)</th>
+                            <th>Retorno</th>
+                            <th>Fórmula/Lógica</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="variable-name">determinarPeriodo</span></td>
+                            <td>hora: <span class="type">Integer</span></td>
+                            <td><span class="type">String</span></td>
+                            <td>Si hora ∈ [6,11]: "Mañana"<br>Si hora ∈ [12,17]: "Tarde"<br>Sino: "Noche"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">obtenerComisionBase</span></td>
+                            <td>diaSemana: <span class="type">String</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>L-V: 0.5, Sáb: 0.8, Dom: 1.0</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">obtenerAjustePeriodo</span></td>
+                            <td>hora: <span class="type">Integer</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>Llama determinarPeriodo(hora), luego retorna: Mañana: 0.0, Tarde: 0.2, Noche: 0.5</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">calcularMontoOperacion</span></td>
+                            <td>cantidad: <span class="type">Double</span>,<br>precioUnitario: <span class="type">Double</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>cantidad × precioUnitario</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">calcularComisionPorcentaje</span></td>
+                            <td>diaSemana: <span class="type">String</span>,<br>hora: <span class="type">Integer</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>obtenerComisionBase(diaSemana) + obtenerAjustePeriodo(hora)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">calcularComisionDolares</span></td>
+                            <td>cantidad: <span class="type">Double</span>,<br>precioUnitario: <span class="type">Double</span>,<br>diaSemana: <span class="type">String</span>,<br>hora: <span class="type">Integer</span></td>
+                            <td><span class="type">Double</span></td>
+                            <td>calcularMontoOperacion(cantidad, precioUnitario) × (calcularComisionPorcentaje(diaSemana, hora) / 100)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">calcularPrecioPromedioBTC</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">Double</span></td>
+                            <td>Usa atributos: btcDineroInvertido / btcCompradas</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">calcularCantidadActualBTC</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">Double</span></td>
+                            <td>Usa atributos: btcCompradas - btcVendidas</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">calcularGananciaBTC</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">Double</span></td>
+                            <td>Usa atributos: btcDineroRecuperado - (btcVendidas × calcularPrecioPromedioBTC())</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">calcularRentabilidadBTC</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">Double</span></td>
+                            <td>Usa atributos: ((btcPrecioPromVenta - btcPrecioPromCompra) / btcPrecioPromCompra) × 100</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="note">
+                    <strong>📝 Nota importante:</strong> Las operaciones con parámetros reciben SOLO datos externos del usuario (cantidad, precio, día, hora). Las operaciones que necesitan atributos de la clase o resultados de otras operaciones, los acceden/llaman directamente, NO los reciben como parámetros.
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">💡</span>Ejemplo de Operación Correcta vs Incorrecta</h3>
+
+                <div class="example">
+                    <strong>✅ CORRECTO:</strong><br>
+                    calcularMontoOperacion(cantidad: Double, precioUnitario: Double): Double {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;return cantidad * precioUnitario<br>
+                    }<br><br>
+                    <em>// cantidad y precioUnitario vienen de FUERA (del usuario)</em>
+                </div>
+
+                <div class="important">
+                    <strong>❌ INCORRECTO:</strong><br>
+                    calcularPrecioPromedio(btcDineroInvertido: Double, btcCompradas: Double): Double {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;return btcDineroInvertido / btcCompradas<br>
+                    }<br><br>
+                    <em>// ¡MAL! btcDineroInvertido y btcCompradas son ATRIBUTOS de la clase, no deben ser parámetros</em>
+                </div>
+            </div>
+
+            <div class="summary-box">
+                <h3>📊 Resumen de Operaciones</h3>
+                <p><span class="count-badge">6</span> Operaciones que reciben parámetros externos del usuario</p>
+                <p><span class="count-badge">4</span> Operaciones que usan atributos directamente (por cada cripto = 20 total)</p>
+                <h3 style="margin-top: 20px;">TOTAL: <span class="count-badge">26 OPERACIONES</span></h3>
+                <p style="font-size: 0.9em; margin-top: 10px;">(6 generales + 4×5 específicas por cripto)</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: MÉTODOS -->
+        <div class="section">
+            <h2 class="section-title">🔧 3. MÉTODOS (Acciones de la Clase)</h2>
+
+            <div class="note">
+                <strong>💡 ¿Qué es un método?</strong><br>
+                Es una función que realiza acciones. Los métodos pueden acceder directamente a los atributos de la clase sin necesidad de recibirlos como parámetros.
+                Los métodos pueden recibir como parámetros SOLO datos externos (del usuario).
+            </div>
+
+            <!-- Métodos de entrada -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">📥</span>Métodos de Entrada y Validación</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Método</th>
+                            <th>Parámetros</th>
+                            <th>Retorno</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="variable-name">registrarOperacion</span></td>
+                            <td>tipoOperacion: <span class="type">String</span>,<br>
+                                criptomoneda: <span class="type">String</span>,<br>
+                                cantidad: <span class="type">Double</span>,<br>
+                                precioUnitario: <span class="type">Double</span>,<br>
+                                diaSemana: <span class="type">String</span>,<br>
+                                hora: <span class="type">Integer</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Método principal que recibe los datos del usuario y procesa la operación</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">validarCriptomoneda</span></td>
+                            <td>cripto: <span class="type">String</span></td>
+                            <td><span class="type">Boolean</span></td>
+                            <td>Verifica que sea BTC, ETH, ADA, SOL o XRP</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">validarDiaSemana</span></td>
+                            <td>dia: <span class="type">String</span></td>
+                            <td><span class="type">Boolean</span></td>
+                            <td>Verifica que sea un día válido</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">validarHora</span></td>
+                            <td>hora: <span class="type">Integer</span></td>
+                            <td><span class="type">Boolean</span></td>
+                            <td>Verifica que esté entre 0 y 23</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Métodos de procesamiento -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">💼</span>Métodos de Procesamiento</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Método</th>
+                            <th>Parámetros</th>
+                            <th>Retorno</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="variable-name">procesarCompra</span></td>
+                            <td>criptomoneda: <span class="type">String</span>,<br>
+                                cantidad: <span class="type">Double</span>,<br>
+                                precioUnitario: <span class="type">Double</span>,<br>
+                                comisionDolares: <span class="type">Double</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Actualiza los atributos de la cripto tras una compra</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">procesarVenta</span></td>
+                            <td>criptomoneda: <span class="type">String</span>,<br>
+                                cantidad: <span class="type">Double</span>,<br>
+                                precioUnitario: <span class="type">Double</span>,<br>
+                                comisionDolares: <span class="type">Double</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Actualiza los atributos de la cripto tras una venta</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">actualizarTotalesGlobales</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">void</span></td>
+                            <td>Suma los valores de todas las criptos para calcular totales globales</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Métodos de alertas -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">⚠️</span>Métodos de Alertas y Recomendaciones</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Método</th>
+                            <th>Parámetros</th>
+                            <th>Retorno</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="variable-name">evaluarAlertasBTC</span></td>
+                            <td>tipoOperacion: <span class="type">String</span>,<br>
+                                precioUnitario: <span class="type">Double</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Evalúa y muestra alertas específicas de Bitcoin</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">evaluarAlertasETH</span></td>
+                            <td>tipoOperacion: <span class="type">String</span>,<br>
+                                cantidad: <span class="type">Double</span>,<br>
+                                precioUnitario: <span class="type">Double</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Evalúa y muestra alertas específicas de Ethereum</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">evaluarAlertasADA</span></td>
+                            <td>tipoOperacion: <span class="type">String</span>,<br>
+                                precioUnitario: <span class="type">Double</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Evalúa y muestra alertas específicas de Cardano</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">evaluarAlertasSOL</span></td>
+                            <td>tipoOperacion: <span class="type">String</span>,<br>
+                                precioUnitario: <span class="type">Double</span>,<br>
+                                diaSemana: <span class="type">String</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Evalúa y muestra alertas específicas de Solana</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">evaluarAlertasXRP</span></td>
+                            <td>tipoOperacion: <span class="type">String</span>,<br>
+                                cantidad: <span class="type">Double</span>,<br>
+                                precioUnitario: <span class="type">Double</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Evalúa y muestra alertas específicas de Ripple</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">mostrarRecomendacion</span></td>
+                            <td>periodo: <span class="type">String</span>,<br>
+                                diaSemana: <span class="type">String</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Muestra recomendación según día y período</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Métodos de análisis -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">📊</span>Métodos de Análisis y Consulta</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Método</th>
+                            <th>Parámetros</th>
+                            <th>Retorno</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="variable-name">obtenerMejorCripto</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">String</span></td>
+                            <td>Retorna el nombre de la cripto con mejor rentabilidad (usa atributos directamente)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">obtenerPeorCripto</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">String</span></td>
+                            <td>Retorna el nombre de la cripto con peor rentabilidad (usa atributos directamente)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">calcularPorcentajeComisionesGanancias</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">Double</span></td>
+                            <td>Calcula qué % de las ganancias son comisiones (usa atributos directamente)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Métodos de salida -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">📤</span>Métodos de Salida (Mostrar Información)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre del Método</th>
+                            <th>Parámetros</th>
+                            <th>Retorno</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="variable-name">mostrarResumenOperacion</span></td>
+                            <td>criptomoneda: <span class="type">String</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Muestra el resumen de la operación realizada</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">mostrarEstadoCripto</span></td>
+                            <td>cripto: <span class="type">String</span></td>
+                            <td><span class="type">void</span></td>
+                            <td>Muestra el estado completo de una cripto específica</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">mostrarTotalesGlobales</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">void</span></td>
+                            <td>Muestra los totales del portafolio completo</td>
+                        </tr>
+                        <tr>
+                            <td><span class="variable-name">mostrarDesgloseComisiones</span></td>
+                            <td>Ninguno</td>
+                            <td><span class="type">void</span></td>
+                            <td>Muestra el desglose de comisiones por cripto</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="summary-box">
+                <h3>📊 Resumen de Métodos</h3>
+                <p><span class="count-badge">4</span> Métodos de entrada y validación</p>
+                <p><span class="count-badge">3</span> Métodos de procesamiento</p>
+                <p><span class="count-badge">6</span> Métodos de alertas y recomendaciones</p>
+                <p><span class="count-badge">3</span> Métodos de análisis</p>
+                <p><span class="count-badge">4</span> Métodos de salida</p>
+                <h3 style="margin-top: 20px;">TOTAL: <span class="count-badge">20 MÉTODOS</span></h3>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: EJEMPLO DE IMPLEMENTACIÓN -->
+        <div class="section">
+            <h2 class="section-title">💻 4. EJEMPLO DE IMPLEMENTACIÓN CORRECTA</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">🎯</span>Método Principal: registrarOperacion()</h3>
+
+                <div class="method-signature">
+<span class="return">void</span> registrarOperacion(<span class="param">String tipoOperacion, String criptomoneda,
+                        Double cantidad, Double precioUnitario,
+                        String diaSemana, Integer hora</span>) {
+
+    <span class="param">// 1. Determinar período del día (operación con dato externo)</span>
+    String periodo = determinarPeriodo(hora);
+
+    <span class="param">// 2. Calcular comisión en dólares (operación con datos externos)</span>
+    <span class="param">// Esta operación internamente llama a otras operaciones</span>
+    Double comisionDolares = calcularComisionDolares(cantidad, precioUnitario, diaSemana, hora);
+
+    <span class="param">// 3. Procesar compra o venta (método con datos externos)</span>
+    if (tipoOperacion.equals("Compra")) {
+        procesarCompra(criptomoneda, cantidad, precioUnitario, comisionDolares);
+    } else {
+        procesarVenta(criptomoneda, cantidad, precioUnitario, comisionDolares);
+    }
+
+    <span class="param">// 4. Actualizar totales globales (método sin parámetros, usa atributos)</span>
+    actualizarTotalesGlobales();
+
+    <span class="param">// 5. Evaluar alertas según la cripto (método con datos externos)</span>
+    switch(criptomoneda) {
+        case "BTC":
+            evaluarAlertasBTC(tipoOperacion, precioUnitario);
+            break;
+        case "ETH":
+            evaluarAlertasETH(tipoOperacion, cantidad, precioUnitario);
+            break;
+        <span class="param">// ... otros casos</span>
+    }
+
+    <span class="param">// 6. Mostrar recomendación (método con datos externos)</span>
+    mostrarRecomendacion(periodo, diaSemana);
+
+    <span class="param">// 7. Mostrar resumen (método con dato externo)</span>
+    mostrarResumenOperacion(criptomoneda);
+}
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">🔧</span>Ejemplo: Método procesarCompra()</h3>
+
+                <div class="method-signature">
+<span class="return">void</span> procesarCompra(<span class="param">String criptomoneda, Double cantidad,
+                    Double precioUnitario, Double comisionDolares</span>) {
+
+    <span class="param">// Calcular monto de la operación (operación con datos externos)</span>
+    Double monto = calcularMontoOperacion(cantidad, precioUnitario);
+
+    <span class="param">// Actualizar atributos según la criptomoneda</span>
+    switch(criptomoneda) {
+        case "BTC":
+            <span class="param">// Actualizar atributos directamente</span>
+            btcCompradas += cantidad;
+            btcDineroInvertido += monto;
+            <span class="param">// Calcular precio promedio (operación que usa atributos)</span>
+            btcPrecioPromCompra = calcularPrecioPromedioBTC();
+            btcComisiones += comisionDolares;
+            <span class="param">// Calcular cantidad actual (operación que usa atributos)</span>
+            btcActuales = calcularCantidadActualBTC();
+            break;
+
+        case "ETH":
+            ethCompradas += cantidad;
+            ethDineroInvertido += monto;
+            ethPrecioPromCompra = calcularPrecioPromedioETH();
+            ethComisiones += comisionDolares;
+            ethActuales = calcularCantidadActualETH();
+            break;
+
+        <span class="param">// ... casos para ADA, SOL, XRP</span>
+    }
+}
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="icon">📊</span>Ejemplo: Método actualizarTotalesGlobales()</h3>
+
+                <div class="method-signature">
+<span class="return">void</span> actualizarTotalesGlobales() {
+    <span class="param">// Este método NO recibe parámetros porque usa los ATRIBUTOS directamente</span>
+
+    valorTotalInvertido = btcDineroInvertido + ethDineroInvertido +
+                          adaDineroInvertido + solDineroInvertido +
+                          xrpDineroInvertido;
+
+    valorTotalRecuperado = btcDineroRecuperado + ethDineroRecuperado +
+                           adaDineroRecuperado + solDineroRecuperado +
+                           xrpDineroRecuperado;
+
+    gananciaTotal = btcGanancia + ethGanancia + adaGanancia +
+                    solGanancia + xrpGanancia;
+
+    comisionesTotales = btcComisiones + ethComisiones + adaComisiones +
+                        solComisiones + xrpComisiones;
+}
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 5: RESUMEN FINAL -->
+        <div class="section">
+            <h2 class="section-title">📋 5. RESUMEN GENERAL DEL SISTEMA</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h4>📦 ATRIBUTOS</h4>
+                    <p style="font-size: 2.5em; color: #667eea; font-weight: bold; margin: 10px 0;">54</p>
+                    <p>Variables de la clase</p>
+                    <ul style="margin-top: 10px; text-align: left;">
+                        <li>50 por criptomoneda</li>
+                        <li>4 globales</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>⚙️ OPERACIONES</h4>
+                    <p style="font-size: 2.5em; color: #764ba2; font-weight: bold; margin: 10px 0;">26</p>
+                    <p>Cálculos que retornan valores</p>
+                    <ul style="margin-top: 10px; text-align: left;">
+                        <li>6 reciben solo datos externos</li>
+                        <li>20 usan atributos (4×5 criptos)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>🔧 MÉTODOS</h4>
+                    <p style="font-size: 2.5em; color: #e91e63; font-weight: bold; margin: 10px 0;">20</p>
+                    <p>Acciones de la clase</p>
+                    <ul style="margin-top: 10px; text-align: left;">
+                        <li>Usan atributos directamente</li>
+                        <li>Reciben solo datos externos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important" style="margin-top: 30px;">
+                <strong>🎯 Diferencias Clave (CORREGIDAS):</strong><br><br>
+
+                <strong>ATRIBUTOS:</strong> Variables que pertenecen a la clase y persisten.<br>
+                <em>Ejemplo:</em> <code>btcCompradas</code>, <code>ethDineroInvertido</code>, <code>comisionesTotales</code><br><br>
+
+                <strong>OPERACIONES:</strong> Funciones que calculan y retornan valores. Sus parámetros SOLO son datos externos.<br>
+                <em>Ejemplo:</em> <code>calcularMontoOperacion(cantidad, precioUnitario)</code> → cantidad y precio vienen del USUARIO<br>
+                <em>Ejemplo:</em> <code>calcularPrecioPromedio(dineroTotal, cantidadTotal)</code> → dinero y cantidad vienen de OTRA operación o atributo<br><br>
+
+                <strong>MÉTODOS:</strong> Funciones que realizan acciones. Usan los atributos directamente sin recibirlos como parámetros.<br>
+                <em>Ejemplo:</em> <code>actualizarTotalesGlobales()</code> → usa btcGanancia, ethGanancia, etc. directamente<br>
+                <em>Ejemplo:</em> <code>registrarOperacion(tipo, cripto, cantidad, precio, dia, hora)</code> → recibe datos del USUARIO
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📚 <strong>Material Didáctico para Fundamentos de Programación</strong></p>
+            <p>Sistema de Gestión de Portafolio de Criptomonedas</p>
+            <p style="margin-top: 10px; color: #999;">Análisis Corregido de Atributos, Operaciones y Métodos</p>
+        </div>
+    </div>
+</body>
+</html>
