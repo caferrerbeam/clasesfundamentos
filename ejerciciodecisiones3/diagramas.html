@@ -140,6 +140,7 @@
             <a href="enunciado.md" class="nav-button">📋 Enunciado</a>
             <a href="analisis.html" class="nav-button">📊 Análisis (Atributos, Operaciones, Métodos)</a>
             <a href="diagramas.html" class="nav-button active">🔀 Diagramas de Flujo</a>
+            <a href="entidades.html" class="nav-button">🏗️ Múltiples Entidades</a>
         </div>
 
         <!-- SECCIÓN 1: OPERACIONES CON PARÁMETROS EXTERNOS -->
@@ -255,10 +256,9 @@
                     <div class="diagram-title">calcularPrecioPromedioBTC(): Double</div>
                     <div class="mermaid">
                         flowchart TD
-                            A[Inicio] --> B[Leer: btcDineroInvertido<br/>Leer: btcCompradas]
-                            B --> C[promedio = btcDineroInvertido / btcCompradas]
-                            C --> D[Retornar promedio]
-                            D --> E[Fin]
+                            A[Inicio] --> B[promedio = btcDineroInvertido / btcCompradas]
+                            B --> C[Retornar promedio]
+                            C --> D[Fin]
                     </div>
                 </div>
 
@@ -267,10 +267,9 @@
                     <div class="diagram-title">calcularCantidadActualBTC(): Double</div>
                     <div class="mermaid">
                         flowchart TD
-                            A[Inicio] --> B[Leer: btcCompradas<br/>Leer: btcVendidas]
-                            B --> C[actual = btcCompradas - btcVendidas]
-                            C --> D[Retornar actual]
-                            D --> E[Fin]
+                            A[Inicio] --> B[actual = btcCompradas - btcVendidas]
+                            B --> C[Retornar actual]
+                            C --> D[Fin]
                     </div>
                 </div>
 
@@ -279,11 +278,10 @@
                     <div class="diagram-title">calcularGananciaBTC(): Double</div>
                     <div class="mermaid">
                         flowchart TD
-                            A[Inicio] --> B[Leer: btcDineroRecuperado<br/>Leer: btcVendidas<br/>Leer: btcPrecioPromCompra]
-                            B --> C[costo = btcVendidas × btcPrecioPromCompra]
-                            C --> D[ganancia = btcDineroRecuperado - costo]
-                            D --> E[Retornar ganancia]
-                            E --> F[Fin]
+                            A[Inicio] --> B[costo = btcVendidas × btcPrecioPromCompra]
+                            B --> C[ganancia = btcDineroRecuperado - costo]
+                            C --> D[Retornar ganancia]
+                            D --> E[Fin]
                     </div>
                 </div>
 
@@ -292,11 +290,10 @@
                     <div class="diagram-title">calcularRentabilidadBTC(): Double</div>
                     <div class="mermaid">
                         flowchart TD
-                            A[Inicio] --> B[Leer: btcPrecioPromVenta<br/>Leer: btcPrecioPromCompra]
-                            B --> C[diferencia = btcPrecioPromVenta - btcPrecioPromCompra]
-                            C --> D[rentabilidad = diferencia / btcPrecioPromCompra × 100]
-                            D --> E[Retornar rentabilidad]
-                            E --> F[Fin]
+                            A[Inicio] --> B[diferencia = btcPrecioPromVenta - btcPrecioPromCompra]
+                            B --> C[rentabilidad = diferencia / btcPrecioPromCompra × 100]
+                            C --> D[Retornar rentabilidad]
+                            D --> E[Fin]
                     </div>
                 </div>
             </div>
@@ -312,16 +309,16 @@
                 <div class="mermaid">
                     flowchart TD
                         A[Inicio] --> B[Recibir: tipoOperacion, criptomoneda,<br/>cantidad, precioUnitario, diaSemana, hora]
-                        B --> C[periodo = determinarPeriodo hora]
-                        C --> D[comisionDolares = calcularComisionDolares<br/>cantidad, precioUnitario, diaSemana, hora]
+                        B --> C["periodo = 🔄 determinarPeriodo(hora)"]
+                        C --> D["comisionDolares = 🔄 calcularComisionDolares<br/>(cantidad, precioUnitario, diaSemana, hora)"]
                         D --> E{tipoOperacion == Compra?}
-                        E -->|SÍ| F[procesarCompra criptomoneda,<br/>cantidad, precioUnitario, comisionDolares]
-                        E -->|NO| G[procesarVenta criptomoneda,<br/>cantidad, precioUnitario, comisionDolares]
-                        F --> H[actualizarTotalesGlobales]
+                        E -->|SÍ| F["🔄 procesarCompra(criptomoneda,<br/>cantidad, precioUnitario, comisionDolares)"]
+                        E -->|NO| G["🔄 procesarVenta(criptomoneda,<br/>cantidad, precioUnitario, comisionDolares)"]
+                        F --> H["🔄 actualizarTotalesGlobales()"]
                         G --> H
-                        H --> I[evaluarAlertas según criptomoneda]
-                        I --> J[mostrarRecomendacion periodo, diaSemana]
-                        J --> K[mostrarResumenOperacion criptomoneda]
+                        H --> I["🔄 evaluarAlertas(según criptomoneda)"]
+                        I --> J["🔄 mostrarRecomendacion(periodo, diaSemana)"]
+                        J --> K["🔄 mostrarResumenOperacion(criptomoneda)"]
                         K --> L[Fin]
                 </div>
             </div>
@@ -332,9 +329,9 @@
                 <div class="mermaid">
                     flowchart TD
                         A[Inicio] --> B[Recibir: criptomoneda, cantidad,<br/>precioUnitario, comisionDolares]
-                        B --> C[monto = calcularMontoOperacion<br/>cantidad, precioUnitario]
+                        B --> C[monto = cantidad × precioUnitario]
                         C --> D{Switch criptomoneda}
-                        D -->|BTC| E[btcCompradas += cantidad<br/>btcDineroInvertido += monto<br/>btcPrecioPromCompra = calcularPrecioPromedioBTC<br/>btcComisiones += comisionDolares<br/>btcActuales = calcularCantidadActualBTC]
+                        D -->|BTC| E["btcCompradas += cantidad<br/>btcDineroInvertido += monto<br/>btcPrecioPromCompra = 🔄 calcularPrecioPromedioBTC()<br/>btcComisiones += comisionDolares<br/>btcActuales = 🔄 calcularCantidadActualBTC()"]
                         D -->|ETH| F[Similar para ETH]
                         D -->|ADA| G[Similar para ADA]
                         D -->|SOL| H[Similar para SOL]
@@ -353,9 +350,9 @@
                 <div class="mermaid">
                     flowchart TD
                         A[Inicio] --> B[Recibir: criptomoneda, cantidad,<br/>precioUnitario, comisionDolares]
-                        B --> C[monto = calcularMontoOperacion<br/>cantidad, precioUnitario]
+                        B --> C[monto = cantidad × precioUnitario]
                         C --> D{Switch criptomoneda}
-                        D -->|BTC| E[btcVendidas += cantidad<br/>btcDineroRecuperado += monto<br/>btcPrecioPromVenta = btcDineroRecuperado / btcVendidas<br/>btcGanancia = calcularGananciaBTC<br/>btcRentabilidad = calcularRentabilidadBTC<br/>btcComisiones += comisionDolares<br/>btcActuales = calcularCantidadActualBTC]
+                        D -->|BTC| E["btcVendidas += cantidad<br/>btcDineroRecuperado += monto<br/>btcPrecioPromVenta = btcDineroRecuperado / btcVendidas<br/>btcGanancia = 🔄 calcularGananciaBTC()<br/>btcRentabilidad = 🔄 calcularRentabilidadBTC()<br/>btcComisiones += comisionDolares<br/>btcActuales = 🔄 calcularCantidadActualBTC()"]
                         D -->|ETH, ADA, SOL, XRP| F[Similar para otras criptos]
                         E --> G[Fin]
                         F --> G

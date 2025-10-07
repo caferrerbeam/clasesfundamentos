@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏗️ Diseño con Múltiples Entidades - Sistema de Criptomonedas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-button:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        .intro-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+        }
+
+        .concept-box {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 3px solid #00acc1;
+        }
+
+        .concept-box h4 {
+            color: #00838f;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 3px solid #fbc02d;
+        }
+
+        .example-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .comparison-card {
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid;
+        }
+
+        .card-bad {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-color: #e57373;
+        }
+
+        .card-good {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-color: #66bb6a;
+        }
+
+        .card-bad h4 {
+            color: #c62828;
+        }
+
+        .card-good h4 {
+            color: #2e7d32;
+        }
+
+        .entity-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .entity-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 4px solid;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .entity-card.criptomoneda {
+            border-color: #9c27b0;
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+        }
+
+        .entity-card.portafolio {
+            border-color: #2196f3;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        }
+
+        .entity-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .entity-card.criptomoneda h3 {
+            color: #7b1fa2;
+        }
+
+        .entity-card.portafolio h3 {
+            color: #1565c0;
+        }
+
+        .attribute-list {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .attribute-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .relationship-box {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 3px solid #e91e63;
+        }
+
+        .relationship-box h3 {
+            color: #c2185b;
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .diagram-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: monospace;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-top: 5px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .benefit-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .important {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe082 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ff9800;
+            margin: 20px 0;
+        }
+
+        .important strong {
+            color: #e65100;
+            font-size: 1.1em;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .steps-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .step {
+            padding: 20px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            border-radius: 10px;
+            border-left: 5px solid #3f51b5;
+        }
+
+        .step h4 {
+            color: #283593;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid, .entity-showcase {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏗️ Diseño con Múltiples Entidades</h1>
+        <p class="subtitle">Aprende a dividir un problema en entidades independientes y reutilizables</p>
+
+        <div class="nav-menu">
+            <a href="enunciado.md" class="nav-button">📋 Enunciado</a>
+            <a href="analisis.html" class="nav-button">📊 Análisis (Atributos, Operaciones, Métodos)</a>
+            <a href="diagramas.html" class="nav-button">🔀 Diagramas de Flujo</a>
+            <a href="entidades.html" class="nav-button active">🏗️ Múltiples Entidades</a>
+        </div>
+
+        <!-- SECCIÓN 1: ¿QUÉ ES UNA ENTIDAD? -->
+        <div class="section">
+            <h2>🎯 ¿Qué es una Entidad?</h2>
+
+            <div class="intro-box">
+                <h3>📚 Definición de Entidad</h3>
+                <p>Una <strong>entidad</strong> es una representación de un "objeto del mundo real" que tiene:</p>
+                <ul>
+                    <li><strong>Identidad propia:</strong> Es algo que existe de forma independiente</li>
+                    <li><strong>Características (atributos):</strong> Propiedades que describen su estado</li>
+                    <li><strong>Comportamientos (métodos):</strong> Acciones que puede realizar</li>
+                    <li><strong>Responsabilidades:</strong> Cosas de las que se encarga</li>
+                </ul>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 Analogía del Mundo Real</h4>
+                <p>Piensa en tu <strong>teléfono celular</strong>:</p>
+                <ul>
+                    <li><strong>Es una entidad</strong> porque existe de forma independiente</li>
+                    <li><strong>Tiene atributos:</strong> marca, modelo, color, batería, memoria, número telefónico</li>
+                    <li><strong>Tiene comportamientos:</strong> hacer llamadas, enviar mensajes, tomar fotos, reproducir música</li>
+                    <li><strong>Tiene responsabilidades:</strong> gestionar su propia batería, almacenar sus propios contactos</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>En programación, una entidad se convierte en una CLASE.</strong></p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card card-bad">
+                    <h4>❌ NO es una entidad:</h4>
+                    <ul>
+                        <li>"Precio" → Es solo un dato, no tiene comportamiento propio</li>
+                        <li>"Suma total" → Es un cálculo, no un objeto independiente</li>
+                        <li>"Color rojo" → Es una característica, no un objeto</li>
+                        <li>"Proceso de sumar" → Es una acción, no un objeto</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card card-good">
+                    <h4>✅ SÍ es una entidad:</h4>
+                    <ul>
+                        <li>"Estudiante" → Tiene datos (nombre, edad) y comportamientos (estudiar, inscribirse)</li>
+                        <li>"Carro" → Tiene datos (marca, color) y comportamientos (acelerar, frenar)</li>
+                        <li>"Cuenta bancaria" → Tiene datos (saldo, titular) y comportamientos (depositar, retirar)</li>
+                        <li>"Producto" → Tiene datos (precio, stock) y comportamientos (vender, reabastecer)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: ¿CÓMO IDENTIFICAR ENTIDADES? -->
+        <div class="section">
+            <h2>🔍 ¿Cómo Identificar Entidades en un Problema?</h2>
+
+            <div class="highlight-box">
+                <h3>📝 Preguntas Clave para Identificar Entidades</h3>
+                <p>Cuando leas un problema, hazte estas preguntas:</p>
+            </div>
+
+            <div class="steps-box">
+                <div class="step">
+                    <h4>1️⃣ ¿Qué "cosas" u "objetos" existen en este problema?</h4>
+                    <p>Busca <strong>sustantivos</strong> que representen objetos del mundo real.</p>
+                    <p style="margin-top: 10px;"><em>Ejemplo en nuestro problema:</em></p>
+                    <ul>
+                        <li>🪙 <strong>Criptomoneda</strong> (Bitcoin, Ethereum, Cardano, etc.)</li>
+                        <li>💼 <strong>Portafolio</strong> (la colección de criptomonedas)</li>
+                        <li>👤 <strong>Trader/Usuario</strong> (la persona que opera)</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>2️⃣ ¿Esa "cosa" tiene datos propios que debe recordar?</h4>
+                    <p>Si algo tiene información que debe guardar, probablemente es una entidad.</p>
+                    <p style="margin-top: 10px;"><em>Ejemplo:</em></p>
+                    <ul>
+                        <li>Una <strong>Criptomoneda</strong> debe recordar: cuántas unidades compradas, cuánto dinero invertido, precio promedio</li>
+                        <li>Un <strong>Portafolio</strong> debe recordar: valor total invertido, ganancia total, comisiones totales</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>3️⃣ ¿Esa "cosa" hace acciones por sí misma?</h4>
+                    <p>Si algo puede realizar acciones o cálculos sobre sus propios datos, es una entidad.</p>
+                    <p style="margin-top: 10px;"><em>Ejemplo:</em></p>
+                    <ul>
+                        <li>Una <strong>Criptomoneda</strong> puede: calcular su precio promedio, calcular su ganancia, actualizar su cantidad</li>
+                        <li>Un <strong>Portafolio</strong> puede: registrar una operación, calcular comisiones, generar reportes</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>4️⃣ ¿Esa "cosa" tiene sentido de forma independiente?</h4>
+                    <p>Si puedes hablar de esa "cosa" sin necesitar otras cosas, es una buena entidad.</p>
+                    <p style="margin-top: 10px;"><em>Ejemplo:</em></p>
+                    <ul>
+                        <li>✅ Puedes tener un <strong>Bitcoin</strong> sin tener otras criptomonedas</li>
+                        <li>✅ Puedes tener un <strong>Portafolio</strong> vacío o con una sola cripto</li>
+                        <li>❌ No puedes tener un "precio" sin que pertenezca a algo</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>5️⃣ ¿Podrías reutilizar esta "cosa" en otros proyectos?</h4>
+                    <p>Si la respuesta es SÍ, definitivamente es una buena entidad.</p>
+                    <p style="margin-top: 10px;"><em>Ejemplo:</em></p>
+                    <ul>
+                        <li>✅ La clase <strong>Criptomoneda</strong> se puede usar en un exchange, una wallet, un simulador</li>
+                        <li>✅ La clase <strong>Portafolio</strong> se puede usar para cualquier tipo de inversión (acciones, bonos, etc.)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: UNA ENTIDAD VS MÚLTIPLES ENTIDADES -->
+        <div class="section">
+            <h2>⚖️ Una Entidad vs Múltiples Entidades</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-card card-bad">
+                    <h4>😰 Solución con UNA SOLA entidad (PortafolioCriptomonedas)</h4>
+                    <p style="margin: 15px 0; font-weight: 600;">Todos los datos y métodos en una sola clase gigante:</p>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>Atributos (54 en total):</strong>
+                        <ul style="font-size: 0.9em; margin-top: 10px;">
+                            <li>btcCompradas, btcVendidas, btcDineroInvertido...</li>
+                            <li>ethCompradas, ethVendidas, ethDineroInvertido...</li>
+                            <li>adaCompradas, adaVendidas, adaDineroInvertido...</li>
+                            <li>solCompradas, solVendidas, solDineroInvertido...</li>
+                            <li>xrpCompradas, xrpVendidas, xrpDineroInvertido...</li>
+                            <li>valorTotalInvertido, gananciaTotal...</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>Métodos (45 en total):</strong>
+                        <ul style="font-size: 0.9em; margin-top: 10px;">
+                            <li>calcularPrecioPromedioBTC()</li>
+                            <li>calcularPrecioPromedioETH()</li>
+                            <li>calcularPrecioPromedioADA()</li>
+                            <li>calcularPrecioPromedioSOL()</li>
+                            <li>calcularPrecioPromedioXRP()</li>
+                            <li>... y así con todas las operaciones ×5 criptos</li>
+                        </ul>
+                    </div>
+
+                    <p style="margin-top: 15px; color: #c62828; font-weight: 600;">❌ Problemas:</p>
+                    <ul>
+                        <li>Código muy largo y difícil de leer</li>
+                        <li>Si quieres agregar una 6ta cripto, debes modificar TODO</li>
+                        <li>Mucho código repetido (×5 para cada cripto)</li>
+                        <li>Difícil de mantener y probar</li>
+                        <li>No puedes reutilizar la lógica de una cripto</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card card-good">
+                    <h4>😊 Solución con MÚLTIPLES entidades (Criptomoneda + Portafolio)</h4>
+                    <p style="margin: 15px 0; font-weight: 600;">Dividimos responsabilidades en 2 clases:</p>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>Clase Criptomoneda (10 atributos):</strong>
+                        <ul style="font-size: 0.9em; margin-top: 10px;">
+                            <li>simbolo (BTC, ETH, ADA, SOL, XRP)</li>
+                            <li>cantidadComprada, cantidadVendida</li>
+                            <li>dineroInvertido, dineroRecuperado</li>
+                            <li>precioPromCompra, precioPromVenta</li>
+                            <li>ganancia, rentabilidad, comisiones</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>Clase Portafolio (4 atributos + lista):</strong>
+                        <ul style="font-size: 0.9em; margin-top: 10px;">
+                            <li>criptomonedas[] (lista de 5 Criptomonedas)</li>
+                            <li>valorTotalInvertido</li>
+                            <li>valorTotalRecuperado</li>
+                            <li>gananciaTotal, comisionesTotales</li>
+                        </ul>
+                    </div>
+
+                    <p style="margin-top: 15px; color: #2e7d32; font-weight: 600;">✅ Ventajas:</p>
+                    <ul>
+                        <li>Código organizado y fácil de leer</li>
+                        <li>Agregar una 6ta cripto es muy fácil</li>
+                        <li>NO hay código repetido</li>
+                        <li>Fácil de mantener y probar</li>
+                        <li>Puedes reutilizar Criptomoneda en otros proyectos</li>
+                        <li>Cada clase tiene una responsabilidad clara</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: LAS DOS ENTIDADES DE NUESTRO SISTEMA -->
+        <div class="section">
+            <h2>🏗️ Las Dos Entidades de Nuestro Sistema</h2>
+
+            <div class="entity-showcase">
+                <!-- ENTIDAD 1: CRIPTOMONEDA -->
+                <div class="entity-card criptomoneda">
+                    <h3>🪙 Entidad: Criptomoneda</h3>
+
+                    <div class="example-box">
+                        <h4 style="color: #7b1fa2;">📋 ¿Qué representa?</h4>
+                        <p>Representa <strong>UNA criptomoneda específica</strong> dentro del portafolio (ej: Bitcoin, Ethereum).</p>
+                        <p style="margin-top: 10px;">Cada Criptomoneda es <strong>independiente</strong> y lleva el control de sus propias operaciones.</p>
+                    </div>
+
+                    <div class="attribute-list">
+                        <h4 style="color: #7b1fa2; margin-bottom: 10px;">📦 Atributos (10)</h4>
+                        <div class="attribute-item"><strong>simbolo:</strong> String (BTC, ETH, ADA, SOL, XRP)</div>
+                        <div class="attribute-item"><strong>cantidadComprada:</strong> Double</div>
+                        <div class="attribute-item"><strong>cantidadVendida:</strong> Double</div>
+                        <div class="attribute-item"><strong>dineroInvertido:</strong> Double</div>
+                        <div class="attribute-item"><strong>dineroRecuperado:</strong> Double</div>
+                        <div class="attribute-item"><strong>precioPromCompra:</strong> Double</div>
+                        <div class="attribute-item"><strong>precioPromVenta:</strong> Double</div>
+                        <div class="attribute-item"><strong>ganancia:</strong> Double</div>
+                        <div class="attribute-item"><strong>rentabilidad:</strong> Double</div>
+                        <div class="attribute-item"><strong>comisiones:</strong> Double</div>
+                    </div>
+
+                    <div class="attribute-list">
+                        <h4 style="color: #7b1fa2; margin-bottom: 10px;">⚙️ Operaciones (4)</h4>
+                        <div class="attribute-item"><strong>calcularPrecioPromedio():</strong> Double</div>
+                        <div class="attribute-item"><strong>calcularCantidadActual():</strong> Double</div>
+                        <div class="attribute-item"><strong>calcularGanancia():</strong> Double</div>
+                        <div class="attribute-item"><strong>calcularRentabilidad():</strong> Double</div>
+                    </div>
+
+                    <div class="attribute-list">
+                        <h4 style="color: #7b1fa2; margin-bottom: 10px;">🔧 Métodos (3)</h4>
+                        <div class="attribute-item"><strong>registrarCompra(cantidad, precio, comision):</strong> void</div>
+                        <div class="attribute-item"><strong>registrarVenta(cantidad, precio, comision):</strong> void</div>
+                        <div class="attribute-item"><strong>obtenerEstado():</strong> String</div>
+                    </div>
+
+                    <div class="important">
+                        <strong>🎯 Responsabilidad:</strong><br>
+                        La clase Criptomoneda se encarga de <strong>gestionar SOLO sus propios datos</strong>. No sabe nada del portafolio ni de otras criptomonedas.
+                    </div>
+                </div>
+
+                <!-- ENTIDAD 2: PORTAFOLIO -->
+                <div class="entity-card portafolio">
+                    <h3>💼 Entidad: Portafolio</h3>
+
+                    <div class="example-box">
+                        <h4 style="color: #1565c0;">📋 ¿Qué representa?</h4>
+                        <p>Representa <strong>la colección completa</strong> de todas las criptomonedas del trader.</p>
+                        <p style="margin-top: 10px;">El Portafolio <strong>coordina</strong> las operaciones y <strong>gestiona las 5 Criptomonedas</strong>.</p>
+                    </div>
+
+                    <div class="attribute-list">
+                        <h4 style="color: #1565c0; margin-bottom: 10px;">📦 Atributos (5)</h4>
+                        <div class="attribute-item"><strong>criptomonedas[]:</strong> Lista de Criptomoneda (5 elementos)</div>
+                        <div class="attribute-item"><strong>valorTotalInvertido:</strong> Double</div>
+                        <div class="attribute-item"><strong>valorTotalRecuperado:</strong> Double</div>
+                        <div class="attribute-item"><strong>gananciaTotal:</strong> Double</div>
+                        <div class="attribute-item"><strong>comisionesTotales:</strong> Double</div>
+                    </div>
+
+                    <div class="attribute-list">
+                        <h4 style="color: #1565c0; margin-bottom: 10px;">⚙️ Operaciones (5)</h4>
+                        <div class="attribute-item"><strong>determinarPeriodo(hora):</strong> String</div>
+                        <div class="attribute-item"><strong>obtenerComisionBase(diaSemana):</strong> Double</div>
+                        <div class="attribute-item"><strong>obtenerAjustePeriodo(hora):</strong> Double</div>
+                        <div class="attribute-item"><strong>calcularComisionPorcentaje(dia, hora):</strong> Double</div>
+                        <div class="attribute-item"><strong>calcularComisionDolares(cant, precio, dia, hora):</strong> Double</div>
+                    </div>
+
+                    <div class="attribute-list">
+                        <h4 style="color: #1565c0; margin-bottom: 10px;">🔧 Métodos (11)</h4>
+                        <div class="attribute-item"><strong>registrarOperacion(tipo, cripto, cant, precio, dia, hora):</strong> void</div>
+                        <div class="attribute-item"><strong>buscarCriptomoneda(simbolo):</strong> Criptomoneda</div>
+                        <div class="attribute-item"><strong>actualizarTotalesGlobales():</strong> void</div>
+                        <div class="attribute-item"><strong>evaluarAlertasBTC(tipo, precio):</strong> void</div>
+                        <div class="attribute-item"><strong>evaluarAlertasETH(tipo, cant, precio):</strong> void</div>
+                        <div class="attribute-item"><strong>evaluarAlertasADA(precio, rentab):</strong> void</div>
+                        <div class="attribute-item"><strong>evaluarAlertasSOL(precio, dia):</strong> void</div>
+                        <div class="attribute-item"><strong>evaluarAlertasXRP(precio, cant):</strong> void</div>
+                        <div class="attribute-item"><strong>mostrarRecomendacion(periodo, dia):</strong> void</div>
+                        <div class="attribute-item"><strong>obtenerCriptoMejorRentabilidad():</strong> Criptomoneda</div>
+                        <div class="attribute-item"><strong>generarReporteCompleto():</strong> void</div>
+                    </div>
+
+                    <div class="important">
+                        <strong>🎯 Responsabilidad:</strong><br>
+                        El Portafolio se encarga de <strong>coordinar operaciones</strong>, calcular comisiones, evaluar alertas y generar reportes generales.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 5: RELACIÓN ENTRE ENTIDADES -->
+        <div class="section">
+            <h2>🔗 Relación entre Criptomoneda y Portafolio</h2>
+
+            <div class="relationship-box">
+                <h3>💡 ¿Cómo se relacionan estas entidades?</h3>
+
+                <div class="diagram-box">
+                    Portafolio <strong>TIENE</strong> 5 Criptomonedas<br>
+                    ↓<br>
+                    [Portafolio]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;├── contiene → [Bitcoin]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;├── contiene → [Ethereum]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;├── contiene → [Cardano]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;├── contiene → [Solana]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;└── contiene → [Ripple]
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; font-size: 1.1em;">
+                    Esta relación se llama <strong style="color: #c2185b;">"Composición"</strong> o <strong style="color: #c2185b;">"Agregación"</strong>
+                </p>
+            </div>
+
+            <div class="concept-box">
+                <h4>📚 Tipos de Relaciones Explicadas</h4>
+
+                <div class="example-box">
+                    <h4 style="color: #00838f;">1️⃣ Composición (TIENE - parte de)</h4>
+                    <p><strong>Definición:</strong> Una entidad "contiene" otras entidades que NO pueden existir sin ella.</p>
+                    <p style="margin-top: 10px;"><strong>Ejemplo del mundo real:</strong></p>
+                    <ul>
+                        <li>Un <strong>Carro TIENE un Motor</strong> → Si destruyes el carro, el motor ya no sirve solo</li>
+                        <li>Una <strong>Casa TIENE Habitaciones</strong> → Las habitaciones son parte de la casa</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>En nuestro caso:</strong></p>
+                    <p style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 5px;">
+                        ❌ <strong>No aplica completamente</strong> porque una Criptomoneda puede existir sin un Portafolio
+                    </p>
+                </div>
+
+                <div class="example-box">
+                    <h4 style="color: #00838f;">2️⃣ Agregación (TIENE - colección de)</h4>
+                    <p><strong>Definición:</strong> Una entidad "contiene" otras entidades que SÍ pueden existir de forma independiente.</p>
+                    <p style="margin-top: 10px;"><strong>Ejemplo del mundo real:</strong></p>
+                    <ul>
+                        <li>Una <strong>Biblioteca TIENE Libros</strong> → Los libros pueden existir fuera de la biblioteca</li>
+                        <li>Un <strong>Equipo TIENE Jugadores</strong> → Los jugadores pueden cambiar de equipo</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>En nuestro caso:</strong></p>
+                    <p style="background: #c8e6c9; padding: 10px; border-radius: 5px; margin-top: 5px;">
+                        ✅ <strong>SÍ aplica</strong> porque:<br>
+                        • El Portafolio TIENE Criptomonedas<br>
+                        • Las Criptomonedas pueden existir sin el Portafolio<br>
+                        • Podrías tener un Bitcoin en otra wallet o exchange
+                    </p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🎯 ¿Cómo funciona la comunicación?</h3>
+                <p style="margin-top: 15px;"><strong>Escenario:</strong> El usuario quiere comprar 0.5 BTC a $45,000 un Lunes a las 9 AM</p>
+
+                <div class="steps-box">
+                    <div class="step">
+                        <h4>Paso 1: El Portafolio recibe la solicitud</h4>
+                        <p>El método <code>registrarOperacion("Compra", "BTC", 0.5, 45000, "Lunes", 9)</code> se ejecuta en el Portafolio.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Paso 2: El Portafolio calcula la comisión</h4>
+                        <p>El Portafolio usa sus propias operaciones para calcular:</p>
+                        <ul>
+                            <li>Período del día: <code>determinarPeriodo(9)</code> → "Mañana"</li>
+                            <li>Comisión: <code>calcularComisionDolares(0.5, 45000, "Lunes", 9)</code> → $112.50</li>
+                        </ul>
+                    </div>
+
+                    <div class="step">
+                        <h4>Paso 3: El Portafolio busca la Criptomoneda</h4>
+                        <p>El Portafolio busca en su lista: <code>buscarCriptomoneda("BTC")</code> → retorna el objeto Bitcoin</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Paso 4: La Criptomoneda registra la compra</h4>
+                        <p>El Portafolio le dice al Bitcoin: <code>bitcoin.registrarCompra(0.5, 45000, 112.50)</code></p>
+                        <p style="margin-top: 10px;">El Bitcoin actualiza <strong>SUS PROPIOS datos</strong>:</p>
+                        <ul>
+                            <li>cantidadComprada += 0.5</li>
+                            <li>dineroInvertido += 22500</li>
+                            <li>comisiones += 112.50</li>
+                            <li>precioPromCompra = calcularPrecioPromedio()</li>
+                        </ul>
+                    </div>
+
+                    <div class="step">
+                        <h4>Paso 5: El Portafolio actualiza totales</h4>
+                        <p>El Portafolio suma los datos de TODAS las criptomonedas: <code>actualizarTotalesGlobales()</code></p>
+                    </div>
+
+                    <div class="step">
+                        <h4>Paso 6: El Portafolio muestra alertas y recomendaciones</h4>
+                        <p>El Portafolio evalúa y muestra información relevante al usuario.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 6: VENTAJAS DE MÚLTIPLES ENTIDADES -->
+        <div class="section">
+            <h2>🌟 Ventajas de Usar Múltiples Entidades</h2>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h4>🧩 1. Separación de Responsabilidades</h4>
+                    <p>Cada clase tiene una tarea específica y bien definida. La Criptomoneda gestiona sus datos, el Portafolio coordina.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🔄 2. Reutilización de Código</h4>
+                    <p>La clase Criptomoneda se puede usar en otros proyectos: exchange, wallet, simulador de inversión.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>📖 3. Código Más Legible</h4>
+                    <p>Es más fácil entender una clase pequeña con 10 atributos que una gigante con 54 atributos.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🛠️ 4. Fácil de Mantener</h4>
+                    <p>Si hay un error en el cálculo de ganancia, solo revisas la clase Criptomoneda, no todo el sistema.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>➕ 5. Fácil de Extender</h4>
+                    <p>¿Quieres agregar una 6ta criptomoneda? Solo creas otra instancia de Criptomoneda. No modificas código.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🧪 6. Fácil de Probar</h4>
+                    <p>Puedes probar la clase Criptomoneda de forma aislada sin necesitar el Portafolio completo.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>👥 7. Trabajo en Equipo</h4>
+                    <p>Una persona puede trabajar en Criptomoneda y otra en Portafolio al mismo tiempo sin conflictos.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🎯 8. Cohesión Alta</h4>
+                    <p>Todo lo relacionado con una cripto está junto en un solo lugar, no disperso en 50 variables.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🔌 9. Acoplamiento Bajo</h4>
+                    <p>Los cambios en Criptomoneda no afectan al Portafolio (siempre que mantengas los métodos públicos).</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🏗️ 10. Escalabilidad</h4>
+                    <p>Puedes tener 100 criptomonedas sin cambiar ni una línea de código, solo agregando instancias.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>💡 11. Comprensión Conceptual</h4>
+                    <p>El código refleja mejor la realidad: "tengo un portafolio que contiene criptomonedas".</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🔒 12. Encapsulamiento</h4>
+                    <p>Cada Criptomoneda protege sus datos. El Portafolio no puede modificar directamente los atributos internos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 7: ENCAPSULAMIENTO Y VISIBILIDAD -->
+        <div class="section">
+            <h2>🔒 Encapsulamiento y Visibilidad de Datos</h2>
+
+            <div class="intro-box">
+                <h3>🤔 ¿Por qué necesitamos proteger los datos de una clase?</h3>
+                <p>Imagina que tienes una <strong>caja fuerte</strong> con dinero:</p>
+                <ul>
+                    <li>❌ <strong>Malo:</strong> Dejar la caja fuerte abierta para que cualquiera pueda tomar o meter dinero sin control</li>
+                    <li>✅ <strong>Bueno:</strong> Cerrar la caja fuerte y tener un procedimiento (método) para depositar o retirar dinero de forma controlada</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>En programación, los atributos son como el dinero en la caja fuerte. Necesitamos protegerlos.</strong></p>
+            </div>
+
+            <div class="concept-box">
+                <h4>📚 ¿Qué es el Encapsulamiento?</h4>
+                <p><strong>Encapsulamiento</strong> es el principio de <strong>ocultar los datos internos</strong> de una clase y permitir el acceso a ellos solo a través de <strong>métodos controlados</strong>.</p>
+
+                <div class="example-box" style="margin-top: 15px;">
+                    <h4 style="color: #00838f;">Analogía: El Cajero Automático</h4>
+                    <p>Cuando usas un cajero automático:</p>
+                    <ul>
+                        <li>🏦 <strong>NO puedes</strong> abrir el cajero y tomar dinero directamente</li>
+                        <li>🏦 <strong>NO puedes</strong> ver cuánto dinero hay en total dentro del cajero</li>
+                        <li>🏦 <strong>NO puedes</strong> modificar el saldo de otras personas</li>
+                        <li>✅ <strong>SÍ puedes</strong> usar los botones (métodos) para: consultar saldo, retirar, depositar</li>
+                        <li>✅ <strong>El cajero valida</strong> que no retires más de lo que tienes</li>
+                        <li>✅ <strong>El cajero protege</strong> tu dinero de accesos no autorizados</li>
+                    </ul>
+                    <p style="margin-top: 10px; background: #fff3cd; padding: 10px; border-radius: 5px;">
+                        <strong>En programación:</strong> Los atributos son el dinero interno (privados), y los métodos son los botones del cajero (públicos).
+                    </p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🔑 Public vs Private: Niveles de Visibilidad</h3>
+                <p>En programación orientada a objetos, podemos controlar quién puede acceder a los atributos y métodos de una clase:</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card card-bad">
+                    <h4>🔓 PRIVATE (Privado)</h4>
+                    <p style="font-weight: 600; margin: 15px 0;">Solo accesible DENTRO de la misma clase</p>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>¿Qué se marca como private?</strong>
+                        <ul style="font-size: 0.95em; margin-top: 10px;">
+                            <li><strong>Atributos</strong> (casi siempre)</li>
+                            <li><strong>Métodos auxiliares</strong> que solo usa la clase internamente</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>Ejemplo en Criptomoneda:</strong>
+                        <ul style="font-size: 0.9em; margin-top: 10px;">
+                            <li><code>private cantidadComprada</code></li>
+                            <li><code>private dineroInvertido</code></li>
+                            <li><code>private comisiones</code></li>
+                        </ul>
+                    </div>
+
+                    <p style="margin-top: 15px; color: #c62828; font-weight: 600;">🛡️ Propósito:</p>
+                    <ul>
+                        <li>Proteger los datos de modificaciones no controladas</li>
+                        <li>Evitar que otras clases rompan la consistencia interna</li>
+                        <li>Permitir cambios internos sin afectar otras clases</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card card-good">
+                    <h4>🌐 PUBLIC (Público)</h4>
+                    <p style="font-weight: 600; margin: 15px 0;">Accesible desde CUALQUIER parte del código</p>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>¿Qué se marca como public?</strong>
+                        <ul style="font-size: 0.95em; margin-top: 10px;">
+                            <li><strong>Métodos</strong> que otras clases necesitan usar</li>
+                            <li><strong>Operaciones</strong> que proporcionan servicios</li>
+                            <li><strong>Constructores</strong> (para crear objetos)</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>Ejemplo en Criptomoneda:</strong>
+                        <ul style="font-size: 0.9em; margin-top: 10px;">
+                            <li><code>public registrarCompra(...)</code></li>
+                            <li><code>public calcularGanancia()</code></li>
+                            <li><code>public obtenerEstado()</code></li>
+                        </ul>
+                    </div>
+
+                    <p style="margin-top: 15px; color: #2e7d32; font-weight: 600;">🌍 Propósito:</p>
+                    <ul>
+                        <li>Permitir que otras clases usen los servicios</li>
+                        <li>Definir la interfaz pública de la clase</li>
+                        <li>Facilitar la comunicación entre objetos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>🎯 Regla de Oro de Visibilidad:</strong><br>
+                <p style="margin-top: 10px; font-size: 1.1em;">
+                    "Los <strong>atributos</strong> deben ser <strong style="color: #c62828;">PRIVATE</strong><br>
+                    Los <strong>métodos</strong> que usan otras clases deben ser <strong style="color: #2e7d32;">PUBLIC</strong>"
+                </p>
+            </div>
+
+            <div class="concept-box">
+                <h4>👤 Responsabilidad de la Clase sobre sus Atributos</h4>
+                <p style="font-size: 1.05em; margin-bottom: 15px;">
+                    <strong>Principio fundamental:</strong> Una clase es la <strong>ÚNICA RESPONSABLE</strong> de gestionar sus propios atributos.
+                </p>
+
+                <div class="example-box">
+                    <h4 style="color: #00838f;">¿Qué significa esto?</h4>
+                    <ul>
+                        <li>✅ Solo la clase Criptomoneda puede modificar <code>cantidadComprada</code></li>
+                        <li>✅ Solo la clase Criptomoneda sabe cómo calcular su <code>precioPromedio</code></li>
+                        <li>✅ Solo la clase Criptomoneda valida que no vendas más de lo que tienes</li>
+                        <li>❌ El Portafolio NO puede cambiar directamente <code>btc.cantidadComprada = 10</code></li>
+                        <li>❌ Ninguna otra clase puede "meter mano" a los datos internos</li>
+                    </ul>
+                </div>
+
+                <div class="steps-box" style="margin-top: 20px;">
+                    <div class="step">
+                        <h4>📜 Regla: Operaciones que necesitan atributos de una clase</h4>
+                        <p><strong>Si una operación necesita los atributos de una clase, debe implementarse EN ESA CLASE.</strong></p>
+
+                        <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                            <strong>❌ INCORRECTO (violando responsabilidad):</strong>
+                            <div style="background: #ffebee; padding: 10px; margin-top: 10px; border-radius: 5px; font-family: monospace;">
+                                Clase Portafolio:<br>
+                                &nbsp;&nbsp;calcularPrecioPromedioBTC() {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;// ❌ Mal: accediendo a datos privados de otra clase<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;promedio = bitcoin.dineroInvertido / bitcoin.cantidadComprada<br>
+                                &nbsp;&nbsp;}
+                            </div>
+                            <p style="color: #c62828; margin-top: 10px;">
+                                <strong>Problema:</strong> El Portafolio está haciendo cálculos con datos que pertenecen a Bitcoin. ¡Esto rompe el encapsulamiento!
+                            </p>
+                        </div>
+
+                        <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                            <strong>✅ CORRECTO (respetando responsabilidad):</strong>
+                            <div style="background: #e8f5e9; padding: 10px; margin-top: 10px; border-radius: 5px; font-family: monospace;">
+                                Clase Criptomoneda:<br>
+                                &nbsp;&nbsp;private dineroInvertido<br>
+                                &nbsp;&nbsp;private cantidadComprada<br>
+                                &nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;public calcularPrecioPromedio() {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;// ✅ Bien: la clase usa sus propios atributos<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return dineroInvertido / cantidadComprada<br>
+                                &nbsp;&nbsp;}<br>
+                                <br>
+                                Clase Portafolio:<br>
+                                &nbsp;&nbsp;obtenerPrecioPromedioBTC() {<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;// ✅ Bien: le pide a Bitcoin que calcule su promedio<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return bitcoin.calcularPrecioPromedio()<br>
+                                &nbsp;&nbsp;}
+                            </div>
+                            <p style="color: #2e7d32; margin-top: 10px;">
+                                <strong>Ventaja:</strong> Bitcoin es responsable de su propio cálculo. Si cambia la fórmula, solo se modifica en un lugar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h4>🚪 ¿Cómo se accede a los atributos privados?</h4>
+                <p>Si los atributos son privados, ¿cómo otras clases pueden obtener información? A través de <strong>métodos públicos</strong>.</p>
+
+                <div class="highlight-box" style="margin-top: 15px;">
+                    <h4>🔑 Métodos de Acceso (Getters y Setters)</h4>
+                    <p>Son métodos públicos que permiten leer o modificar atributos privados de forma controlada.</p>
+                </div>
+
+                <div class="comparison-grid" style="margin-top: 20px;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 3px solid #2196f3;">
+                        <h4 style="color: #1565c0;">📖 GETTER (Obtener/Leer)</h4>
+                        <p style="margin: 10px 0;">Método que <strong>retorna el valor</strong> de un atributo privado.</p>
+
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 10px 0; font-family: monospace; font-size: 0.9em;">
+                            Clase Criptomoneda:<br>
+                            &nbsp;&nbsp;private cantidadComprada<br>
+                            <br>
+                            &nbsp;&nbsp;public obtenerCantidadComprada() {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return cantidadComprada<br>
+                            &nbsp;&nbsp;}
+                        </div>
+
+                        <p style="margin-top: 10px;"><strong>Uso desde otra clase:</strong></p>
+                        <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin: 5px 0; font-family: monospace; font-size: 0.9em;">
+                            cantidad = bitcoin.obtenerCantidadComprada()
+                        </div>
+
+                        <p style="margin-top: 10px; color: #1565c0; font-weight: 600;">✅ Ventaja:</p>
+                        <ul style="font-size: 0.95em;">
+                            <li>Permite leer el dato sin exponerlo directamente</li>
+                            <li>Puedes agregar validaciones o transformaciones</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 3px solid #ff9800;">
+                        <h4 style="color: #e65100;">✏️ SETTER (Establecer/Escribir)</h4>
+                        <p style="margin: 10px 0;">Método que <strong>modifica el valor</strong> de un atributo privado <strong>con validación</strong>.</p>
+
+                        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 10px 0; font-family: monospace; font-size: 0.9em;">
+                            Clase Criptomoneda:<br>
+                            &nbsp;&nbsp;private cantidadComprada<br>
+                            <br>
+                            &nbsp;&nbsp;public establecerCantidadComprada(valor) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if (valor >= 0) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cantidadComprada = valor<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;} else {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error "No se permiten valores negativos"<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;}
+                        </div>
+
+                        <p style="margin-top: 10px;"><strong>Uso desde otra clase:</strong></p>
+                        <div style="background: #fff3e0; padding: 10px; border-radius: 5px; margin: 5px 0; font-family: monospace; font-size: 0.9em;">
+                            bitcoin.establecerCantidadComprada(0.5)
+                        </div>
+
+                        <p style="margin-top: 10px; color: #e65100; font-weight: 600;">✅ Ventaja:</p>
+                        <ul style="font-size: 0.95em;">
+                            <li>Valida los datos antes de guardarlos</li>
+                            <li>Protege la consistencia de los datos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="important" style="margin-top: 20px;">
+                    <strong>⚠️ IMPORTANTE para nuestro ejercicio:</strong><br>
+                    <p style="margin-top: 10px;">
+                        En el sistema de criptomonedas, <strong>NO usamos setters simples</strong> porque modificar directamente <code>cantidadComprada</code> rompería la lógica del sistema.
+                    </p>
+                    <p style="margin-top: 10px;">
+                        En su lugar, usamos <strong>métodos con lógica de negocio</strong>:
+                    </p>
+                    <ul style="margin-top: 10px;">
+                        <li>✅ <code>registrarCompra(cantidad, precio, comision)</code> - actualiza varios atributos relacionados</li>
+                        <li>✅ <code>registrarVenta(cantidad, precio, comision)</code> - valida que hay suficiente cantidad</li>
+                        <li>❌ <code>setCantidadComprada(valor)</code> - muy peligroso, podría romper la consistencia</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="relationship-box">
+                <h3>🎯 Ejemplo Completo: Encapsulamiento en Acción</h3>
+
+                <div class="diagram-box" style="text-align: left; font-family: 'Segoe UI', sans-serif; font-size: 1em;">
+                    <strong style="color: #7b1fa2; font-size: 1.2em;">Clase Criptomoneda (BTC)</strong><br><br>
+
+                    <div style="background: #ffebee; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>🔒 ATRIBUTOS PRIVADOS (nadie puede acceder directamente):</strong><br>
+                        <span style="font-family: monospace;">
+                        &nbsp;&nbsp;- cantidadComprada: 0.5<br>
+                        &nbsp;&nbsp;- cantidadVendida: 0.0<br>
+                        &nbsp;&nbsp;- dineroInvertido: 22,500<br>
+                        &nbsp;&nbsp;- comisiones: 112.50
+                        </span>
+                    </div>
+
+                    <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>🌐 MÉTODOS PÚBLICOS (otras clases pueden usarlos):</strong><br>
+                        <span style="font-family: monospace;">
+                        &nbsp;&nbsp;+ registrarCompra(cantidad, precio, comision)<br>
+                        &nbsp;&nbsp;+ calcularPrecioPromedio() → 45,000<br>
+                        &nbsp;&nbsp;+ obtenerCantidadActual() → 0.5<br>
+                        &nbsp;&nbsp;+ obtenerEstado() → "0.5 BTC ($45,000/BTC)"
+                        </span>
+                    </div>
+
+                    <hr style="border: 2px solid #c2185b; margin: 20px 0;">
+
+                    <strong style="color: #1565c0; font-size: 1.2em;">Clase Portafolio</strong><br><br>
+
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>¿Qué PUEDE hacer el Portafolio?</strong><br>
+                        <span style="font-family: monospace; color: #2e7d32;">
+                        ✅ bitcoin.registrarCompra(0.5, 45000, 112.50)<br>
+                        ✅ precio = bitcoin.calcularPrecioPromedio()<br>
+                        ✅ estado = bitcoin.obtenerEstado()<br>
+                        ✅ cantidad = bitcoin.obtenerCantidadActual()
+                        </span>
+                    </div>
+
+                    <div style="background: #ffebee; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>¿Qué NO PUEDE hacer el Portafolio?</strong><br>
+                        <span style="font-family: monospace; color: #c62828;">
+                        ❌ bitcoin.cantidadComprada = 10 // Error: es privado<br>
+                        ❌ bitcoin.dineroInvertido += 1000 // Error: es privado<br>
+                        ❌ bitcoin.comisiones = 0 // Error: es privado
+                        </span>
+                    </div>
+
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                        <strong>💡 ¿Por qué es bueno esto?</strong><br>
+                        <ul style="margin-top: 10px;">
+                            <li>El Portafolio no puede romper los datos internos de Bitcoin</li>
+                            <li>Si Bitcoin cambia cómo calcula el promedio, el Portafolio no se ve afectado</li>
+                            <li>Bitcoin garantiza que sus datos siempre sean consistentes</li>
+                            <li>El código es más seguro y fácil de mantener</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h4>🛡️ Protección de Datos</h4>
+                    <p>Los atributos privados no pueden ser modificados accidentalmente desde otras clases.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>✅ Validación Centralizada</h4>
+                    <p>Todas las validaciones están en un solo lugar (los métodos de la clase), no dispersas.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🔄 Flexibilidad Interna</h4>
+                    <p>Puedes cambiar cómo se almacenan los datos internamente sin afectar otras clases.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>📜 Contrato Claro</h4>
+                    <p>Los métodos públicos definen exactamente qué puede hacer cada clase.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🐛 Menos Errores</h4>
+                    <p>Es imposible poner datos inconsistentes porque solo la clase puede modificarlos.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <h4>🧪 Mejor Testing</h4>
+                    <p>Puedes probar que los métodos públicos funcionan sin preocuparte por los detalles internos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 8: COMPARACIÓN FINAL -->
+        <div class="section">
+            <h2>📊 Comparación Final: 1 vs 2 Entidades</h2>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0; background: white;">
+                <thead>
+                    <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <th style="padding: 15px; text-align: left;">Aspecto</th>
+                        <th style="padding: 15px; text-align: center;">1 Entidad (Mala práctica)</th>
+                        <th style="padding: 15px; text-align: center;">2 Entidades (Buena práctica)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Número de atributos por clase</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #ffebee;">54 atributos</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #e8f5e9;">10 + 5 atributos</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Código repetido</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #ffebee;">Mucho (×5 veces)</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #e8f5e9;">Nada</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Facilidad para agregar 6ta cripto</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #ffebee;">Difícil (10+ cambios)</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #e8f5e9;">Fácil (1 línea)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Legibilidad del código</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #ffebee;">Baja</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #e8f5e9;">Alta</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Facilidad de pruebas</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #ffebee;">Difícil</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #e8f5e9;">Fácil</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Reutilización en otros proyectos</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #ffebee;">No</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #e8f5e9;">Sí (Criptomoneda)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>Mantenimiento a largo plazo</strong></td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #ffebee;">Complicado</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center; background: #e8f5e9;">Simple</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px;"><strong>Trabajo en equipo</strong></td>
+                        <td style="padding: 12px; text-align: center; background: #ffebee;">Difícil (conflictos)</td>
+                        <td style="padding: 12px; text-align: center; background: #e8f5e9;">Fácil (separado)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECCIÓN 9: CONCLUSIÓN -->
+        <div class="section">
+            <h2>🎓 Conclusión y Recomendaciones</h2>
+
+            <div class="highlight-box">
+                <h3>✨ Principios Fundamentales para el Diseño de Clases</h3>
+
+                <div class="steps-box">
+                    <div class="step">
+                        <h4>1️⃣ Identificar Entidades</h4>
+                        <ul>
+                            <li>Busca "cosas" del mundo real que tengan identidad propia</li>
+                            <li>¿Esta "cosa" tiene datos propios que debe recordar?</li>
+                            <li>¿Esta "cosa" hace acciones por sí misma?</li>
+                            <li>¿Esta "cosa" tiene sentido de forma independiente?</li>
+                            <li>¿Podría reutilizar esta "cosa" en otro proyecto?</li>
+                            <li>Si hay código repetido 3+ veces, necesitas una nueva entidad</li>
+                            <li>Si una clase tiene 20+ atributos, debes dividirla</li>
+                        </ul>
+                    </div>
+
+                    <div class="step">
+                        <h4>2️⃣ Aplicar Encapsulamiento</h4>
+                        <ul>
+                            <li>Marca los atributos como <strong>private</strong></li>
+                            <li>Marca los métodos que usan otras clases como <strong>public</strong></li>
+                            <li>Si necesitas leer un atributo, crea un método <strong>getter</strong></li>
+                            <li>Si necesitas modificar un atributo, crea un método <strong>setter con validación</strong></li>
+                            <li>Mejor aún: crea métodos con <strong>lógica de negocio</strong> (ej: registrarCompra)</li>
+                        </ul>
+                    </div>
+
+                    <div class="step">
+                        <h4>3️⃣ Respetar Responsabilidades</h4>
+                        <ul>
+                            <li>Cada clase es responsable de <strong>sus propios atributos</strong></li>
+                            <li>Si una operación necesita atributos de una clase, <strong>implementa esa operación EN ESA CLASE</strong></li>
+                            <li>No permitas que otras clases accedan directamente a tus atributos</li>
+                            <li>No hagas cálculos con atributos de otra clase</li>
+                            <li>Usa los métodos públicos para obtener información</li>
+                        </ul>
+                    </div>
+
+                    <div class="step">
+                        <h4>4️⃣ Definir Interfaces Claras</h4>
+                        <ul>
+                            <li>Los métodos públicos son el "contrato" de tu clase</li>
+                            <li>Documenta qué hace cada método público</li>
+                            <li>No cambies los métodos públicos sin pensar en el impacto</li>
+                            <li>Los detalles internos pueden cambiar libremente</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="important">
+                <strong>🎯 Las 3 Reglas de Oro del Diseño Orientado a Objetos:</strong><br>
+
+                <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                    <h4 style="color: #e65100; margin-bottom: 15px;">1. Principio de Responsabilidad Única (SRP)</h4>
+                    <p style="font-size: 1.1em;">
+                        "Una clase debe tener <strong>una sola responsabilidad</strong> y debe hacerla bien."
+                    </p>
+                    <p style="margin-top: 10px; color: #666;">
+                        ✅ Criptomoneda gestiona UNA cripto<br>
+                        ✅ Portafolio coordina TODAS las criptos
+                    </p>
+                </div>
+
+                <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                    <h4 style="color: #e65100; margin-bottom: 15px;">2. Principio de Encapsulamiento</h4>
+                    <p style="font-size: 1.1em;">
+                        "Los datos internos deben ser <strong>privados</strong> y solo accesibles a través de <strong>métodos controlados</strong>."
+                    </p>
+                    <p style="margin-top: 10px; color: #666;">
+                        ✅ Atributos → private<br>
+                        ✅ Métodos de servicio → public
+                    </p>
+                </div>
+
+                <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                    <h4 style="color: #e65100; margin-bottom: 15px;">3. Principio de Ubicación de Operaciones</h4>
+                    <p style="font-size: 1.1em;">
+                        "Si una operación necesita los atributos de una clase, debe <strong>implementarse EN ESA CLASE</strong>."
+                    </p>
+                    <p style="margin-top: 10px; color: #666;">
+                        ✅ calcularPrecioPromedio() → en Criptomoneda<br>
+                        ✅ calcularComisionPorcentaje() → en Portafolio
+                    </p>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h4>🚀 Para este Ejercicio:</h4>
+                <ul>
+                    <li>✅ Usa <strong>2 entidades</strong>: Criptomoneda y Portafolio</li>
+                    <li>✅ La clase <strong>Criptomoneda</strong> gestiona los datos de UNA cripto</li>
+                    <li>✅ La clase <strong>Portafolio</strong> coordina las 5 Criptomonedas</li>
+                    <li>✅ El Portafolio <strong>TIENE</strong> 5 objetos de tipo Criptomoneda</li>
+                    <li>✅ Cada entidad tiene <strong>responsabilidades claras</strong> y separadas</li>
+                </ul>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-top: 30px; text-align: center;">
+                <h3 style="color: white; margin-bottom: 15px;">💡 Recuerda</h3>
+                <p style="font-size: 1.2em;">
+                    Un buen diseño con múltiples entidades hace que tu código sea:
+                </p>
+                <p style="font-size: 1.5em; margin-top: 15px; font-weight: bold;">
+                    Más fácil de LEER, MANTENER, EXTENDER y REUTILIZAR
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 10: RESUMEN VISUAL FINAL -->
+        <div class="section">
+            <h2>📋 Resumen Visual: Todo lo que Aprendimos</h2>
+
+            <div class="relationship-box">
+                <h3>🎯 Mapa Mental del Diseño con 2 Entidades</h3>
+
+                <div style="background: white; padding: 30px; border-radius: 15px; margin: 20px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <!-- Columna Criptomoneda -->
+                        <div style="border: 4px solid #9c27b0; border-radius: 15px; padding: 25px; background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);">
+                            <h3 style="color: #7b1fa2; text-align: center; margin-bottom: 20px;">🪙 Criptomoneda</h3>
+
+                            <div style="background: #ffebee; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                <strong style="color: #c62828;">🔒 10 Atributos PRIVATE</strong>
+                                <p style="font-size: 0.85em; margin-top: 5px;">simbolo, cantidades, dinero, precios, etc.</p>
+                            </div>
+
+                            <div style="background: #e8f5e9; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                <strong style="color: #2e7d32;">🌐 4 Operaciones PUBLIC</strong>
+                                <p style="font-size: 0.85em; margin-top: 5px;">calcularPrecioPromedio, calcularGanancia, etc.</p>
+                            </div>
+
+                            <div style="background: #e3f2fd; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                <strong style="color: #1565c0;">🌐 3 Métodos PUBLIC</strong>
+                                <p style="font-size: 0.85em; margin-top: 5px;">registrarCompra, registrarVenta, obtenerEstado</p>
+                            </div>
+
+                            <div style="background: #fff3cd; padding: 12px; border-radius: 8px; margin: 10px 0; text-align: center;">
+                                <strong>✅ Responsabilidad:</strong>
+                                <p style="font-size: 0.9em; margin-top: 5px;">Gestionar UNA cripto</p>
+                            </div>
+                        </div>
+
+                        <!-- Columna Portafolio -->
+                        <div style="border: 4px solid #2196f3; border-radius: 15px; padding: 25px; background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);">
+                            <h3 style="color: #1565c0; text-align: center; margin-bottom: 20px;">💼 Portafolio</h3>
+
+                            <div style="background: #ffebee; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                <strong style="color: #c62828;">🔒 5 Atributos PRIVATE</strong>
+                                <p style="font-size: 0.85em; margin-top: 5px;">Lista de criptos, totales globales</p>
+                            </div>
+
+                            <div style="background: #e8f5e9; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                <strong style="color: #2e7d32;">🌐 5 Operaciones PUBLIC</strong>
+                                <p style="font-size: 0.85em; margin-top: 5px;">determinarPeriodo, calcularComision, etc.</p>
+                            </div>
+
+                            <div style="background: #e3f2fd; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                                <strong style="color: #1565c0;">🌐 11 Métodos PUBLIC</strong>
+                                <p style="font-size: 0.85em; margin-top: 5px;">registrarOperacion, evaluar alertas, reportes</p>
+                            </div>
+
+                            <div style="background: #fff3cd; padding: 12px; border-radius: 8px; margin: 10px 0; text-align: center;">
+                                <strong>✅ Responsabilidad:</strong>
+                                <p style="font-size: 0.9em; margin-top: 5px;">Coordinar TODAS las criptos</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); border-radius: 10px;">
+                        <h4 style="color: #c2185b; margin-bottom: 10px;">🔗 Relación: AGREGACIÓN</h4>
+                        <p style="font-size: 1.1em;">Portafolio <strong>TIENE</strong> 5 objetos de tipo Criptomoneda</p>
+                        <p style="font-size: 0.95em; margin-top: 5px; color: #666;">Las Criptomonedas pueden existir independientemente del Portafolio</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>🔐 Checklist: ¿Estoy aplicando bien el Encapsulamiento?</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div>
+                        <h4 style="color: #2e7d32;">✅ Haz esto:</h4>
+                        <ul style="margin-top: 10px;">
+                            <li>Marca atributos como <code>private</code></li>
+                            <li>Marca métodos de servicio como <code>public</code></li>
+                            <li>Implementa operaciones en la clase que tiene los atributos</li>
+                            <li>Usa getters para leer datos</li>
+                            <li>Usa métodos con lógica para modificar datos</li>
+                            <li>Valida datos en los métodos</li>
+                            <li>Documenta tus métodos públicos</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 style="color: #c62828;">❌ NO hagas esto:</h4>
+                        <ul style="margin-top: 10px;">
+                            <li>Atributos <code>public</code> (casi nunca)</li>
+                            <li>Acceder a <code>objeto.atributo</code> directamente</li>
+                            <li>Modificar <code>objeto.atributo = valor</code> directamente</li>
+                            <li>Implementar operaciones en clase incorrecta</li>
+                            <li>Hacer cálculos con atributos de otra clase</li>
+                            <li>Setters sin validación</li>
+                            <li>Exponer detalles internos innecesarios</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h4>🎓 Preguntas para Auto-evaluar tu Diseño</h4>
+
+                <div class="steps-box">
+                    <div class="step">
+                        <h4>❓ ¿Mis atributos están protegidos?</h4>
+                        <p>Si otra clase puede hacer <code>objeto.atributo = valor</code>, algo está mal. Los atributos deben ser <strong>private</strong>.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>❓ ¿Las operaciones están en la clase correcta?</h4>
+                        <p>Si necesitas atributos de Criptomoneda para calcular algo, esa operación debe estar EN Criptomoneda, no en Portafolio.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>❓ ¿Estoy repitiendo código?</h4>
+                        <p>Si tienes el mismo código copiado 3+ veces para diferentes criptos, necesitas crear una clase Criptomoneda reutilizable.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>❓ ¿Mi clase hace muchas cosas?</h4>
+                        <p>Si tu clase tiene 20+ atributos o mezcla diferentes responsabilidades, probablemente necesitas dividirla.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>❓ ¿Puedo cambiar detalles internos sin romper otras clases?</h4>
+                        <p>Si cambiar cómo calculas el precio promedio internamente afecta al Portafolio, tu encapsulamiento es débil.</p>
+                    </div>
+
+                    <div class="step">
+                        <h4>❓ ¿Los métodos públicos tienen nombres claros?</h4>
+                        <p>Los métodos públicos son tu "contrato". Nombres como <code>obtenerCantidadActual()</code> son mucho mejores que <code>getX()</code>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 20px; margin-top: 30px;">
+                <h2 style="color: white; text-align: center; margin-bottom: 25px;">🏆 Certificado de Comprensión</h2>
+
+                <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; border: 2px solid white;">
+                    <p style="font-size: 1.1em; text-align: center; margin-bottom: 20px;">
+                        Si comprendiste estos conceptos, ahora sabes:
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                            <strong>✨ Qué es una entidad</strong>
+                            <p style="font-size: 0.95em; margin-top: 5px; opacity: 0.9;">y cómo identificar entidades en un problema</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                            <strong>🔒 Qué es encapsulamiento</strong>
+                            <p style="font-size: 0.95em; margin-top: 5px; opacity: 0.9;">y por qué es crucial proteger los datos</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                            <strong>🔑 Private vs Public</strong>
+                            <p style="font-size: 0.95em; margin-top: 5px; opacity: 0.9;">y cuándo usar cada nivel de visibilidad</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                            <strong>👤 Responsabilidad de clase</strong>
+                            <p style="font-size: 0.95em; margin-top: 5px; opacity: 0.9;">y dónde implementar cada operación</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                            <strong>🚪 Getters y Setters</strong>
+                            <p style="font-size: 0.95em; margin-top: 5px; opacity: 0.9;">y cómo acceder a datos privados de forma segura</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                            <strong>🏗️ Diseño con múltiples entidades</strong>
+                            <p style="font-size: 0.95em; margin-top: 5px; opacity: 0.9;">y sus ventajas sobre una clase gigante</p>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 1.3em; text-align: center; margin-top: 30px; font-weight: bold;">
+                        ¡Estás listo para implementar el sistema de criptomonedas con un diseño profesional! 🚀
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0; color: #666;">
+            <p>📚 <strong>Material Didáctico para Fundamentos de Programación</strong></p>
+            <p>Diseño Orientado a Objetos con Múltiples Entidades</p>
+        </div>
+    </div>
+</body>
+</html>

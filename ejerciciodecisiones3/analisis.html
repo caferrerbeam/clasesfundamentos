@@ -272,6 +272,7 @@
             <a href="enunciado.md" class="nav-button">📋 Enunciado</a>
             <a href="analisis.html" class="nav-button active">📊 Análisis (Atributos, Operaciones, Métodos)</a>
             <a href="diagramas.html" class="nav-button">🔀 Diagramas de Flujo</a>
+            <a href="entidades.html" class="nav-button">🏗️ Múltiples Entidades</a>
         </div>
 
         <div class="intro">
@@ -487,12 +488,6 @@
                             <td>Llama determinarPeriodo(hora), luego retorna: Mañana: 0.0, Tarde: 0.2, Noche: 0.5</td>
                         </tr>
                         <tr>
-                            <td><span class="variable-name">calcularMontoOperacion</span></td>
-                            <td>cantidad: <span class="type">Double</span>,<br>precioUnitario: <span class="type">Double</span></td>
-                            <td><span class="type">Double</span></td>
-                            <td>cantidad × precioUnitario</td>
-                        </tr>
-                        <tr>
                             <td><span class="variable-name">calcularComisionPorcentaje</span></td>
                             <td>diaSemana: <span class="type">String</span>,<br>hora: <span class="type">Integer</span></td>
                             <td><span class="type">Double</span></td>
@@ -502,7 +497,7 @@
                             <td><span class="variable-name">calcularComisionDolares</span></td>
                             <td>cantidad: <span class="type">Double</span>,<br>precioUnitario: <span class="type">Double</span>,<br>diaSemana: <span class="type">String</span>,<br>hora: <span class="type">Integer</span></td>
                             <td><span class="type">Double</span></td>
-                            <td>calcularMontoOperacion(cantidad, precioUnitario) × (calcularComisionPorcentaje(diaSemana, hora) / 100)</td>
+                            <td>(cantidad × precioUnitario) × (calcularComisionPorcentaje(diaSemana, hora) / 100)</td>
                         </tr>
                         <tr>
                             <td><span class="variable-name">calcularPrecioPromedioBTC</span></td>
@@ -541,10 +536,10 @@
 
                 <div class="example">
                     <strong>✅ CORRECTO:</strong><br>
-                    calcularMontoOperacion(cantidad: Double, precioUnitario: Double): Double {<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;return cantidad * precioUnitario<br>
+                    calcularComisionPorcentaje(diaSemana: String, hora: Integer): Double {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;return obtenerComisionBase(diaSemana) + obtenerAjustePeriodo(hora)<br>
                     }<br><br>
-                    <em>// cantidad y precioUnitario vienen de FUERA (del usuario)</em>
+                    <em>// diaSemana y hora vienen de FUERA (del usuario)</em>
                 </div>
 
                 <div class="important">
@@ -558,10 +553,10 @@
 
             <div class="summary-box">
                 <h3>📊 Resumen de Operaciones</h3>
-                <p><span class="count-badge">6</span> Operaciones que reciben parámetros externos del usuario</p>
+                <p><span class="count-badge">5</span> Operaciones que reciben parámetros externos del usuario</p>
                 <p><span class="count-badge">4</span> Operaciones que usan atributos directamente (por cada cripto = 20 total)</p>
-                <h3 style="margin-top: 20px;">TOTAL: <span class="count-badge">26 OPERACIONES</span></h3>
-                <p style="font-size: 0.9em; margin-top: 10px;">(6 generales + 4×5 específicas por cripto)</p>
+                <h3 style="margin-top: 20px;">TOTAL: <span class="count-badge">25 OPERACIONES</span></h3>
+                <p style="font-size: 0.9em; margin-top: 10px;">(5 generales + 4×5 específicas por cripto)</p>
             </div>
         </div>
 
@@ -812,115 +807,6 @@
         </div>
 
         <!-- SECCIÓN 4: EJEMPLO DE IMPLEMENTACIÓN -->
-        <div class="section">
-            <h2 class="section-title">💻 4. EJEMPLO DE IMPLEMENTACIÓN CORRECTA</h2>
-
-            <div class="subsection">
-                <h3 class="subsection-title"><span class="icon">🎯</span>Método Principal: registrarOperacion()</h3>
-
-                <div class="method-signature">
-<span class="return">void</span> registrarOperacion(<span class="param">String tipoOperacion, String criptomoneda,
-                        Double cantidad, Double precioUnitario,
-                        String diaSemana, Integer hora</span>) {
-
-    <span class="param">// 1. Determinar período del día (operación con dato externo)</span>
-    String periodo = determinarPeriodo(hora);
-
-    <span class="param">// 2. Calcular comisión en dólares (operación con datos externos)</span>
-    <span class="param">// Esta operación internamente llama a otras operaciones</span>
-    Double comisionDolares = calcularComisionDolares(cantidad, precioUnitario, diaSemana, hora);
-
-    <span class="param">// 3. Procesar compra o venta (método con datos externos)</span>
-    if (tipoOperacion.equals("Compra")) {
-        procesarCompra(criptomoneda, cantidad, precioUnitario, comisionDolares);
-    } else {
-        procesarVenta(criptomoneda, cantidad, precioUnitario, comisionDolares);
-    }
-
-    <span class="param">// 4. Actualizar totales globales (método sin parámetros, usa atributos)</span>
-    actualizarTotalesGlobales();
-
-    <span class="param">// 5. Evaluar alertas según la cripto (método con datos externos)</span>
-    switch(criptomoneda) {
-        case "BTC":
-            evaluarAlertasBTC(tipoOperacion, precioUnitario);
-            break;
-        case "ETH":
-            evaluarAlertasETH(tipoOperacion, cantidad, precioUnitario);
-            break;
-        <span class="param">// ... otros casos</span>
-    }
-
-    <span class="param">// 6. Mostrar recomendación (método con datos externos)</span>
-    mostrarRecomendacion(periodo, diaSemana);
-
-    <span class="param">// 7. Mostrar resumen (método con dato externo)</span>
-    mostrarResumenOperacion(criptomoneda);
-}
-                </div>
-            </div>
-
-            <div class="subsection">
-                <h3 class="subsection-title"><span class="icon">🔧</span>Ejemplo: Método procesarCompra()</h3>
-
-                <div class="method-signature">
-<span class="return">void</span> procesarCompra(<span class="param">String criptomoneda, Double cantidad,
-                    Double precioUnitario, Double comisionDolares</span>) {
-
-    <span class="param">// Calcular monto de la operación (operación con datos externos)</span>
-    Double monto = calcularMontoOperacion(cantidad, precioUnitario);
-
-    <span class="param">// Actualizar atributos según la criptomoneda</span>
-    switch(criptomoneda) {
-        case "BTC":
-            <span class="param">// Actualizar atributos directamente</span>
-            btcCompradas += cantidad;
-            btcDineroInvertido += monto;
-            <span class="param">// Calcular precio promedio (operación que usa atributos)</span>
-            btcPrecioPromCompra = calcularPrecioPromedioBTC();
-            btcComisiones += comisionDolares;
-            <span class="param">// Calcular cantidad actual (operación que usa atributos)</span>
-            btcActuales = calcularCantidadActualBTC();
-            break;
-
-        case "ETH":
-            ethCompradas += cantidad;
-            ethDineroInvertido += monto;
-            ethPrecioPromCompra = calcularPrecioPromedioETH();
-            ethComisiones += comisionDolares;
-            ethActuales = calcularCantidadActualETH();
-            break;
-
-        <span class="param">// ... casos para ADA, SOL, XRP</span>
-    }
-}
-                </div>
-            </div>
-
-            <div class="subsection">
-                <h3 class="subsection-title"><span class="icon">📊</span>Ejemplo: Método actualizarTotalesGlobales()</h3>
-
-                <div class="method-signature">
-<span class="return">void</span> actualizarTotalesGlobales() {
-    <span class="param">// Este método NO recibe parámetros porque usa los ATRIBUTOS directamente</span>
-
-    valorTotalInvertido = btcDineroInvertido + ethDineroInvertido +
-                          adaDineroInvertido + solDineroInvertido +
-                          xrpDineroInvertido;
-
-    valorTotalRecuperado = btcDineroRecuperado + ethDineroRecuperado +
-                           adaDineroRecuperado + solDineroRecuperado +
-                           xrpDineroRecuperado;
-
-    gananciaTotal = btcGanancia + ethGanancia + adaGanancia +
-                    solGanancia + xrpGanancia;
-
-    comisionesTotales = btcComisiones + ethComisiones + adaComisiones +
-                        solComisiones + xrpComisiones;
-}
-                </div>
-            </div>
-        </div>
 
         <!-- SECCIÓN 5: RESUMEN FINAL -->
         <div class="section">
@@ -939,10 +825,10 @@
 
                 <div class="card">
                     <h4>⚙️ OPERACIONES</h4>
-                    <p style="font-size: 2.5em; color: #764ba2; font-weight: bold; margin: 10px 0;">26</p>
+                    <p style="font-size: 2.5em; color: #764ba2; font-weight: bold; margin: 10px 0;">25</p>
                     <p>Cálculos que retornan valores</p>
                     <ul style="margin-top: 10px; text-align: left;">
-                        <li>6 reciben solo datos externos</li>
+                        <li>5 reciben solo datos externos</li>
                         <li>20 usan atributos (4×5 criptos)</li>
                     </ul>
                 </div>
@@ -965,8 +851,8 @@
                 <em>Ejemplo:</em> <code>btcCompradas</code>, <code>ethDineroInvertido</code>, <code>comisionesTotales</code><br><br>
 
                 <strong>OPERACIONES:</strong> Funciones que calculan y retornan valores. Sus parámetros SOLO son datos externos.<br>
-                <em>Ejemplo:</em> <code>calcularMontoOperacion(cantidad, precioUnitario)</code> → cantidad y precio vienen del USUARIO<br>
-                <em>Ejemplo:</em> <code>calcularPrecioPromedio(dineroTotal, cantidadTotal)</code> → dinero y cantidad vienen de OTRA operación o atributo<br><br>
+                <em>Ejemplo con parámetros:</em> <code>calcularComisionPorcentaje(diaSemana, hora)</code> → día y hora vienen del USUARIO<br>
+                <em>Ejemplo sin parámetros:</em> <code>calcularPrecioPromedioBTC()</code> → usa atributos directamente (btcDineroInvertido, btcCompradas)<br><br>
 
                 <strong>MÉTODOS:</strong> Funciones que realizan acciones. Usan los atributos directamente sin recibirlos como parámetros.<br>
                 <em>Ejemplo:</em> <code>actualizarTotalesGlobales()</code> → usa btcGanancia, ethGanancia, etc. directamente<br>
