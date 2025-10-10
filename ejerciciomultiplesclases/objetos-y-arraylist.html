@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clases, Objetos y ArrayList - Guía Didáctica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .analogy-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .comparison-box {
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid;
+        }
+
+        .class-box {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .object-box {
+            background: #fff3e0;
+            border-color: #ff9800;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #95a5a6;
+        }
+
+        .code-block .keyword {
+            color: #e74c3c;
+        }
+
+        .code-block .type {
+            color: #3498db;
+        }
+
+        .code-block .string {
+            color: #2ecc71;
+        }
+
+        .code-block .number {
+            color: #f39c12;
+        }
+
+        .visual-diagram {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 3px solid #667eea;
+            font-family: 'Courier New', monospace;
+        }
+
+        .step-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            background: #ffc107;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 50%;
+            display: inline-block;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .key-concept {
+            background: #fff9c4;
+            border-left: 5px solid #f39c12;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .interactive-note {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .memory-diagram {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .nav-button {
+            background: #667eea;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 5px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #764ba2;
+        }
+
+        .warning-box {
+            background: #ffebee;
+            border-left: 5px solid #e74c3c;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .memory-box {
+            background: #f0f0f0;
+            border: 3px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .memory-stack {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .memory-heap {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .arraylist-visualization {
+            background: white;
+            border: 3px solid #4caf50;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .arraylist-cell {
+            display: inline-block;
+            border: 2px solid #667eea;
+            padding: 15px 20px;
+            margin: 5px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            min-width: 120px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .arraylist-empty {
+            display: inline-block;
+            border: 2px dashed #ccc;
+            padding: 15px 20px;
+            margin: 5px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            min-width: 120px;
+            text-align: center;
+            color: #999;
+        }
+
+        .arrow-down {
+            font-size: 2em;
+            color: #4caf50;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .step-title {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .object-card {
+            background: #fff9c4;
+            border: 3px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .reference-arrow {
+            font-size: 1.5em;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏗️ Clases, Objetos y ArrayList</h1>
+            <p>Entendiendo cómo funciona la programación orientada a objetos</p>
+        </div>
+
+        <!-- Navegación -->
+        <div class="section" style="text-align: center;">
+            <a href="index.html" class="nav-button">⬅️ Volver al Índice</a>
+        </div>
+
+        <!-- Sección 1: Clase vs Objeto -->
+        <div class="section">
+            <h2>🎭 Clase vs Objeto: La Diferencia Fundamental</h2>
+
+            <div class="analogy-box">
+                <h3 style="color: #667eea; margin-top: 0;">🏠 Analogía: El Plano y las Casas</h3>
+                <p style="font-size: 1.1em; margin-top: 15px;">
+                    Imagina que eres arquitecto y diseñas el plano de una casa. El <strong>plano</strong> describe cómo debe ser la casa:
+                    tiene 3 habitaciones, 2 baños, cocina, etc. Pero el plano NO es una casa real, no puedes vivir en él.
+                </p>
+                <p style="font-size: 1.1em; margin-top: 15px;">
+                    Luego, usando ese plano, construyes <strong>3 casas reales</strong>: una en la calle A, otra en la calle B, y otra en la calle C.
+                    Cada casa es diferente (diferentes dueños, diferentes colores de pintura, diferentes muebles), pero todas se construyeron
+                    usando el mismo plano.
+                </p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-box class-box">
+                    <h3 style="color: #2196f3; margin-top: 0;">📋 CLASE = Plano</h3>
+                    <ul style="margin-left: 20px; margin-top: 15px; line-height: 1.8;">
+                        <li>Es la <strong>plantilla o molde</strong></li>
+                        <li>Define QUÉ atributos tendrá</li>
+                        <li>Define QUÉ métodos tendrá</li>
+                        <li>NO ocupa memoria real para datos</li>
+                        <li>Se escribe UNA SOLA VEZ en el código</li>
+                    </ul>
+                    <div class="code-block" style="margin-top: 20px;">
+<pre><span class="comment">// La CLASE Nota (el plano)</span>
+<span class="keyword">class</span> Nota {
+    <span class="comment">// Atributos (características)</span>
+    <span class="keyword">private</span> <span class="type">String</span> nombre;
+    <span class="keyword">private</span> <span class="type">double</span> valor;
+    <span class="keyword">private</span> <span class="type">double</span> porcentaje;
+
+    <span class="comment">// Constructor y métodos...</span>
+}</pre>
+                    </div>
+                </div>
+
+                <div class="comparison-box object-box">
+                    <h3 style="color: #ff9800; margin-top: 0;">🏠 OBJETO = Casa Real</h3>
+                    <ul style="margin-left: 20px; margin-top: 15px; line-height: 1.8;">
+                        <li>Es una <strong>instancia concreta</strong></li>
+                        <li>Tiene valores REALES en los atributos</li>
+                        <li>Ocupa memoria real</li>
+                        <li>Puede haber MUCHOS objetos de la misma clase</li>
+                        <li>Cada objeto es independiente</li>
+                    </ul>
+                    <div class="code-block" style="margin-top: 20px;">
+<pre><span class="comment">// OBJETOS Nota (casas reales)</span>
+Nota parcial1 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);
+Nota parcial2 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 2"</span>, <span class="number">3.8</span>, <span class="number">30</span>);
+Nota proyecto = <span class="keyword">new</span> Nota(<span class="string">"Proyecto"</span>, <span class="number">4.5</span>, <span class="number">40</span>);
+
+<span class="comment">// ¡3 objetos diferentes de la misma clase!</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-concept">
+                <h4>💡 Punto Clave</h4>
+                <p style="font-size: 1.1em; margin-top: 10px;">
+                    <strong>Clase:</strong> "Así es COMO debe ser una Nota" (plantilla)<br>
+                    <strong>Objeto:</strong> "Esta ES una nota específica con valores reales" (instancia)
+                </p>
+            </div>
+        </div>
+
+        <!-- Sección 2: Creando Objetos -->
+        <div class="section">
+            <h2>🔨 Cómo se Crea un Objeto</h2>
+
+            <p style="font-size: 1.1em; margin-top: 15px;">
+                Para crear un objeto necesitas usar la palabra clave <code>new</code> seguida del <strong>constructor</strong> de la clase.
+            </p>
+
+            <div class="step-box">
+                <span class="step-number">1</span>
+                <strong>Sintaxis General:</strong>
+                <div class="code-block" style="margin-top: 15px;">
+<pre>TipoClase nombreVariable = <span class="keyword">new</span> TipoClase(parámetros);</pre>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">2</span>
+                <strong>Ejemplo Real con Nota:</strong>
+                <div class="code-block" style="margin-top: 15px;">
+<pre>Nota parcial1 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);
+<span class="comment">//   ↑           ↑                 ↑</span>
+<span class="comment">//   |           |                 |</span>
+<span class="comment">//   |           |                 +-- Llama al constructor</span>
+<span class="comment">//   |           +-- Crea el objeto en memoria</span>
+<span class="comment">//   +-- Variable que apunta al objeto</span></pre>
+                </div>
+            </div>
+
+            <div class="key-concept">
+                <h4 style="color: #667eea;">🧠 ¿Qué pasa en memoria?</h4>
+
+                <div class="analogy-box" style="margin-top: 20px;">
+                    <h4 style="color: #667eea; margin-top: 0;">📍 Analogía: La Dirección de una Casa</h4>
+                    <p style="font-size: 1.1em; margin-top: 15px;">
+                        Cuando escribes <code>Nota parcial1 = new Nota(...)</code>, pasan dos cosas:
+                    </p>
+                    <ul style="margin-left: 20px; margin-top: 15px; line-height: 2; font-size: 1.05em;">
+                        <li><strong>Se construye una casa real</strong> (el objeto Nota con sus datos)</li>
+                        <li><strong>Se anota la dirección en un papel</strong> (la variable parcial1 guarda dónde está el objeto)</li>
+                    </ul>
+                    <p style="font-size: 1.1em; margin-top: 15px;">
+                        El papel NO es la casa. Solo te dice dónde encontrarla. De la misma forma, la variable NO es el objeto,
+                        solo guarda la ubicación donde está el objeto en memoria.
+                    </p>
+                </div>
+
+                <h4 style="color: #667eea; margin-top: 30px;">Visualización:</h4>
+
+                <div class="step-box">
+                    <div class="step-title">PASO 1: Antes de crear el objeto</div>
+                    <div class="code-block">
+<pre>Nota parcial1;</pre>
+                    </div>
+
+                    <div style="background: white; border: 2px solid #667eea; border-radius: 8px; padding: 20px; margin-top: 20px;">
+                        <div style="text-align: center;">
+                            <div style="display: inline-block; background: #e3f2fd; border: 2px solid #2196f3; padding: 15px 30px; border-radius: 8px; margin: 10px;">
+                                <strong>Variable parcial1</strong><br>
+                                <span style="color: #999; font-size: 1.2em;">vacía (null)</span>
+                            </div>
+                        </div>
+                        <p style="text-align: center; margin-top: 15px; color: #666;">
+                            La variable existe, pero todavía no apunta a ningún objeto
+                        </p>
+                    </div>
+                </div>
+
+                <div class="arrow-down">⬇️</div>
+
+                <div class="step-box">
+                    <div class="step-title">PASO 2: Después de new Nota("Parcial 1", 4.2, 30)</div>
+                    <div class="code-block">
+<pre>Nota parcial1 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);</pre>
+                    </div>
+
+                    <div style="background: white; border: 2px solid #667eea; border-radius: 8px; padding: 20px; margin-top: 20px;">
+                        <div style="text-align: center;">
+                            <div style="display: inline-block; background: #e3f2fd; border: 2px solid #2196f3; padding: 15px 30px; border-radius: 8px; margin: 10px;">
+                                <strong>Variable parcial1</strong><br>
+                                <span style="font-size: 1.1em;">📍 apunta al objeto →</span>
+                            </div>
+
+                            <div style="display: inline-block; background: #fff9c4; border: 3px solid #ffc107; padding: 15px 30px; border-radius: 8px; margin: 10px;">
+                                <strong>🏠 Objeto Nota</strong><br>
+                                <div style="text-align: left; margin-top: 10px; line-height: 1.8;">
+                                    nombre: "Parcial 1"<br>
+                                    valor: 4.2<br>
+                                    porcentaje: 30.0
+                                </div>
+                            </div>
+                        </div>
+                        <p style="text-align: center; margin-top: 20px; color: #666;">
+                            Ahora la variable guarda la "dirección" donde está el objeto
+                        </p>
+                    </div>
+                </div>
+
+                <div class="interactive-note" style="margin-top: 30px;">
+                    <h4 style="color: #4caf50; margin-top: 0;">💡 Concepto Importante</h4>
+                    <p style="font-size: 1.1em; margin-top: 10px; line-height: 1.8;">
+                        <strong>La variable NO contiene el objeto</strong>, solo guarda "dónde encontrarlo".<br>
+                        Por eso se dice que la variable es una <strong>referencia</strong> al objeto.
+                    </p>
+                    <p style="font-size: 1.05em; margin-top: 15px; line-height: 1.8;">
+                        <strong>Ejemplo:</strong> Si escribes <code>parcial1</code> en tu código,
+                        Java automáticamente va a la dirección guardada y te trae el objeto que está allí.
+                    </p>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">3</span>
+                <strong>Creando múltiples objetos:</strong>
+                <div class="code-block" style="margin-top: 15px;">
+<pre><span class="comment">// Cada uno es un objeto diferente en memoria</span>
+Nota parcial1 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);
+Nota parcial2 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 2"</span>, <span class="number">3.8</span>, <span class="number">30</span>);
+Nota examenFinal = <span class="keyword">new</span> Nota(<span class="string">"Examen Final"</span>, <span class="number">4.5</span>, <span class="number">40</span>);
+
+<span class="comment">// ¡3 objetos independientes!</span>
+<span class="comment">// Si modificas parcial1, NO afecta a parcial2 ni examenFinal</span></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 3: El Constructor -->
+        <div class="section">
+            <h2>🏗️ El Papel del Constructor</h2>
+
+            <div class="analogy-box">
+                <h3 style="color: #667eea; margin-top: 0;">🏭 Analogía: La Fábrica</h3>
+                <p style="font-size: 1.1em; margin-top: 15px;">
+                    El constructor es como una <strong>fábrica que ensambla el objeto</strong>. Cuando le das los materiales
+                    (parámetros), la fábrica construye el objeto y lo deja listo para usar.
+                </p>
+            </div>
+
+            <h3>¿Qué hace el constructor?</h3>
+            <ol style="margin-left: 20px; margin-top: 15px; line-height: 2; font-size: 1.05em;">
+                <li><strong>Recibe los valores iniciales</strong> (parámetros)</li>
+                <li><strong>Crea el objeto en memoria</strong></li>
+                <li><strong>Asigna los valores a los atributos</strong></li>
+                <li><strong>Puede hacer validaciones</strong> antes de crear el objeto</li>
+                <li><strong>Retorna la referencia</strong> al objeto creado</li>
+            </ol>
+
+            <div class="code-block" style="margin-top: 20px;">
+<pre><span class="keyword">public class</span> Nota {
+    <span class="keyword">private</span> <span class="type">String</span> nombre;
+    <span class="keyword">private</span> <span class="type">double</span> valor;
+    <span class="keyword">private</span> <span class="type">double</span> porcentaje;
+
+    <span class="comment">// CONSTRUCTOR: se llama automáticamente al hacer "new"</span>
+    <span class="keyword">public</span> Nota(<span class="type">String</span> nombre, <span class="type">double</span> valor, <span class="type">double</span> porcentaje) {
+        <span class="comment">// Paso 1: Validar (opcional pero recomendado)</span>
+        <span class="keyword">if</span> (valor &lt; <span class="number">0</span> || valor &gt; <span class="number">5</span>) {
+            System.out.println(<span class="string">"⚠️ Error: valor debe estar entre 0 y 5"</span>);
+            <span class="keyword">return</span>;
+        }
+
+        <span class="comment">// Paso 2: Asignar valores a los atributos</span>
+        <span class="keyword">this</span>.nombre = nombre;        <span class="comment">// "this" = este objeto</span>
+        <span class="keyword">this</span>.valor = valor;
+        <span class="keyword">this</span>.porcentaje = porcentaje;
+
+        <span class="comment">// ¡Listo! El objeto está creado e inicializado</span>
+    }
+}</pre>
+            </div>
+
+            <div class="key-concept">
+                <h4>🔑 Palabra clave: <code>this</code></h4>
+                <p style="margin-top: 10px; font-size: 1.05em;">
+                    <code>this</code> significa <strong>"este objeto"</strong> (el que se está creando en este momento).
+                </p>
+                <div class="code-block" style="margin-top: 15px;">
+<pre><span class="keyword">this</span>.nombre = nombre;
+<span class="comment">// ↑              ↑</span>
+<span class="comment">// |              +-- parámetro del constructor</span>
+<span class="comment">// +-- atributo del objeto que se está creando</span></pre>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <h4>📝 Ejemplo Completo: Creación Paso a Paso</h4>
+                <div class="code-block" style="margin-top: 15px;">
+<pre><span class="comment">// 1. Llamas al constructor con valores</span>
+Nota miNota = <span class="keyword">new</span> Nota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);
+
+<span class="comment">// 2. El constructor recibe los parámetros:</span>
+<span class="comment">//    nombre = "Parcial 1"</span>
+<span class="comment">//    valor = 4.2</span>
+<span class="comment">//    porcentaje = 30</span>
+
+<span class="comment">// 3. Valida que 4.2 esté entre 0 y 5 ✓</span>
+
+<span class="comment">// 4. Asigna valores:</span>
+<span class="comment">//    this.nombre = "Parcial 1"</span>
+<span class="comment">//    this.valor = 4.2</span>
+<span class="comment">//    this.porcentaje = 30</span>
+
+<span class="comment">// 5. Retorna la referencia al objeto → miNota</span>
+
+<span class="comment">// ¡Ahora miNota es un objeto real y funcional!</span></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 4: Interacción entre Objetos -->
+        <div class="section">
+            <h2>🤝 Cómo un Objeto Llama a Métodos/Atributos de Otro Objeto</h2>
+
+            <p style="font-size: 1.1em; margin-top: 15px;">
+                Los objetos NO acceden directamente a los atributos privados de otros objetos.
+                En cambio, usan los <strong>métodos públicos</strong> (getters).
+            </p>
+
+            <div class="warning-box">
+                <h4 style="color: #e74c3c; margin-top: 0;">❌ LO QUE NO SE PUEDE HACER</h4>
+                <div class="code-block" style="margin-top: 15px;">
+<pre>Nota nota1 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);
+
+<span class="comment">// ❌ ERROR: no puedes acceder a atributos privados</span>
+<span class="type">double</span> valor = nota1.valor;  <span class="comment">// ¡COMPILACIÓN FALLA!</span></pre>
+                </div>
+            </div>
+
+            <div class="interactive-note">
+                <h4 style="color: #4caf50; margin-top: 0;">✅ LA FORMA CORRECTA</h4>
+                <div class="code-block" style="margin-top: 15px;">
+<pre>Nota nota1 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);
+
+<span class="comment">// ✅ CORRECTO: usa el método público getter</span>
+<span class="type">double</span> valor = nota1.getValor();  <span class="comment">// ¡Funciona!</span></pre>
+                </div>
+            </div>
+
+            <h3>Sintaxis para llamar métodos de un objeto:</h3>
+            <div class="code-block">
+<pre>objeto.nombreMetodo(parametros);</pre>
+            </div>
+
+            <div class="step-box">
+                <h4>Ejemplo Real: Asignatura usando Nota</h4>
+                <div class="code-block" style="margin-top: 15px;">
+<pre><span class="keyword">public class</span> Asignatura {
+    <span class="keyword">private</span> <span class="type">String</span> nombre;
+    <span class="keyword">private</span> List&lt;Nota&gt; notas;
+
+    <span class="comment">// Método que calcula la nota final (ejemplo con 3 notas)</span>
+    <span class="keyword">public</span> <span class="type">double</span> calcularNotaFinal() {
+        <span class="keyword">if</span> (notas.isEmpty()) {
+            <span class="keyword">return</span> <span class="number">0</span>;
+        }
+
+        <span class="comment">// Obtenemos cada nota directamente</span>
+        Nota nota1 = notas.get(<span class="number">0</span>);
+        Nota nota2 = notas.get(<span class="number">1</span>);
+        Nota nota3 = notas.get(<span class="number">2</span>);
+
+        <span class="comment">// ¡La Asignatura le PIDE a cada Nota su información!</span>
+        <span class="type">double</span> valor1 = nota1.getValor();           <span class="comment">// ← llamada al método</span>
+        <span class="type">double</span> porcentaje1 = nota1.getPorcentaje(); <span class="comment">// ← llamada al método</span>
+
+        <span class="type">double</span> valor2 = nota2.getValor();
+        <span class="type">double</span> porcentaje2 = nota2.getPorcentaje();
+
+        <span class="type">double</span> valor3 = nota3.getValor();
+        <span class="type">double</span> porcentaje3 = nota3.getPorcentaje();
+
+        <span class="comment">// Calcula la contribución de cada nota</span>
+        <span class="type">double</span> contribucion1 = valor1 * (porcentaje1 / <span class="number">100</span>);
+        <span class="type">double</span> contribucion2 = valor2 * (porcentaje2 / <span class="number">100</span>);
+        <span class="type">double</span> contribucion3 = valor3 * (porcentaje3 / <span class="number">100</span>);
+
+        <span class="keyword">return</span> contribucion1 + contribucion2 + contribucion3;
+    }
+}</pre>
+                </div>
+            </div>
+
+            <div class="visual-diagram">
+<pre>
+<strong>Interacción entre objetos:</strong>
+
+┌─────────────────────┐
+│  Objeto Asignatura  │
+│  "Cálculo I"        │
+└──────────┬──────────┘
+           │ .getValor()
+           │ .getPorcentaje()
+           ↓
+   ┌───────────────────┐
+   │  Objeto Nota      │
+   │  "Parcial 1"      │
+   │  valor: 4.2       │
+   │  porcentaje: 30   │
+   └───────────────────┘
+
+La Asignatura NO puede hacer: nota.valor
+La Asignatura SÍ puede hacer: nota.getValor()
+</pre>
+            </div>
+
+            <div class="key-concept">
+                <h4>🎯 Principio de Encapsulamiento</h4>
+                <p style="margin-top: 10px; font-size: 1.05em;">
+                    "No preguntes por los datos internos. En su lugar, pídele al objeto que haga algo con esos datos."
+                </p>
+            </div>
+        </div>
+
+        <!-- Sección 5: List y ArrayList -->
+        <div class="section">
+            <h2>📚 List y ArrayList: Colecciones de Objetos</h2>
+
+            <div class="analogy-box">
+                <h3 style="color: #667eea; margin-top: 0;">📦 Analogía: La Estantería Flexible</h3>
+                <p style="font-size: 1.1em; margin-top: 15px;">
+                    Imagina que tienes una <strong>estantería mágica</strong> que crece automáticamente cuando le agregas libros.
+                    No necesitas saber de antemano cuántos libros vas a guardar. Simplemente vas agregando y la estantería se expande.
+                </p>
+            </div>
+
+            <h3>¿Qué es List y ArrayList?</h3>
+
+            <div class="comparison-grid">
+                <div class="comparison-box class-box">
+                    <h4 style="color: #2196f3; margin-top: 0;">List (Interfaz)</h4>
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                        <li>Es una <strong>abstracción</strong></li>
+                        <li>Define QUÉ operaciones se pueden hacer</li>
+                        <li>No se puede instanciar directamente</li>
+                        <li>Es el "contrato" o "especificación"</li>
+                    </ul>
+                    <div class="code-block" style="margin-top: 15px;">
+<pre><span class="comment">// List es la interfaz</span>
+List&lt;Nota&gt; notas;</pre>
+                    </div>
+                </div>
+
+                <div class="comparison-box object-box">
+                    <h4 style="color: #ff9800; margin-top: 0;">ArrayList (Implementación)</h4>
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                        <li>Es una <strong>implementación concreta</strong></li>
+                        <li>Define CÓMO se hacen las operaciones</li>
+                        <li>SÍ se puede instanciar</li>
+                        <li>Es la "realización" del contrato</li>
+                    </ul>
+                    <div class="code-block" style="margin-top: 15px;">
+<pre><span class="comment">// ArrayList es la implementación</span>
+notas = <span class="keyword">new</span> ArrayList&lt;&gt;();</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <h4>📝 Forma Completa de Declarar e Inicializar</h4>
+                <div class="code-block" style="margin-top: 15px;">
+<pre><span class="comment">// Forma completa (recomendada)</span>
+<span class="keyword">private</span> List&lt;Nota&gt; notas = <span class="keyword">new</span> ArrayList&lt;&gt;();
+<span class="comment">//        ↑                  ↑</span>
+<span class="comment">//        |                  +-- Implementación concreta</span>
+<span class="comment">//        +-- Tipo de la interfaz</span>
+
+<span class="comment">// También puedes hacerlo en dos pasos:</span>
+<span class="keyword">private</span> List&lt;Nota&gt; notas;           <span class="comment">// Declaración</span>
+notas = <span class="keyword">new</span> ArrayList&lt;&gt;();     <span class="comment">// Inicialización (en constructor)</span></pre>
+                </div>
+            </div>
+
+            <div class="key-concept">
+                <h4>🤔 ¿Por qué usar List en lugar de ArrayList directamente?</h4>
+                <p style="margin-top: 10px;">
+                    Porque así tu código es más <strong>flexible</strong>. Si en el futuro quieres cambiar ArrayList por otra
+                    implementación (como LinkedList), solo cambias el <code>new ArrayList&lt;&gt;()</code> y el resto del código sigue funcionando.
+                </p>
+            </div>
+
+            <h3>Operaciones Principales con ArrayList</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operación</th>
+                        <th>Método</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Agregar elemento</td>
+                        <td><code>add(elemento)</code></td>
+                        <td>Agrega al final de la lista</td>
+                    </tr>
+                    <tr>
+                        <td>Obtener elemento</td>
+                        <td><code>get(índice)</code></td>
+                        <td>Obtiene el elemento en la posición indicada (empieza en 0)</td>
+                    </tr>
+                    <tr>
+                        <td>Tamaño</td>
+                        <td><code>size()</code></td>
+                        <td>Retorna cuántos elementos hay</td>
+                    </tr>
+                    <tr>
+                        <td>Verificar si está vacía</td>
+                        <td><code>isEmpty()</code></td>
+                        <td>Retorna true si no hay elementos</td>
+                    </tr>
+                    <tr>
+                        <td>Eliminar elemento</td>
+                        <td><code>remove(índice)</code></td>
+                        <td>Elimina el elemento en la posición indicada</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sección 6: Agregar y Obtener Elementos -->
+        <div class="section">
+            <h2>➕ Agregar y Obtener Elementos de un ArrayList</h2>
+
+            <h3>1. Agregar Elementos con <code>add()</code></h3>
+
+            <div class="step-box">
+                <span class="step-number">1</span>
+                <strong>Crear la lista vacía:</strong>
+                <div class="code-block" style="margin-top: 15px;">
+<pre>List&lt;Nota&gt; notas = <span class="keyword">new</span> ArrayList&lt;&gt;();
+<span class="comment">// La lista está vacía: []</span>
+<span class="comment">// size() = 0</span></pre>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">2</span>
+                <strong>Agregar primer elemento:</strong>
+                <div class="code-block" style="margin-top: 15px;">
+<pre>Nota parcial1 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);
+notas.add(parcial1);
+<span class="comment">// Ahora la lista: [parcial1]</span>
+<span class="comment">// size() = 1</span></pre>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">3</span>
+                <strong>Agregar más elementos:</strong>
+                <div class="code-block" style="margin-top: 15px;">
+<pre>Nota parcial2 = <span class="keyword">new</span> Nota(<span class="string">"Parcial 2"</span>, <span class="number">3.8</span>, <span class="number">30</span>);
+notas.add(parcial2);
+<span class="comment">// Lista: [parcial1, parcial2]</span>
+<span class="comment">// size() = 2</span>
+
+Nota examen = <span class="keyword">new</span> Nota(<span class="string">"Examen Final"</span>, <span class="number">4.5</span>, <span class="number">40</span>);
+notas.add(examen);
+<span class="comment">// Lista: [parcial1, parcial2, examen]</span>
+<span class="comment">// size() = 3</span></pre>
+                </div>
+            </div>
+
+            <div class="visual-diagram">
+<pre>
+<strong>Estado de la lista después de cada add():</strong>
+
+Inicio:  []
+
+add(parcial1):  [Parcial1(4.2)]
+
+add(parcial2):  [Parcial1(4.2), Parcial2(3.8)]
+
+add(examen):    [Parcial1(4.2), Parcial2(3.8), ExamenFinal(4.5)]
+                    ↑ índice 0      ↑ índice 1        ↑ índice 2
+</pre>
+            </div>
+
+            <h3>2. Obtener Elementos con <code>get(índice)</code></h3>
+
+            <div class="warning-box">
+                <h4 style="color: #e74c3c; margin-top: 0;">⚠️ Los índices empiezan en 0</h4>
+                <p style="margin-top: 10px;">
+                    Si tienes 3 elementos, los índices son: 0, 1, 2 (NO 1, 2, 3)
+                </p>
+            </div>
+
+            <div class="code-block">
+<pre><span class="comment">// Tenemos 3 notas en la lista</span>
+<span class="comment">// Índices: 0, 1, 2</span>
+
+<span class="comment">// Obtener la primera nota (índice 0)</span>
+Nota primera = notas.get(<span class="number">0</span>);
+System.out.println(primera.getNombre());  <span class="comment">// "Parcial 1"</span>
+
+<span class="comment">// Obtener la segunda nota (índice 1)</span>
+Nota segunda = notas.get(<span class="number">1</span>);
+System.out.println(segunda.getNombre());  <span class="comment">// "Parcial 2"</span>
+
+<span class="comment">// Obtener la tercera nota (índice 2)</span>
+Nota tercera = notas.get(<span class="number">2</span>);
+System.out.println(tercera.getNombre());  <span class="comment">// "Examen Final"</span>
+
+<span class="comment">// ❌ ERROR: índice fuera de rango</span>
+<span class="comment">// Nota cuarta = notas.get(3);  // ¡CRASH!</span></pre>
+            </div>
+
+            <h3>3. Visualización: El ArrayList Creciendo</h3>
+
+            <p style="font-size: 1.05em; margin-top: 15px;">
+                Veamos gráficamente cómo crece el ArrayList cuando agregamos elementos uno por uno:
+            </p>
+
+            <div class="arraylist-visualization">
+                <div class="step-title">Estado Inicial: ArrayList Vacío</div>
+                <div class="code-block" style="margin-top: 10px;">
+<pre>List&lt;Nota&gt; notas = <span class="keyword">new</span> ArrayList&lt;&gt;();</pre>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <div class="arraylist-empty">vacío</div>
+                </div>
+                <p style="margin-top: 10px; text-align: center; color: #666;">
+                    size() = 0
+                </p>
+            </div>
+
+            <div class="arrow-down">⬇️ add(parcial1)</div>
+
+            <div class="arraylist-visualization">
+                <div class="step-title">Después del primer add()</div>
+                <div class="code-block" style="margin-top: 10px;">
+<pre>notas.add(parcial1);  <span class="comment">// parcial1 = new Nota("Parcial 1", 4.2, 30)</span></pre>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <div class="arraylist-cell">
+                        Parcial 1<br>
+                        <span style="font-size: 0.9em; color: #666;">índice [0]</span>
+                    </div>
+                </div>
+                <p style="margin-top: 10px; text-align: center; color: #666;">
+                    size() = 1
+                </p>
+            </div>
+
+            <div class="arrow-down">⬇️ add(parcial2)</div>
+
+            <div class="arraylist-visualization">
+                <div class="step-title">Después del segundo add()</div>
+                <div class="code-block" style="margin-top: 10px;">
+<pre>notas.add(parcial2);  <span class="comment">// parcial2 = new Nota("Parcial 2", 3.8, 30)</span></pre>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <div class="arraylist-cell">
+                        Parcial 1<br>
+                        <span style="font-size: 0.9em; color: #666;">índice [0]</span>
+                    </div>
+                    <div class="arraylist-cell" style="background: #c8e6c9;">
+                        Parcial 2<br>
+                        <span style="font-size: 0.9em; color: #666;">índice [1]</span>
+                    </div>
+                </div>
+                <p style="margin-top: 10px; text-align: center; color: #666;">
+                    size() = 2
+                </p>
+            </div>
+
+            <div class="arrow-down">⬇️ add(examen)</div>
+
+            <div class="arraylist-visualization">
+                <div class="step-title">Después del tercer add()</div>
+                <div class="code-block" style="margin-top: 10px;">
+<pre>notas.add(examen);  <span class="comment">// examen = new Nota("Examen Final", 4.5, 40)</span></pre>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <div class="arraylist-cell">
+                        Parcial 1<br>
+                        <span style="font-size: 0.9em; color: #666;">índice [0]</span>
+                    </div>
+                    <div class="arraylist-cell">
+                        Parcial 2<br>
+                        <span style="font-size: 0.9em; color: #666;">índice [1]</span>
+                    </div>
+                    <div class="arraylist-cell" style="background: #ffecb3;">
+                        Examen Final<br>
+                        <span style="font-size: 0.9em; color: #666;">índice [2]</span>
+                    </div>
+                </div>
+                <p style="margin-top: 10px; text-align: center; color: #666;">
+                    size() = 3
+                </p>
+            </div>
+
+            <div class="key-concept" style="margin-top: 30px;">
+                <h4>💡 Observaciones Importantes</h4>
+                <ul style="margin-left: 20px; margin-top: 15px; line-height: 2;">
+                    <li>El ArrayList <strong>crece automáticamente</strong> cuando agregas elementos</li>
+                    <li>Los índices <strong>siempre empiezan en 0</strong></li>
+                    <li>El último elemento siempre está en el índice <strong>size() - 1</strong></li>
+                    <li>Si tienes 3 elementos: índices válidos son 0, 1, 2</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sección 7: Ejemplo Completo -->
+        <div class="section">
+            <h2>🎯 Ejemplo Completo: Asignatura Agregando Notas</h2>
+
+            <p style="font-size: 1.1em; margin-top: 15px;">
+                Veamos cómo todo se conecta: creamos una Asignatura que agrega Notas a su ArrayList.
+            </p>
+
+            <div class="code-block">
+<pre><span class="keyword">public class</span> Asignatura {
+    <span class="keyword">private</span> <span class="type">String</span> nombre;
+    <span class="keyword">private</span> List&lt;Nota&gt; notas;  <span class="comment">// Declaración</span>
+
+    <span class="comment">// Constructor</span>
+    <span class="keyword">public</span> Asignatura(<span class="type">String</span> nombre) {
+        <span class="keyword">this</span>.nombre = nombre;
+        <span class="keyword">this</span>.notas = <span class="keyword">new</span> ArrayList&lt;&gt;();  <span class="comment">// Inicialización: crea el ArrayList vacío</span>
+    }
+
+    <span class="comment">// Método para agregar una nota (versión simplificada sin validación)</span>
+    <span class="keyword">public</span> <span class="type">void</span> agregarNota(<span class="type">String</span> nombre, <span class="type">double</span> valor, <span class="type">double</span> porcentaje) {
+        <span class="comment">// Paso 1: Crear el objeto Nota</span>
+        Nota nuevaNota = <span class="keyword">new</span> Nota(nombre, valor, porcentaje);
+
+        <span class="comment">// Paso 2: Agregarlo a la lista</span>
+        notas.add(nuevaNota);
+
+        System.out.println(<span class="string">"✅ Nota '"</span> + nombre + <span class="string">"' agregada exitosamente"</span>);
+    }
+
+    <span class="comment">// Método para obtener una nota específica</span>
+    <span class="keyword">public</span> Nota obtenerNota(<span class="type">int</span> indice) {
+        <span class="keyword">return</span> notas.get(indice);
+    }
+
+    <span class="comment">// Método para calcular nota final (ejemplo con 3 notas)</span>
+    <span class="keyword">public</span> <span class="type">double</span> calcularNotaFinal() {
+        <span class="keyword">if</span> (notas.isEmpty()) {
+            <span class="keyword">return</span> <span class="number">0</span>;
+        }
+
+        <span class="comment">// Suponemos que tenemos exactamente 3 notas</span>
+        Nota nota1 = notas.get(<span class="number">0</span>);
+        Nota nota2 = notas.get(<span class="number">1</span>);
+        Nota nota3 = notas.get(<span class="number">2</span>);
+
+        <span class="comment">// Cada nota aporta: valor × (porcentaje/100)</span>
+        <span class="type">double</span> contribucion1 = nota1.getValor() * (nota1.getPorcentaje() / <span class="number">100</span>);
+        <span class="type">double</span> contribucion2 = nota2.getValor() * (nota2.getPorcentaje() / <span class="number">100</span>);
+        <span class="type">double</span> contribucion3 = nota3.getValor() * (nota3.getPorcentaje() / <span class="number">100</span>);
+
+        <span class="type">double</span> notaFinal = contribucion1 + contribucion2 + contribucion3;
+
+        <span class="keyword">return</span> notaFinal;
+    }
+
+    <span class="comment">// Método para obtener cuántas notas tiene</span>
+    <span class="keyword">public</span> <span class="type">int</span> cantidadNotas() {
+        <span class="keyword">return</span> notas.size();
+    }
+}</pre>
+            </div>
+
+            <h3>Usando la Asignatura:</h3>
+
+            <div class="code-block">
+<pre><span class="keyword">public class</span> Main {
+    <span class="keyword">public static void</span> main(<span class="type">String</span>[] args) {
+        <span class="comment">// 1. Crear una asignatura</span>
+        Asignatura calculo = <span class="keyword">new</span> Asignatura(<span class="string">"Cálculo I"</span>);
+
+        <span class="comment">// 2. Agregar notas (cada add() crea un objeto Nota internamente)</span>
+        calculo.agregarNota(<span class="string">"Parcial 1"</span>, <span class="number">4.2</span>, <span class="number">30</span>);
+        calculo.agregarNota(<span class="string">"Parcial 2"</span>, <span class="number">3.8</span>, <span class="number">30</span>);
+        calculo.agregarNota(<span class="string">"Examen Final"</span>, <span class="number">4.5</span>, <span class="number">40</span>);
+
+        <span class="comment">// 3. Ver cuántas notas tiene</span>
+        System.out.println(<span class="string">"Total de notas: "</span> + calculo.cantidadNotas());
+
+        <span class="comment">// 4. Acceder a una nota específica</span>
+        Nota primera = calculo.obtenerNota(<span class="number">0</span>);
+        System.out.println(<span class="string">"Primera nota: "</span> + primera.getNombre());
+
+        <span class="comment">// 5. Calcular la nota final</span>
+        <span class="type">double</span> notaFinal = calculo.calcularNotaFinal();
+        System.out.println(<span class="string">"Nota Final: "</span> + notaFinal);
+    }
+}
+
+<span class="comment">/* Salida:
+✅ Nota 'Parcial 1' agregada exitosamente
+✅ Nota 'Parcial 2' agregada exitosamente
+✅ Nota 'Examen Final' agregada exitosamente
+Total de notas: 3
+Primera nota: Parcial 1
+Nota Final: 4.1
+1. Parcial 1: 4.2 (30%)
+2. Parcial 2: 3.8 (30%)
+3. Examen Final: 4.5 (40%)
+Nota Final: 4.1
+*/</span></pre>
+            </div>
+
+            <h3>¿Qué pasó paso a paso?</h3>
+
+            <div class="visual-diagram">
+<pre>
+<strong>1. Se crea la Asignatura:</strong>
+   calculo = new Asignatura("Cálculo I")
+   ├─ nombre = "Cálculo I"
+   └─ notas = [] (ArrayList vacío)
+
+<strong>2. Primera llamada a agregarNota:</strong>
+   calculo.agregarNota("Parcial 1", 4.2, 30)
+
+   Dentro del método:
+   ├─ Valida porcentaje: 0 + 30 = 30 ≤ 100 ✓
+   ├─ Crea: nuevaNota = new Nota("Parcial 1", 4.2, 30)
+   └─ Agrega: notas.add(nuevaNota)
+
+   Estado de notas: [Nota("Parcial 1")]
+
+<strong>3. Segunda llamada a agregarNota:</strong>
+   calculo.agregarNota("Parcial 2", 3.8, 30)
+
+   Dentro del método:
+   ├─ Valida porcentaje: 30 + 30 = 60 ≤ 100 ✓
+   ├─ Crea: nuevaNota = new Nota("Parcial 2", 3.8, 30)
+   └─ Agrega: notas.add(nuevaNota)
+
+   Estado de notas: [Nota("Parcial 1"), Nota("Parcial 2")]
+
+<strong>4. Tercera llamada a agregarNota:</strong>
+   calculo.agregarNota("Examen Final", 4.5, 40)
+
+   Dentro del método:
+   ├─ Valida porcentaje: 60 + 40 = 100 ≤ 100 ✓
+   ├─ Crea: nuevaNota = new Nota("Examen Final", 4.5, 40)
+   └─ Agrega: notas.add(nuevaNota)
+
+   Estado de notas: [Nota("Parcial 1"), Nota("Parcial 2"), Nota("Examen Final")]
+
+<strong>5. Se llama a calcularNotaFinal():</strong>
+   ├─ Obtiene las 3 notas con get(0), get(1), get(2)
+   ├─ Para cada nota, llama a getValor() y getPorcentaje()
+   ├─ Calcula las 3 contribuciones
+   └─ Retorna la suma: 4.1
+</pre>
+            </div>
+        </div>
+
+        <!-- Sección 8: Diagrama de Memoria -->
+        <div class="section">
+            <h2>🧠 Diagrama de Memoria: Cómo se Relacionan los Objetos</h2>
+
+            <div class="visual-diagram">
+<pre>
+<strong>Estado final en memoria después de agregar las 3 notas:</strong>
+
+   ┌─────────────────────────────────┐
+   │  Objeto Asignatura              │
+   │  (referencia: calculo)          │
+   ├─────────────────────────────────┤
+   │ nombre: "Cálculo I"             │
+   │ notas: ────────────┐            │
+   └────────────────────│────────────┘
+                        │
+                        ↓
+            ┌───────────────────────┐
+            │   ArrayList           │
+            │   size = 3            │
+            ├───────────────────────┤
+            │ [0] ──────────────┐   │
+            │ [1] ────────┐     │   │
+            │ [2] ──┐     │     │   │
+            └───────│─────│─────│───┘
+                    │     │     │
+                    │     │     └────────────►┌──────────────────┐
+                    │     │                   │  Objeto Nota     │
+                    │     │                   ├──────────────────┤
+                    │     │                   │ nombre: "Parcial 1"│
+                    │     │                   │ valor: 4.2       │
+                    │     │                   │ porcentaje: 30.0 │
+                    │     │                   └──────────────────┘
+                    │     │
+                    │     └──────────────────►┌──────────────────┐
+                    │                         │  Objeto Nota     │
+                    │                         ├──────────────────┤
+                    │                         │ nombre: "Parcial 2"│
+                    │                         │ valor: 3.8       │
+                    │                         │ porcentaje: 30.0 │
+                    │                         └──────────────────┘
+                    │
+                    └────────────────────────►┌──────────────────┐
+                                              │  Objeto Nota     │
+                                              ├──────────────────┤
+                                              │ nombre: "Examen Final"│
+                                              │ valor: 4.5       │
+                                              │ porcentaje: 40.0 │
+                                              └──────────────────┘
+
+<strong>Relación de composición:</strong>
+- La Asignatura "tiene" una lista de Notas
+- Cada Nota es un objeto independiente en memoria
+- El ArrayList almacena referencias (punteros) a cada Nota
+</pre>
+            </div>
+        </div>
+
+        <!-- Sección 9: Resumen -->
+        <div class="section">
+            <h2>📝 Resumen de Conceptos Clave</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Explicación</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Clase</strong></td>
+                        <td>Plantilla o molde que define estructura</td>
+                        <td><code>class Nota { ... }</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Objeto</strong></td>
+                        <td>Instancia concreta de una clase</td>
+                        <td><code>new Nota("Parcial", 4.2, 30)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Constructor</strong></td>
+                        <td>Método especial que inicializa el objeto</td>
+                        <td><code>public Nota(...) { ... }</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>this</strong></td>
+                        <td>Referencia al objeto actual</td>
+                        <td><code>this.nombre = nombre;</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Llamar método</strong></td>
+                        <td>Objeto invoca comportamiento de otro</td>
+                        <td><code>nota.getValor()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>List</strong></td>
+                        <td>Interfaz (contrato) para colecciones</td>
+                        <td><code>List&lt;Nota&gt; notas;</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>ArrayList</strong></td>
+                        <td>Implementación de List (lista dinámica)</td>
+                        <td><code>new ArrayList&lt;&gt;()</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>add()</strong></td>
+                        <td>Agrega elemento al final de la lista</td>
+                        <td><code>notas.add(nuevaNota)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>get(índice)</strong></td>
+                        <td>Obtiene elemento en posición (desde 0)</td>
+                        <td><code>notas.get(0)</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>size()</strong></td>
+                        <td>Retorna cantidad de elementos</td>
+                        <td><code>notas.size()</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Ejercicio Práctico -->
+        <div class="section">
+            <h2>💪 Ejercicio Práctico</h2>
+
+            <div class="interactive-note">
+                <h4 style="color: #4caf50; margin-top: 0;">Desafío: Implementa la clase Estudiante</h4>
+                <p style="margin-top: 15px;">
+                    Siguiendo el mismo patrón que vimos con Asignatura y Nota, implementa la clase <code>Estudiante</code> que:
+                </p>
+                <ol style="margin-left: 20px; margin-top: 15px; line-height: 2;">
+                    <li>Tenga atributos: nombre, código, semestre, y una lista de asignaturas</li>
+                    <li>Tenga un constructor que inicialice los datos y cree el ArrayList vacío</li>
+                    <li>Tenga un método <code>agregarAsignatura(Asignatura)</code> que agregue asignaturas a la lista</li>
+                    <li>Tenga un método <code>calcularPromedioGeneral()</code> que calcule el promedio de todas las asignaturas</li>
+                    <li>Tenga un método <code>mostrarAsignaturas()</code> que liste todas las asignaturas con sus notas finales</li>
+                </ol>
+            </div>
+
+            <div class="key-concept" style="margin-top: 30px;">
+                <h4>💡 Pistas</h4>
+                <ul style="margin-left: 20px; margin-top: 10px; line-height: 1.8;">
+                    <li>Usa <code>List&lt;Asignatura&gt;</code> para la colección de asignaturas</li>
+                    <li>En el constructor, inicializa la lista: <code>this.asignaturas = new ArrayList&lt;&gt;();</code></li>
+                    <li>Para obtener una asignatura específica, usa <code>asignaturas.get(indice)</code></li>
+                    <li>Para calcular el promedio, obtén cada asignatura con get() y llama a su método <code>calcularNotaFinal()</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Navegación Final -->
+        <div class="section" style="text-align: center;">
+            <a href="index.html" class="nav-button">⬅️ Volver al Índice</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="section" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <p style="font-size: 1.2em; margin-bottom: 10px;">Universidad "Excelencia Académica"</p>
+            <p>Fundamentos de Programación - Conceptos de OOP</p>
+            <p style="margin-top: 15px; font-size: 0.9em;">Material Didáctico - 2025</p>
+        </div>
+    </div>
+</body>
+</html>
