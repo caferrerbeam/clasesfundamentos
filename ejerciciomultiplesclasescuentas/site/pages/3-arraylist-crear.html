@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lección 3: ArrayList - Crear - POO Java</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container">
+            <h1>Lección 3: ArrayList - Crear</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
+            </div>
+            <p class="progress-text">Lección 3 de 4</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Objetivos -->
+        <section class="content-section objetivos">
+            <h2>💡 Objetivos de Aprendizaje</h2>
+            <div class="info-box">
+                <p>Al finalizar esta lección serás capaz de:</p>
+                <ul>
+                    <li>Entender qué es un <code>ArrayList</code> y por qué es útil</li>
+                    <li>Conocer la sintaxis para crear un <code>ArrayList</code></li>
+                    <li>Inicializar correctamente un <code>ArrayList</code> en el constructor</li>
+                    <li>Importar la clase <code>ArrayList</code> de Java</li>
+                    <li>Implementar un <code>ArrayList</code> de cuentas en la clase <code>Cliente</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ¿Por qué ArrayList? -->
+        <section class="content-section teoria">
+            <h2>📚 ¿Por qué ArrayList?</h2>
+
+            <p>Imagina que queremos que un cliente pueda tener hasta 6 cuentas bancarias. ¿Cómo lo haríamos?</p>
+
+            <h3>Enfoque 1: Atributos Individuales (Problemático)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Antes - Sin ArrayList</span>
+                </div>
+                <pre><code class="language-java">public class Cliente {
+    private String nombre;
+    private String cedula;
+
+    // ¡6 atributos separados! 😰
+    private Cuenta cuenta1;
+    private Cuenta cuenta2;
+    private Cuenta cuenta3;
+    private Cuenta cuenta4;
+    private Cuenta cuenta5;
+    private Cuenta cuenta6;
+}</code></pre>
+            </div>
+
+            <div class="info-box danger">
+                <h3>Problemas de este enfoque:</h3>
+                <ul>
+                    <li>❌ Código repetitivo y difícil de mantener</li>
+                    <li>❌ Difícil de iterar sobre todas las cuentas</li>
+                    <li>❌ ¿Qué pasa si queremos 10 cuentas? ¿Agregamos 4 atributos más?</li>
+                    <li>❌ ¿Cómo sabemos cuántas cuentas tiene el cliente?</li>
+                    <li>❌ Complejidad al buscar una cuenta específica</li>
+                </ul>
+            </div>
+
+            <h3>Enfoque 2: ArrayList (Solución Elegante)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Ahora - Con ArrayList</span>
+                </div>
+                <pre><code class="language-java">public class Cliente {
+    private String nombre;
+    private String cedula;
+
+    // ¡Un solo atributo! 🎉
+    private ArrayList&lt;Cuenta&gt; cuentas;
+}</code></pre>
+            </div>
+
+            <div class="info-box success">
+                <h3>Ventajas de ArrayList:</h3>
+                <ul>
+                    <li>✅ Simple y fácil de leer</li>
+                    <li>✅ Tamaño flexible (crece y se reduce dinámicamente)</li>
+                    <li>✅ Fácil de iterar con bucles</li>
+                    <li>✅ Muchos métodos útiles: <code>add()</code>, <code>remove()</code>, <code>size()</code>, <code>get()</code></li>
+                    <li>✅ Código más profesional y mantenible</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Sintaxis -->
+        <section class="content-section teoria">
+            <h2>📝 Sintaxis de ArrayList</h2>
+
+            <h3>Estructura General</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Patrón General</span>
+                </div>
+                <pre><code class="language-java">ArrayList&lt;Tipo&gt; nombre = new ArrayList&lt;&gt;();</code></pre>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Componentes:</strong></p>
+                <ul>
+                    <li><code>ArrayList</code> - La clase de colección</li>
+                    <li><code>&lt;Tipo&gt;</code> - El tipo de elementos que contendrá (entre &lt; y &gt;)</li>
+                    <li><code>nombre</code> - El nombre de la variable</li>
+                    <li><code>new ArrayList&lt;&gt;()</code> - Crea una nueva instancia vacía</li>
+                </ul>
+            </div>
+
+            <h3>Ejemplos con Diferentes Tipos</h3>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Ejemplos Prácticos</span>
+                </div>
+                <pre><code class="language-java">// ArrayList de Strings
+ArrayList&lt;String&gt; nombres = new ArrayList&lt;&gt;();
+
+// ArrayList de Integers
+ArrayList&lt;Integer&gt; edades = new ArrayList&lt;&gt;();
+
+// ArrayList de Doubles
+ArrayList&lt;Double&gt; precios = new ArrayList&lt;&gt;();
+
+// ArrayList de objetos Cuenta
+ArrayList&lt;Cuenta&gt; cuentas = new ArrayList&lt;&gt;();</code></pre>
+            </div>
+
+            <div class="info-box warning">
+                <h3>⚠️ Nota Importante</h3>
+                <p>ArrayList <strong>NO</strong> funciona con tipos primitivos directamente. Debes usar sus clases wrapper:</p>
+                <ul>
+                    <li><code>int</code> → <code>Integer</code></li>
+                    <li><code>double</code> → <code>Double</code></li>
+                    <li><code>boolean</code> → <code>Boolean</code></li>
+                    <li><code>char</code> → <code>Character</code></li>
+                </ul>
+            </div>
+
+            <h3>Import Necesario</h3>
+            <p>Para usar <code>ArrayList</code>, debes importarlo al inicio del archivo:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Al inicio del archivo .java</span>
+                </div>
+                <pre><code class="language-java">import java.util.ArrayList;</code></pre>
+            </div>
+        </section>
+
+        <!-- Constantes -->
+        <section class="content-section teoria">
+            <h2>🔒 Constantes en Java</h2>
+
+            <p>Antes de implementar el <code>ArrayList</code>, necesitamos entender un concepto importante: las <strong>constantes</strong>.</p>
+
+            <h3>¿Qué es una Constante?</h3>
+            <p>Una constante es un valor que <strong>nunca cambia</strong> durante la ejecución del programa. En nuestro sistema bancario, el límite de cuentas por cliente es siempre 6.</p>
+
+            <h3>Sintaxis de Constantes</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Declaración de una Constante</span>
+                </div>
+                <pre><code class="language-java">public static final int MAX_CUENTAS = 6;</code></pre>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Componentes de una constante:</strong></p>
+                <ul>
+                    <li><code>public</code> - Puede ser accedida desde cualquier clase</li>
+                    <li><code>static</code> - Pertenece a la clase, no a una instancia particular</li>
+                    <li><code>final</code> - Su valor NO puede cambiar después de asignarse</li>
+                    <li><code>int</code> - El tipo de dato (en este caso, número entero)</li>
+                    <li><code>MAX_CUENTAS</code> - Nombre en MAYÚSCULAS (convención)</li>
+                    <li><code>= 6</code> - El valor constante</li>
+                </ul>
+            </div>
+
+            <h3>❌ Sin Constantes (Números Mágicos)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Código con Números Mágicos - NO Recomendado</span>
+                </div>
+                <pre><code class="language-java">public boolean abrirCuenta(String numeroCuenta, String tipo) {
+    if (cuentas.size() >= 6) {  // ¿Qué significa 6?
+        return false;
+    }
+    // ...
+}
+
+public String obtenerEstadisticas() {
+    return "Cuentas: " + cuentas.size() + " de 6";  // ¿De nuevo 6?
+}
+
+public boolean puedeAbrirMas() {
+    return cuentas.size() < 6;  // ¿Otra vez 6?
+}</code></pre>
+            </div>
+
+            <div class="info-box danger">
+                <h3>Problemas de usar números directamente:</h3>
+                <ul>
+                    <li>❌ <strong>No es claro:</strong> ¿Por qué 6? ¿Qué significa?</li>
+                    <li>❌ <strong>Difícil de mantener:</strong> Si el límite cambia a 10, debes buscar y reemplazar todos los "6" en el código</li>
+                    <li>❌ <strong>Propenso a errores:</strong> Puedes olvidar cambiar algún "6" u cambiar otros "6" que no debías</li>
+                    <li>❌ <strong>Código duplicado:</strong> El mismo valor repetido en múltiples lugares</li>
+                </ul>
+            </div>
+
+            <h3>✅ Con Constantes (Mejor Práctica)</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Código con Constantes - RECOMENDADO</span>
+                </div>
+                <pre><code class="language-java">public class Cliente {
+    public static final int MAX_CUENTAS = 6;  // ← Definida UNA sola vez
+
+    private ArrayList&lt;Cuenta&gt; cuentas;
+
+    public boolean abrirCuenta(String numeroCuenta, String tipo) {
+        if (cuentas.size() >= MAX_CUENTAS) {  // ← Claro y legible
+            return false;
+        }
+        // ...
+    }
+
+    public String obtenerEstadisticas() {
+        return "Cuentas: " + cuentas.size() + " de " + MAX_CUENTAS;
+    }
+
+    public boolean puedeAbrirMas() {
+        return cuentas.size() < MAX_CUENTAS;
+    }
+}</code></pre>
+            </div>
+
+            <div class="info-box success">
+                <h3>✅ Ventajas de usar constantes:</h3>
+                <ul>
+                    <li>✅ <strong>Legibilidad:</strong> <code>MAX_CUENTAS</code> es auto-explicativo</li>
+                    <li>✅ <strong>Mantenibilidad:</strong> Cambias el valor en UN solo lugar</li>
+                    <li>✅ <strong>Seguridad:</strong> El compilador previene cambios accidentales (gracias a <code>final</code>)</li>
+                    <li>✅ <strong>Reutilización:</strong> Puedes usar la constante en todas las clases: <code>Cliente.MAX_CUENTAS</code></li>
+                    <li>✅ <strong>Menos errores:</strong> No hay riesgo de escribir mal el número</li>
+                </ul>
+            </div>
+
+            <h3>Ejemplo de Cambio</h3>
+            <p>Imagina que el banco decide permitir 10 cuentas en lugar de 6:</p>
+
+            <div class="two-column">
+                <div>
+                    <h4>Sin constantes</h4>
+                    <div class="code-block">
+                        <pre><code class="language-java">// Debes buscar y reemplazar
+// cada "6" manualmente
+if (cuentas.size() >= 6)
+if (cuentas.size() >= 6)
+if (cuentas.size() >= 6)
+// ... en 15 lugares diferentes
+// ¿Y si olvidas uno?</code></pre>
+                    </div>
+                    <p style="color: #e74c3c;">❌ Tedioso y propenso a errores</p>
+                </div>
+
+                <div>
+                    <h4>Con constantes</h4>
+                    <div class="code-block">
+                        <pre><code class="language-java">// Un solo cambio
+public static final int
+  MAX_CUENTAS = 10;  // 6 → 10
+
+// Automáticamente se actualiza
+// en TODOS los lugares</code></pre>
+                    </div>
+                    <p style="color: #27ae60;">✓ Simple y seguro</p>
+                </div>
+            </div>
+
+            <h3>Convención de Nombres</h3>
+            <div class="info-box">
+                <p>Por convención, los nombres de constantes se escriben en <strong>MAYÚSCULAS</strong>, con guiones bajos para separar palabras:</p>
+                <ul>
+                    <li>✅ <code>MAX_CUENTAS</code></li>
+                    <li>✅ <code>TASA_INTERES</code></li>
+                    <li>✅ <code>COMISION_RETIRO</code></li>
+                    <li>❌ <code>maxCuentas</code> (parece variable normal)</li>
+                    <li>❌ <code>max_cuentas</code> (no usa mayúsculas)</li>
+                </ul>
+            </div>
+
+            <h3>Otros Ejemplos de Constantes en Nuestro Proyecto</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Constantes en la Clase Cuenta</span>
+                </div>
+                <pre><code class="language-java">public class Cuenta {
+    // Tipos de cuenta (constantes de tipo String)
+    public static final String TIPO_AHORROS = "AHORROS";
+    public static final String TIPO_CORRIENTE = "CORRIENTE";
+
+    // En lugar de escribir "AHORROS" y "CORRIENTE" directamente
+    // usamos las constantes:
+    Cuenta c = new Cuenta(Cuenta.TIPO_AHORROS, "001");
+}</code></pre>
+            </div>
+
+            <div class="info-box success">
+                <p><strong>Beneficio adicional:</strong> Si escribes mal "AHORROS" como "AHORRS", el compilador no detecta el error. Pero si escribes mal <code>Cuenta.TIPO_AHORROS</code> como <code>Cuenta.TIPO_AHORRS</code>, el compilador te avisará inmediatamente!</p>
+            </div>
+        </section>
+
+        <!-- Aplicar en Cliente -->
+        <section class="content-section practica">
+            <h2>💻 Aplicar en la Clase Cliente</h2>
+
+            <p>Ahora implementaremos un <code>ArrayList</code> de cuentas en la clase <code>Cliente</code>. Sigamos estos pasos cuidadosamente:</p>
+
+            <div class="steps">
+                <div class="step">
+                    <h3>Paso 1: Agregar el Import</h3>
+                    <p>Al inicio del archivo <code>Cliente.java</code>, agrega el import necesario:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Cliente.java - Imports</span>
+                        </div>
+                        <pre><code class="language-java">package edu.eam.ingesoft.fundamentos.cuentabancaria.logica;
+
+import java.util.ArrayList;  // ← Agregar este import
+
+public class Cliente {
+    // ...
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Paso 2: Declarar el Atributo</h3>
+                    <p>Declara el <code>ArrayList</code> como un atributo privado de la clase:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Cliente.java - Atributos</span>
+                        </div>
+                        <pre><code class="language-java">public class Cliente {
+    private String nombre;
+    private String cedula;
+    private ArrayList&lt;Cuenta&gt; cuentas;  // ← Nuevo atributo
+}</code></pre>
+                    </div>
+                    <div class="info-box">
+                        <p><strong>Nota:</strong> Solo lo declaramos, todavía NO lo inicializamos.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Paso 3: Inicializar en el Constructor</h3>
+                    <p><strong>¡MUY IMPORTANTE!</strong> Debes inicializar el <code>ArrayList</code> en el constructor. Si no lo haces, obtendrás un <code>NullPointerException</code>.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Cliente.java - Constructor</span>
+                        </div>
+                        <pre><code class="language-java">public Cliente(String nombre, String cedula) {
+    this.nombre = nombre;
+    this.cedula = cedula;
+    this.cuentas = new ArrayList&lt;&gt;();  // ← ¡Inicializar aquí!
+}</code></pre>
+                    </div>
+
+                    <div class="info-box danger">
+                        <h4>⚠️ ¿Qué pasa si NO inicializas?</h4>
+                        <div class="code-block">
+                            <pre><code class="language-java">// Sin inicializar
+Cliente c = new Cliente("Juan", "123");
+c.cuentas.add(...);  // ERROR: NullPointerException
+                             // cuentas es null!</code></pre>
+                        </div>
+                        <p>El ArrayList es <code>null</code> hasta que lo inicialices con <code>new ArrayList&lt;&gt;()</code></p>
+                    </div>
+
+                    <div class="info-box success">
+                        <h4>✓ Correctamente inicializado</h4>
+                        <div class="code-block">
+                            <pre><code class="language-java">// Con inicialización en constructor
+Cliente c = new Cliente("Juan", "123");
+c.cuentas.add(...);  // ✓ Funciona perfectamente!</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Paso 4: Crear el Getter</h3>
+                    <p>Para acceder a la lista de cuentas desde fuera de la clase, necesitamos un getter:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Cliente.java - Getter</span>
+                        </div>
+                        <pre><code class="language-java">public ArrayList&lt;Cuenta&gt; getCuentas() {
+    return cuentas;
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p><strong>Nota:</strong> El tipo de retorno es <code>ArrayList&lt;Cuenta&gt;</code>, igual que el tipo del atributo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Código Completo -->
+        <section class="content-section practica">
+            <h2>📋 Código Completo</h2>
+
+            <p>Así debe verse la clase <code>Cliente</code> después de implementar el <code>ArrayList</code>:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Cliente.java - Estructura Completa</span>
+                </div>
+                <pre><code class="language-java">package edu.eam.ingesoft.fundamentos.cuentabancaria.logica;
+
+import java.util.ArrayList;
+
+public class Cliente {
+    // Constantes
+    private static final int MAX_CUENTAS = 6;
+
+    // Atributos
+    private String nombre;
+    private String cedula;
+    private ArrayList&lt;Cuenta&gt; cuentas;
+
+    // Constructor
+    public Cliente(String nombre, String cedula) {
+        this.nombre = nombre;
+        this.cedula = cedula;
+        this.cuentas = new ArrayList&lt;&gt;();  // Inicialización crucial
+    }
+
+    // Getters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public ArrayList&lt;Cuenta&gt; getCuentas() {
+        return cuentas;
+    }
+
+    // Métodos de negocio (implementarás en la siguiente lección)
+    public boolean abrirCuenta(String numeroCuenta, String tipo) {
+        // TODO: Implementar
+        return false;
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Ejemplo de Uso -->
+        <section class="content-section practica">
+            <h2>🎬 Ejemplo de Uso</h2>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Usando el ArrayList de Cuentas</span>
+                </div>
+                <pre><code class="language-java">// Crear un cliente
+Cliente cliente = new Cliente("Juan Pérez", "1234567890");
+
+// Obtener la lista de cuentas (vacía al inicio)
+ArrayList&lt;Cuenta&gt; cuentas = cliente.getCuentas();
+
+// Verificar que está inicializada y vacía
+System.out.println("Número de cuentas: " + cuentas.size());  // 0
+System.out.println("¿Es null? " + (cuentas == null));        // false
+
+// En la siguiente lección aprenderemos a agregar cuentas
+// cliente.abrirCuenta("001", "AHORROS");</code></pre>
+            </div>
+        </section>
+
+        <!-- Comparación Visual -->
+        <section class="content-section teoria">
+            <h2>👀 Comparación Visual</h2>
+
+            <div class="two-column">
+                <div>
+                    <h3>Antes (6 atributos)</h3>
+                    <div class="code-block">
+                        <pre><code class="language-java">// Declaración
+private Cuenta cuenta1;
+private Cuenta cuenta2;
+private Cuenta cuenta3;
+private Cuenta cuenta4;
+private Cuenta cuenta5;
+private Cuenta cuenta6;
+
+// Constructor
+cuenta1 = null;
+cuenta2 = null;
+// ... etc
+
+// ¿Cuántas cuentas hay?
+int total = 0;
+if (cuenta1 != null) total++;
+if (cuenta2 != null) total++;
+// ... tedioso!
+</code></pre>
+                    </div>
+                    <p style="color: #e74c3c;">❌ Complicado y repetitivo</p>
+                </div>
+
+                <div>
+                    <h3>Ahora (ArrayList)</h3>
+                    <div class="code-block">
+                        <pre><code class="language-java">// Declaración
+private ArrayList&lt;Cuenta&gt; cuentas;
+
+
+// Constructor
+this.cuentas = new ArrayList&lt;&gt;();
+
+
+
+// ¿Cuántas cuentas hay?
+int total = cuentas.size();
+</code></pre>
+                    </div>
+                    <p style="color: #27ae60;">✓ Simple y elegante</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejercicio -->
+        <section class="content-section ejercicio">
+            <h2>✏️ Ejercicio Práctico</h2>
+
+            <div class="info-box warning">
+                <h3>Tu Tarea</h3>
+                <p>Implementa el <code>ArrayList</code> de cuentas en la clase <code>Cliente</code>.</p>
+            </div>
+
+            <h3>Ubicación del Archivo</h3>
+            <div class="code-block">
+                <pre><code>src/main/java/edu/eam/ingesoft/fundamentos/cuentabancaria/logica/Cliente.java</code></pre>
+            </div>
+
+            <h3>Pasos a Seguir</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>1. Agregar el import</h4>
+                    <p>Al inicio del archivo: <code>import java.util.ArrayList;</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>2. Declarar el atributo</h4>
+                    <p>Agregar: <code>private ArrayList&lt;Cuenta&gt; cuentas;</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>3. Inicializar en el constructor</h4>
+                    <p>Dentro del constructor: <code>this.cuentas = new ArrayList&lt;&gt;();</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>4. Crear el getter</h4>
+                    <p>Implementar: <code>public ArrayList&lt;Cuenta&gt; getCuentas()</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>5. Verificar con las pruebas</h4>
+                    <p>Ejecutar: <code>mvn test -Dtest=ClienteTest#testArrayListCreacion</code></p>
+                </div>
+            </div>
+
+            <h3>Checklist de Verificación</h3>
+            <div class="info-box">
+                <ul style="list-style: none; padding-left: 0;">
+                    <li><input type="checkbox"> Import de ArrayList agregado</li>
+                    <li><input type="checkbox"> Atributo <code>private ArrayList&lt;Cuenta&gt; cuentas;</code> declarado</li>
+                    <li><input type="checkbox"> ArrayList inicializado en el constructor con <code>new ArrayList&lt;&gt;()</code></li>
+                    <li><input type="checkbox"> Getter <code>getCuentas()</code> implementado</li>
+                    <li><input type="checkbox"> El getter retorna <code>ArrayList&lt;Cuenta&gt;</code></li>
+                    <li><input type="checkbox"> Las pruebas pasan exitosamente</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Errores Comunes -->
+        <section class="content-section">
+            <h2>⚠️ Errores Comunes</h2>
+
+            <div class="info-box danger">
+                <h3>Error 1: Olvidar el Import</h3>
+                <div class="code-block">
+                    <pre><code class="language-java">// Falta el import
+public class Cliente {
+    private ArrayList&lt;Cuenta&gt; cuentas;  // ERROR: Cannot resolve symbol
+}</code></pre>
+                </div>
+                <p><strong>Solución:</strong> Agregar <code>import java.util.ArrayList;</code> al inicio.</p>
+            </div>
+
+            <div class="info-box danger">
+                <h3>Error 2: No Inicializar en el Constructor</h3>
+                <div class="code-block">
+                    <pre><code class="language-java">// Solo declarado, no inicializado
+private ArrayList&lt;Cuenta&gt; cuentas;
+
+public Cliente(String nombre, String cedula) {
+    this.nombre = nombre;
+    this.cedula = cedula;
+    // ¡Falta: this.cuentas = new ArrayList<>();
+}</code></pre>
+                </div>
+                <p><strong>Resultado:</strong> <code>NullPointerException</code> al intentar usar <code>cuentas.add()</code></p>
+            </div>
+
+            <div class="info-box danger">
+                <h3>Error 3: Sintaxis Incorrecta</h3>
+                <div class="code-block">
+                    <pre><code class="language-java">// INCORRECTO - falta &lt;&gt; al crear
+ArrayList&lt;Cuenta&gt; cuentas = new ArrayList();  // Warning
+
+// CORRECTO
+ArrayList&lt;Cuenta&gt; cuentas = new ArrayList&lt;&gt;();  // ✓</code></pre>
+                </div>
+                <p><strong>Solución:</strong> Siempre usa <code>&lt;&gt;</code> en ambos lados.</p>
+            </div>
+        </section>
+
+        <!-- Navegación -->
+        <nav class="lesson-nav">
+            <a href="2-encapsulamiento.html" class="btn btn-secondary">← Anterior: Encapsulamiento</a>
+            <a href="4-arraylist-agregar.html" class="btn btn-primary">Siguiente: ArrayList - Agregar →</a>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 - Fundamentos de Programación | EAM Universidad</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Save checklist state
+        document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((cb) => {
+            cb.addEventListener('change', () => {
+                const states = [];
+                document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((checkbox, i) => {
+                    states[i] = checkbox.checked;
+                });
+                localStorage.setItem('lesson-3-checklist', JSON.stringify(states));
+            });
+        });
+
+        // Load checklist state
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('lesson-3-checklist');
+            if (saved) {
+                const states = JSON.parse(saved);
+                document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((cb, idx) => {
+                    if (states[idx] !== undefined) {
+                        cb.checked = states[idx];
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+en 
+con este enunciuado de ejemplo
+@ejeciciodecisiones/enunciado.md
+
+lo siguiente hacerlo en :ejerciciomultiplesclasescuentas
+genera uno para manejar las cuentas del cliente
+el cliente tiene una lista de hasta 6 cuentas, donde maximo pueden ser 3 corrientes
+el cliente tiene nombre, cedula
+la cuentas tienen tipo, saldo, numero (que es el identificador)
+y numero de transacciones mensuales.
+
+cuando se retira en una cuenta de ahorros, si se han hecho mas de 3 transacciones mensuales se cobra un 1%
+cuando se retira en una cuenta de corriente, si se han hecho mas de 5 transacciones mensuales se cobra un 2%
+
+no se puede reitara mas alla de cero.
+
+para la cuante de ahorros el consignar no tiene costo
+para la corriente a partir de la tranasccion numero 5 se cobra un 1% del monto.
+
+el cliente puede abrir cuentas y cerrar cuentas pero la cuenta no puede tener saldo.
+
+sin dar la solucion en el ejercicio se debe hacer la clase cuenta y la clase cliente.
+
+ULTRATHINK

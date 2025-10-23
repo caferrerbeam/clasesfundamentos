@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lección 1: Constructor - POO Java</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container">
+            <h1>Lección 1: Constructor</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%"></div>
+            </div>
+            <p class="progress-text">Lección 1 de 4</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Objetivos -->
+        <section class="content-section objetivos">
+            <h2>💡 Objetivos de Aprendizaje</h2>
+            <div class="info-box">
+                <p>Al finalizar esta lección serás capaz de:</p>
+                <ul>
+                    <li>Entender qué es un constructor y para qué sirve</li>
+                    <li>Conocer la sintaxis básica de un constructor</li>
+                    <li>Usar correctamente la palabra clave <code>this</code></li>
+                    <li>Implementar el constructor de la clase <code>Cuenta</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Teoría Básica -->
+        <section class="content-section teoria">
+            <h2>📚 ¿Qué es un Constructor?</h2>
+
+            <p>Un <strong>constructor</strong> es un método especial que se ejecuta automáticamente cuando creamos un nuevo objeto de una clase.</p>
+
+            <div class="info-box">
+                <h3>Características de un Constructor</h3>
+                <ul>
+                    <li><strong>Se ejecuta al crear un objeto</strong> con la palabra <code>new</code></li>
+                    <li><strong>Inicializa los atributos</strong> del objeto</li>
+                    <li><strong>Tiene el mismo nombre que la clase</strong></li>
+                    <li><strong>No tiene tipo de retorno</strong> (ni siquiera <code>void</code>)</li>
+                </ul>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Sintaxis General</span>
+                </div>
+                <pre><code class="language-java">public class NombreClase {
+    // Atributos
+    private TipoAtributo atributo;
+
+    // Constructor
+    public NombreClase(TipoParametro parametro) {
+        this.atributo = parametro;
+    }
+}</code></pre>
+            </div>
+
+            <div class="info-box success">
+                <h3>¿Por qué son importantes?</h3>
+                <p>Los constructores garantizan que los objetos se creen con valores válidos y consistentes desde el principio, evitando errores y estados inválidos.</p>
+            </div>
+        </section>
+
+        <!-- El Problema -->
+        <section class="content-section teoria">
+            <h2>🎯 El Problema: Clase Cuenta</h2>
+
+            <p>Nuestra clase <code>Cuenta</code> tiene los siguientes atributos:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Cuenta.java - Atributos</span>
+                </div>
+                <pre><code class="language-java">public class Cuenta {
+    private String numeroCuenta;
+    private String tipo;
+    private double saldo;
+    private int transaccionesMes;
+}</code></pre>
+            </div>
+
+            <h3>¿Cuáles son parámetros del constructor?</h3>
+
+            <div class="info-box warning">
+                <h4>Análisis</h4>
+                <p><strong>Solo necesitamos 2 parámetros:</strong></p>
+                <ul>
+                    <li><code>tipo</code> - El cliente debe especificarlo (AHORROS o CORRIENTE)</li>
+                    <li><code>numeroCuenta</code> - El cliente debe especificarlo</li>
+                </ul>
+                <p><strong>¿Por qué no incluimos saldo y transaccionesMes?</strong></p>
+                <ul>
+                    <li><code>saldo</code> - Siempre inicia en 0.0 (cuenta nueva)</li>
+                    <li><code>transaccionesMes</code> - Siempre inicia en 0 (sin transacciones)</li>
+                </ul>
+            </div>
+
+            <p>Por lo tanto, nuestro constructor tendrá esta firma:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Firma del Constructor</span>
+                </div>
+                <pre><code class="language-java">public Cuenta(String tipo, String numeroCuenta) {
+    // Aquí va la inicialización
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Explicar this -->
+        <section class="content-section teoria">
+            <h2>🔍 La Palabra Clave <code>this</code></h2>
+
+            <p>La palabra clave <code>this</code> se refiere al objeto actual. Se usa para diferenciar entre atributos de la clase y parámetros del método cuando tienen el mismo nombre.</p>
+
+            <div class="two-column">
+                <div>
+                    <h4>Sin this (ERROR)</h4>
+                    <div class="code-block">
+                        <pre><code class="language-java">public Cuenta(String tipo, String numeroCuenta) {
+    tipo = tipo;  // ¿Cuál es cuál?
+    numeroCuenta = numeroCuenta;  // Ambiguo
+}</code></pre>
+                    </div>
+                    <div class="info-box danger">
+                        <p>Java asigna el parámetro a sí mismo, no al atributo. Los atributos quedan sin inicializar.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h4>Con this (CORRECTO)</h4>
+                    <div class="code-block">
+                        <pre><code class="language-java">public Cuenta(String tipo, String numeroCuenta) {
+    this.tipo = tipo;
+    this.numeroCuenta = numeroCuenta;
+}</code></pre>
+                    </div>
+                    <div class="info-box success">
+                        <p><code>this.tipo</code> se refiere al atributo de la clase, mientras que <code>tipo</code> es el parámetro.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Diagrama Visual</h3>
+            <div class="info-box">
+                <pre style="background: white; color: #2c3e50; padding: 1rem; font-family: monospace;">
+Parámetro (local, temporal)
+           ↓
+    this.tipo = tipo
+    ↑
+Atributo de la clase (persistente)
+                </pre>
+            </div>
+        </section>
+
+        <!-- Implementación Paso a Paso -->
+        <section class="content-section practica">
+            <h2>💻 Implementación Paso a Paso</h2>
+
+            <div class="steps">
+                <div class="step">
+                    <h3>Paso 1: Firma del Constructor</h3>
+                    <p>Definimos el constructor con el nombre de la clase y los parámetros necesarios:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Paso 1</span>
+                        </div>
+                        <pre><code class="language-java">public Cuenta(String tipo, String numeroCuenta) {</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Paso 2: Asignar Parámetros</h3>
+                    <p>Asignamos los parámetros recibidos a los atributos correspondientes usando <code>this</code>:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Paso 2</span>
+                        </div>
+                        <pre><code class="language-java">    this.tipo = tipo;
+    this.numeroCuenta = numeroCuenta;</code></pre>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Paso 3: Inicializar Otros Atributos</h3>
+                    <p>Inicializamos los atributos que siempre empiezan con un valor predeterminado:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Paso 3</span>
+                        </div>
+                        <pre><code class="language-java">    this.saldo = 0.0;
+    this.transaccionesMes = 0;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Código Completo</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Constructor Completo</span>
+                </div>
+                <pre><code class="language-java">public Cuenta(String tipo, String numeroCuenta) {
+    this.tipo = tipo;
+    this.numeroCuenta = numeroCuenta;
+    this.saldo = 0.0;
+    this.transaccionesMes = 0;
+}</code></pre>
+            </div>
+
+            <div class="info-box success">
+                <h3>¿Qué hace este constructor?</h3>
+                <ol>
+                    <li>Recibe el tipo de cuenta y el número como parámetros</li>
+                    <li>Asigna estos valores a los atributos del objeto</li>
+                    <li>Inicializa el saldo en 0.0 (cuenta nueva sin dinero)</li>
+                    <li>Inicializa las transacciones en 0 (sin transacciones realizadas)</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Ejemplo de Uso -->
+        <section class="content-section practica">
+            <h2>🎬 Ejemplo de Uso</h2>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Main.java</span>
+                </div>
+                <pre><code class="language-java">// Crear una cuenta de ahorros
+Cuenta c1 = new Cuenta("AHORROS", "001");
+
+// Crear una cuenta corriente
+Cuenta c2 = new Cuenta("CORRIENTE", "002");</code></pre>
+            </div>
+
+            <p><strong>Cuando ejecutamos:</strong> <code>new Cuenta("AHORROS", "001")</code></p>
+
+            <div class="info-box">
+                <h4>Lo que sucede internamente:</h4>
+                <ol>
+                    <li>Java crea un nuevo objeto <code>Cuenta</code> en memoria</li>
+                    <li>Ejecuta el constructor automáticamente</li>
+                    <li>El objeto queda con estos valores:</li>
+                </ol>
+                <div class="code-block">
+                    <pre><code class="language-java">// Estado del objeto c1:
+tipo = "AHORROS"
+numeroCuenta = "001"
+saldo = 0.0
+transaccionesMes = 0</code></pre>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="info-box success">
+                    <h4>Correcto ✓</h4>
+                    <pre><code class="language-java">Cuenta c = new Cuenta("AHORROS", "001");
+// Cuenta creada correctamente</code></pre>
+                </div>
+
+                <div class="info-box danger">
+                    <h4>Incorrecto ✗</h4>
+                    <pre><code class="language-java">Cuenta c = new Cuenta();
+// ERROR: No existe constructor sin parámetros</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejercicio -->
+        <section class="content-section ejercicio">
+            <h2>✏️ Ejercicio Práctico</h2>
+
+            <div class="info-box warning">
+                <h3>Tu Tarea</h3>
+                <p>Implementa el constructor de la clase <code>Cuenta</code> en tu proyecto.</p>
+            </div>
+
+            <h3>Ubicación del Archivo</h3>
+            <div class="code-block">
+                <pre><code>src/main/java/edu/eam/ingesoft/fundamentos/cuentabancaria/logica/Cuenta.java</code></pre>
+            </div>
+
+            <h3>Pasos a Seguir</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>1. Abre el archivo Cuenta.java</h4>
+                    <p>Busca el constructor que está vacío con el comentario <code>// TODO</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>2. Implementa el constructor</h4>
+                    <p>Copia el código que aprendiste en esta lección</p>
+                </div>
+
+                <div class="step">
+                    <h4>3. Verifica tu implementación</h4>
+                    <p>Ejecuta las pruebas con: <code>mvn test -Dtest=CuentaTest#testConstructor</code></p>
+                </div>
+            </div>
+
+            <h3>Checklist de Verificación</h3>
+            <div class="info-box">
+                <ul style="list-style: none; padding-left: 0;">
+                    <li><input type="checkbox"> El constructor tiene la firma correcta: <code>public Cuenta(String tipo, String numeroCuenta)</code></li>
+                    <li><input type="checkbox"> Usa <code>this</code> para asignar tipo y numeroCuenta</li>
+                    <li><input type="checkbox"> Inicializa saldo en 0.0</li>
+                    <li><input type="checkbox"> Inicializa transaccionesMes en 0</li>
+                    <li><input type="checkbox"> Las pruebas pasan exitosamente</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Errores Comunes -->
+        <section class="content-section">
+            <h2>⚠️ Errores Comunes</h2>
+
+            <div class="info-box danger">
+                <h3>Error 1: Olvidar <code>this</code></h3>
+                <div class="code-block">
+                    <pre><code class="language-java">// INCORRECTO
+public Cuenta(String tipo, String numeroCuenta) {
+    tipo = tipo;  // Asigna el parámetro a sí mismo
+}</code></pre>
+                </div>
+                <p><strong>Solución:</strong> Usa <code>this.tipo = tipo;</code></p>
+            </div>
+
+            <div class="info-box danger">
+                <h3>Error 2: Invertir Parámetros</h3>
+                <div class="code-block">
+                    <pre><code class="language-java">// INCORRECTO
+public Cuenta(String tipo, String numeroCuenta) {
+    this.tipo = numeroCuenta;  // ¡Valores invertidos!
+    this.numeroCuenta = tipo;
+}</code></pre>
+                </div>
+                <p><strong>Solución:</strong> Asigna cada parámetro al atributo correcto.</p>
+            </div>
+
+            <div class="info-box danger">
+                <h3>Error 3: No Inicializar Saldo/Transacciones</h3>
+                <div class="code-block">
+                    <pre><code class="language-java">// INCORRECTO
+public Cuenta(String tipo, String numeroCuenta) {
+    this.tipo = tipo;
+    this.numeroCuenta = numeroCuenta;
+    // Falta inicializar saldo y transaccionesMes
+}</code></pre>
+                </div>
+                <p><strong>Solución:</strong> Siempre inicializa todos los atributos.</p>
+            </div>
+        </section>
+
+        <!-- Navegación -->
+        <nav class="lesson-nav">
+            <a href="../index.html" class="btn btn-secondary">← Volver al Inicio</a>
+            <a href="2-encapsulamiento.html" class="btn btn-primary">Siguiente: Encapsulamiento →</a>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 - Fundamentos de Programación | EAM Universidad</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Save checklist state when checkboxes change
+        document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((cb, idx) => {
+            cb.addEventListener('change', () => {
+                const states = [];
+                document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((checkbox, i) => {
+                    states[i] = checkbox.checked;
+                });
+                localStorage.setItem('lesson-1-checklist', JSON.stringify(states));
+            });
+        });
+
+        // Load checklist state on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('lesson-1-checklist');
+            if (saved) {
+                const states = JSON.parse(saved);
+                document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((cb, idx) => {
+                    if (states[idx] !== undefined) {
+                        cb.checked = states[idx];
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

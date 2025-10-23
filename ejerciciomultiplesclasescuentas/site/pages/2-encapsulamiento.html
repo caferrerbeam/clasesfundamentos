@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lección 2: Encapsulamiento - POO Java</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container">
+            <h1>Lección 2: Encapsulamiento</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 50%"></div>
+            </div>
+            <p class="progress-text">Lección 2 de 4</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Objetivos -->
+        <section class="content-section objetivos">
+            <h2>💡 Objetivos de Aprendizaje</h2>
+            <div class="info-box">
+                <p>Al finalizar esta lección serás capaz de:</p>
+                <ul>
+                    <li>Entender qué es el encapsulamiento y por qué es importante</li>
+                    <li>Diferenciar entre modificadores <code>private</code> y <code>public</code></li>
+                    <li>Saber cuándo usar getters y cuándo usar setters</li>
+                    <li>Implementar getters y setters correctamente en la clase <code>Cuenta</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Teoría -->
+        <section class="content-section teoria">
+            <h2>📚 ¿Qué es el Encapsulamiento?</h2>
+
+            <p>El <strong>encapsulamiento</strong> es uno de los pilares fundamentales de la Programación Orientada a Objetos. Consiste en <strong>proteger los datos</strong> de una clase, controlando cómo se accede y modifica la información.</p>
+
+            <div class="info-box">
+                <h3>Concepto Clave</h3>
+                <p><strong>Encapsulamiento = Proteger datos + Controlar acceso</strong></p>
+            </div>
+
+            <h3>Modificadores de Acceso</h3>
+
+            <div class="two-column">
+                <div class="info-box danger">
+                    <h4><code>private</code></h4>
+                    <p>Solo la propia clase puede acceder al atributo o método.</p>
+                    <div class="code-block">
+                        <pre><code class="language-java">private double saldo;
+// Solo Cuenta puede acceder</code></pre>
+                    </div>
+                </div>
+
+                <div class="info-box success">
+                    <h4><code>public</code></h4>
+                    <p>Cualquier clase puede acceder al atributo o método.</p>
+                    <div class="code-block">
+                        <pre><code class="language-java">public double getSaldo() {
+    return saldo;
+}
+// Todos pueden acceder</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>¿Qué son Getters y Setters?</h3>
+
+            <div class="two-column">
+                <div>
+                    <h4>Getter (Obtener)</h4>
+                    <p>Método público que permite <strong>leer</strong> el valor de un atributo privado.</p>
+                    <div class="code-block">
+                        <pre><code class="language-java">public String getTipo() {
+    return tipo;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4>Setter (Establecer)</h4>
+                    <p>Método público que permite <strong>modificar</strong> el valor de un atributo privado.</p>
+                    <div class="code-block">
+                        <pre><code class="language-java">public void setTipo(String tipo) {
+    this.tipo = tipo;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box success">
+                <h3>¿Por qué usar Encapsulamiento?</h3>
+                <ul>
+                    <li><strong>Seguridad:</strong> Evita modificaciones no autorizadas</li>
+                    <li><strong>Control:</strong> Podemos validar valores antes de asignarlos</li>
+                    <li><strong>Flexibilidad:</strong> Podemos cambiar la implementación interna sin afectar el código externo</li>
+                    <li><strong>Mantenibilidad:</strong> El código es más fácil de mantener y depurar</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Reglas para Cuenta -->
+        <section class="content-section teoria">
+            <h2>🎯 Reglas para la Clase Cuenta</h2>
+
+            <p>No todos los atributos necesitan getters y setters. Debemos pensar en la <strong>lógica del negocio</strong>:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Atributo</th>
+                        <th>Getter</th>
+                        <th>Setter</th>
+                        <th>¿Por qué?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>numeroCuenta</code></td>
+                        <td style="color: #27ae60;">✅ Sí</td>
+                        <td style="color: #e74c3c;">❌ No</td>
+                        <td>El número de cuenta <strong>nunca cambia</strong> una vez creada</td>
+                    </tr>
+                    <tr>
+                        <td><code>tipo</code></td>
+                        <td style="color: #27ae60;">✅ Sí</td>
+                        <td style="color: #27ae60;">✅ Sí</td>
+                        <td>El tipo <strong>puede cambiar</strong> (de AHORROS a CORRIENTE)</td>
+                    </tr>
+                    <tr>
+                        <td><code>saldo</code></td>
+                        <td style="color: #27ae60;">✅ Sí</td>
+                        <td style="color: #e74c3c;">❌ No</td>
+                        <td>El saldo <strong>solo cambia con consignar/retirar</strong></td>
+                    </tr>
+                    <tr>
+                        <td><code>transaccionesMes</code></td>
+                        <td style="color: #27ae60;">✅ Sí</td>
+                        <td style="color: #e74c3c;">❌ No</td>
+                        <td>Las transacciones <strong>solo cambian internamente</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box warning">
+                <h3>⚠️ ¿Por qué <code>saldo</code> NO tiene setter?</h3>
+                <p>Imagina si cualquiera pudiera cambiar el saldo directamente:</p>
+
+                <div class="two-column">
+                    <div class="info-box danger">
+                        <h4>Peligroso ✗</h4>
+                        <div class="code-block">
+                            <pre><code class="language-java">// Con setter (MAL)
+cuenta.setSaldo(1000000);
+// ¡Dinero gratis!</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="info-box success">
+                        <h4>Controlado ✓</h4>
+                        <div class="code-block">
+                            <pre><code class="language-java">// Sin setter (BIEN)
+cuenta.consignar(1000000);
+// Validaciones, registros, cargos</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Al usar métodos como <code>consignar()</code> y <code>retirar()</code>, podemos:</p>
+                <ul>
+                    <li>Validar que los montos sean positivos</li>
+                    <li>Calcular y aplicar cargos</li>
+                    <li>Incrementar el contador de transacciones</li>
+                    <li>Registrar la operación</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Sintaxis -->
+        <section class="content-section teoria">
+            <h2>📝 Sintaxis de Getters y Setters</h2>
+
+            <h3>Patrón para Getters</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Estructura de un Getter</span>
+                </div>
+                <pre><code class="language-java">public TipoRetorno getNombre() {
+    return nombre;
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <ul>
+                    <li><code>public</code> - Accesible desde fuera de la clase</li>
+                    <li><code>TipoRetorno</code> - Mismo tipo que el atributo</li>
+                    <li><code>getNombre()</code> - "get" + nombre del atributo en CamelCase</li>
+                    <li><code>return nombre</code> - Devuelve el valor del atributo</li>
+                </ul>
+            </div>
+
+            <h3>Patrón para Setters</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Estructura de un Setter</span>
+                </div>
+                <pre><code class="language-java">public void setNombre(TipoParametro nombre) {
+    this.nombre = nombre;
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <ul>
+                    <li><code>public</code> - Accesible desde fuera de la clase</li>
+                    <li><code>void</code> - No retorna nada</li>
+                    <li><code>setNombre()</code> - "set" + nombre del atributo en CamelCase</li>
+                    <li><code>TipoParametro</code> - Mismo tipo que el atributo</li>
+                    <li><code>this.nombre = nombre</code> - Asigna el parámetro al atributo</li>
+                </ul>
+            </div>
+
+            <h3>Ejemplos Concretos</h3>
+            <div class="two-column">
+                <div>
+                    <h4>Para String</h4>
+                    <div class="code-block">
+                        <pre><code class="language-java">private String tipo;
+
+public String getTipo() {
+    return tipo;
+}
+
+public void setTipo(String tipo) {
+    this.tipo = tipo;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h4>Para double</h4>
+                    <div class="code-block">
+                        <pre><code class="language-java">private double saldo;
+
+public double getSaldo() {
+    return saldo;
+}
+
+// ¡No hay setter para saldo!</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementación -->
+        <section class="content-section practica">
+            <h2>💻 Implementación en la Clase Cuenta</h2>
+
+            <h3>Paso 1: Atributos Privados</h3>
+            <p>Los atributos ya están declarados como <code>private</code> en tu proyecto:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Cuenta.java - Atributos</span>
+                </div>
+                <pre><code class="language-java">private String numeroCuenta;
+private String tipo;
+private double saldo;
+private int transaccionesMes;</code></pre>
+            </div>
+
+            <h3>Paso 2: Implementar Todos los Getters</h3>
+            <p>Todos los atributos necesitan getters para poder consultar sus valores:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Getters de Cuenta.java</span>
+                </div>
+                <pre><code class="language-java">public String getNumeroCuenta() {
+    return numeroCuenta;
+}
+
+public String getTipo() {
+    return tipo;
+}
+
+public double getSaldo() {
+    return saldo;
+}
+
+public int getTransaccionesMes() {
+    return transaccionesMes;
+}</code></pre>
+            </div>
+
+            <h3>Paso 3: Implementar Setter de Tipo</h3>
+            <p>Solo el atributo <code>tipo</code> necesita un setter:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Setter de tipo</span>
+                </div>
+                <pre><code class="language-java">public void setTipo(String tipo) {
+    this.tipo = tipo;
+}</code></pre>
+            </div>
+
+            <div class="info-box warning">
+                <h3>⚠️ Importante</h3>
+                <p><strong>NO</strong> implementes setters para:</p>
+                <ul>
+                    <li><code>numeroCuenta</code> - El número no cambia</li>
+                    <li><code>saldo</code> - Solo cambia con consignar/retirar</li>
+                    <li><code>transaccionesMes</code> - Solo cambia internamente</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Ejemplo de Uso -->
+        <section class="content-section practica">
+            <h2>🎬 Ejemplo de Uso</h2>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Usando Getters y Setters</span>
+                </div>
+                <pre><code class="language-java">// Crear cuenta
+Cuenta c = new Cuenta("AHORROS", "001");
+
+// Usar getters para consultar
+System.out.println(c.getNumeroCuenta());    // "001"
+System.out.println(c.getTipo());             // "AHORROS"
+System.out.println(c.getSaldo());            // 0.0
+System.out.println(c.getTransaccionesMes()); // 0
+
+// Usar setter para cambiar tipo
+c.setTipo("CORRIENTE");
+System.out.println(c.getTipo());             // "CORRIENTE"</code></pre>
+            </div>
+
+            <div class="two-column">
+                <div class="info-box success">
+                    <h4>Permitido ✓</h4>
+                    <div class="code-block">
+                        <pre><code class="language-java">// Leer valores
+double saldo = c.getSaldo();
+
+// Cambiar tipo
+c.setTipo("CORRIENTE");</code></pre>
+                    </div>
+                </div>
+
+                <div class="info-box danger">
+                    <h4>NO Permitido ✗</h4>
+                    <div class="code-block">
+                        <pre><code class="language-java">// No existe este setter
+c.setSaldo(1000);  // ERROR
+
+// Atributo es private
+c.saldo = 1000;    // ERROR</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Forma Correcta de Modificar el Saldo</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Métodos de Negocio</span>
+                </div>
+                <pre><code class="language-java">// Usar métodos específicos que implementarás después
+c.consignar(500000);  // Aumenta el saldo de forma controlada
+c.retirar(100000);    // Disminuye el saldo de forma controlada</code></pre>
+            </div>
+        </section>
+
+        <!-- Ejercicio -->
+        <section class="content-section ejercicio">
+            <h2>✏️ Ejercicio Práctico</h2>
+
+            <div class="info-box warning">
+                <h3>Tu Tarea</h3>
+                <p>Implementa los getters y setter de la clase <code>Cuenta</code>.</p>
+            </div>
+
+            <h3>Ubicación del Archivo</h3>
+            <div class="code-block">
+                <pre><code>src/main/java/edu/eam/ingesoft/fundamentos/cuentabancaria/logica/Cuenta.java</code></pre>
+            </div>
+
+            <h3>Pasos a Seguir</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>1. Implementa los 4 getters</h4>
+                    <p>Crea getters para: <code>numeroCuenta</code>, <code>tipo</code>, <code>saldo</code>, <code>transaccionesMes</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>2. Implementa el setter de tipo</h4>
+                    <p>Crea solo el setter <code>setTipo(String tipo)</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>3. Verifica tu implementación</h4>
+                    <p>Ejecuta: <code>mvn test -Dtest=CuentaTest#testGettersSetters</code></p>
+                </div>
+            </div>
+
+            <h3>Checklist de Verificación</h3>
+            <div class="info-box">
+                <ul style="list-style: none; padding-left: 0;">
+                    <li><input type="checkbox"> Getter de numeroCuenta implementado</li>
+                    <li><input type="checkbox"> Getter de tipo implementado</li>
+                    <li><input type="checkbox"> Getter de saldo implementado</li>
+                    <li><input type="checkbox"> Getter de transaccionesMes implementado</li>
+                    <li><input type="checkbox"> Setter de tipo implementado</li>
+                    <li><input type="checkbox"> NO hay setter de numeroCuenta</li>
+                    <li><input type="checkbox"> NO hay setter de saldo</li>
+                    <li><input type="checkbox"> NO hay setter de transaccionesMes</li>
+                    <li><input type="checkbox"> Las pruebas pasan exitosamente</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Ventajas del Encapsulamiento -->
+        <section class="content-section">
+            <h2>🌟 Ventajas del Encapsulamiento</h2>
+
+            <div class="two-column">
+                <div class="info-box">
+                    <h3>Sin Encapsulamiento</h3>
+                    <div class="code-block">
+                        <pre><code class="language-java">// Atributos públicos (MAL)
+public class Cuenta {
+    public double saldo;
+}
+
+// Cualquiera puede hacer:
+cuenta.saldo = -5000;  // ¡Saldo negativo!
+cuenta.saldo = 999999; // ¡Dinero gratis!</code></pre>
+                    </div>
+                    <p style="color: #e74c3c;">❌ Sin control ni validaciones</p>
+                </div>
+
+                <div class="info-box success">
+                    <h3>Con Encapsulamiento</h3>
+                    <div class="code-block">
+                        <pre><code class="language-java">// Atributos privados (BIEN)
+public class Cuenta {
+    private double saldo;
+
+    public boolean consignar(double monto) {
+        if (monto > 0) {
+            saldo += monto;
+            return true;
+        }
+        return false; // Rechaza montos inválidos
+    }
+}</code></pre>
+                    </div>
+                    <p style="color: #27ae60;">✓ Validaciones y control total</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navegación -->
+        <nav class="lesson-nav">
+            <a href="1-constructor.html" class="btn btn-secondary">← Anterior: Constructor</a>
+            <a href="3-arraylist-crear.html" class="btn btn-primary">Siguiente: ArrayList - Crear →</a>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 - Fundamentos de Programación | EAM Universidad</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Save checklist state
+        document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((cb) => {
+            cb.addEventListener('change', () => {
+                const states = [];
+                document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((checkbox, i) => {
+                    states[i] = checkbox.checked;
+                });
+                localStorage.setItem('lesson-2-checklist', JSON.stringify(states));
+            });
+        });
+
+        // Load checklist state
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('lesson-2-checklist');
+            if (saved) {
+                const states = JSON.parse(saved);
+                document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((cb, idx) => {
+                    if (states[idx] !== undefined) {
+                        cb.checked = states[idx];
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+{
+  "tests": [
+    {
+      "name": "Compilación del proyecto",
+      "setup": "",
+      "run": "mvn clean compile",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Cálculo de nota final Cálculo I",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testCalcularNotaFinalCalculoI",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Cálculo de nota final Física I",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testCalcularNotaFinalFisicaI",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Cálculo de nota final Programación I",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testCalcularNotaFinalProgramacionI",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Cálculo de nota final Inglés I",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testCalcularNotaFinalInglesI",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Estado de asignaturas",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testDeterminarEstadoAsignaturas",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Validación de porcentajes",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testValidarPorcentajes",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Promedio general de María",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testCalcularPromedioGeneralMaria",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test: Clasificación de rendimiento",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testClasificarRendimientoMaria",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Contar aprobadas y reprobadas",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testContarAprobadasYReprobadasMaria",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test: Estado académico",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testDeterminarEstadoAcademicoMaria",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test: Mejor asignatura",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testObtenerMejorAsignaturaMaria",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Peor asignatura",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testObtenerPeorAsignaturaMaria",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Mejor nota individual",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testObtenerMejorNotaIndividualMaria",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Peor nota individual",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testObtenerPeorNotaIndividualMaria",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Test: Validaciones completas",
+      "setup": "",
+      "run": "mvn test -Dtest=EstudianteTest#testAgregarNotaConValorInvalido",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 5
+    },
+    {
+      "name": "Todos los tests",
+      "setup": "",
+      "run": "mvn test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    }
+  ]
+}

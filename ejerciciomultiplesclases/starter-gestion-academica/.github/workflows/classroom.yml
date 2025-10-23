@@ -1,0 +1,66 @@
+name: GitHub Classroom Workflow
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  build:
+    name: Autograding
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Verify project structure
+        run: |
+          echo "Verificando estructura del proyecto..."
+          ls -la
+          echo "Verificando archivos de código fuente..."
+          ls -la src/main/java/edu/eam/ingesoft/fundamentos/gestionacademica/logica/ || echo "Directorio logica no encontrado"
+          ls -la src/test/java/edu/eam/ingesoft/fundamentos/gestionacademica/ || echo "Directorio test no encontrado"
+
+      - name: Compile project
+        run: mvn clean compile
+
+      - name: Run tests
+        run: mvn test
+
+      - name: Run autograding
+        uses: education/autograding@v1
+        continue-on-error: true
+
+      - name: Generate test report
+        if: always()
+        run: |
+          echo "==================================="
+          echo "REPORTE DE PRUEBAS"
+          echo "==================================="
+          if [ -f target/surefire-reports/*.txt ]; then
+            cat target/surefire-reports/*.txt
+          else
+            echo "No se encontraron reportes de pruebas"
+          fi

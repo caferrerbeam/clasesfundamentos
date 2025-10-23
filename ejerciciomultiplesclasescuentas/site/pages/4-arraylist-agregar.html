@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lección 4: ArrayList - Agregar - POO Java</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header class="lesson-header">
+        <div class="container">
+            <h1>Lección 4: ArrayList - Agregar</h1>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%"></div>
+            </div>
+            <p class="progress-text">Lección 4 de 4</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Objetivos -->
+        <section class="content-section objetivos">
+            <h2>💡 Objetivos de Aprendizaje</h2>
+            <div class="info-box">
+                <p>Al finalizar esta lección serás capaz de:</p>
+                <ul>
+                    <li>Usar el método <code>add()</code> para agregar elementos a un <code>ArrayList</code></li>
+                    <li>Usar el método <code>size()</code> para obtener la cantidad de elementos</li>
+                    <li>Implementar el método <code>abrirCuenta()</code> con validaciones</li>
+                    <li>Validar límites de capacidad antes de agregar elementos</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Método add() -->
+        <section class="content-section teoria">
+            <h2>📚 Método add()</h2>
+
+            <p>El método <code>add()</code> es el más usado con <code>ArrayList</code>. Te permite agregar elementos al final de la lista.</p>
+
+            <h3>Sintaxis</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Uso de add()</span>
+                </div>
+                <pre><code class="language-java">lista.add(elemento);</code></pre>
+            </div>
+
+            <div class="info-box">
+                <ul>
+                    <li><code>lista</code> - El ArrayList donde agregarás el elemento</li>
+                    <li><code>elemento</code> - El objeto que quieres agregar (debe ser del mismo tipo)</li>
+                    <li>El elemento se agrega <strong>al final</strong> de la lista</li>
+                    <li>El tamaño de la lista aumenta automáticamente en 1</li>
+                </ul>
+            </div>
+
+            <h3>Ejemplo Paso a Paso</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Ejemplo con Strings</span>
+                </div>
+                <pre><code class="language-java">// Crear ArrayList vacío
+ArrayList&lt;String&gt; nombres = new ArrayList&lt;&gt;();
+// Estado: []
+
+// Agregar primer elemento
+nombres.add("Ana");
+// Estado: [Ana]
+
+// Agregar segundo elemento
+nombres.add("Luis");
+// Estado: [Ana, Luis]
+
+// Agregar tercer elemento
+nombres.add("María");
+// Estado: [Ana, Luis, María]</code></pre>
+            </div>
+
+            <h3>Ejemplo con Objetos Cuenta</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Agregando Cuentas</span>
+                </div>
+                <pre><code class="language-java">// ArrayList de cuentas
+ArrayList&lt;Cuenta&gt; cuentas = new ArrayList&lt;&gt;();
+
+// Crear y agregar cuentas
+Cuenta c1 = new Cuenta("AHORROS", "001");
+cuentas.add(c1);  // Agrega la primera cuenta
+
+Cuenta c2 = new Cuenta("CORRIENTE", "002");
+cuentas.add(c2);  // Agrega la segunda cuenta
+
+// También puedes crear y agregar en una línea
+cuentas.add(new Cuenta("AHORROS", "003"));</code></pre>
+            </div>
+
+            <div class="info-box success">
+                <h3>Ventajas de add()</h3>
+                <ul>
+                    <li>✅ Automáticamente aumenta el tamaño del ArrayList</li>
+                    <li>✅ No necesitas preocuparte por el tamaño inicial</li>
+                    <li>✅ Puedes agregar tantos elementos como necesites (limitado por la memoria)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Método size() -->
+        <section class="content-section teoria">
+            <h2>📏 Método size()</h2>
+
+            <p>El método <code>size()</code> te dice cuántos elementos hay actualmente en el <code>ArrayList</code>.</p>
+
+            <h3>Sintaxis</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Uso de size()</span>
+                </div>
+                <pre><code class="language-java">int cantidad = lista.size();</code></pre>
+            </div>
+
+            <div class="info-box">
+                <ul>
+                    <li>Retorna un <code>int</code> con el número de elementos</li>
+                    <li>Si la lista está vacía, retorna <code>0</code></li>
+                    <li>Se actualiza automáticamente cuando agregas o eliminas elementos</li>
+                </ul>
+            </div>
+
+            <h3>Ejemplo</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Ejemplo de size()</span>
+                </div>
+                <pre><code class="language-java">ArrayList&lt;String&gt; nombres = new ArrayList&lt;&gt;();
+
+System.out.println(nombres.size());  // 0 (vacío)
+
+nombres.add("Ana");
+System.out.println(nombres.size());  // 1
+
+nombres.add("Luis");
+System.out.println(nombres.size());  // 2
+
+nombres.add("María");
+System.out.println(nombres.size());  // 3</code></pre>
+            </div>
+
+            <h3>Uso Común: Validar Límites</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Validar antes de agregar</span>
+                </div>
+                <pre><code class="language-java">ArrayList&lt;Cuenta&gt; cuentas = new ArrayList&lt;&gt;();
+final int MAX_CUENTAS = 6;
+
+// Verificar si hay espacio antes de agregar
+if (cuentas.size() &lt; MAX_CUENTAS) {
+    cuentas.add(nuevaCuenta);
+    System.out.println("Cuenta agregada. Total: " + cuentas.size());
+} else {
+    System.out.println("No se puede agregar. Límite alcanzado.");
+}</code></pre>
+            </div>
+
+            <div class="info-box warning">
+                <h3>⚠️ Diferencia: size() vs length</h3>
+                <ul>
+                    <li><code>ArrayList.size()</code> - Método (con paréntesis)</li>
+                    <li><code>array.length</code> - Propiedad de arrays (sin paréntesis)</li>
+                </ul>
+                <div class="code-block">
+                    <pre><code class="language-java">// ArrayList
+ArrayList&lt;String&gt; lista = new ArrayList&lt;&gt;();
+int n = lista.size();  // ✓ Correcto
+
+// Array tradicional
+String[] array = new String[10];
+int m = array.length;  // ✓ Correcto (sin paréntesis)</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementar abrirCuenta() -->
+        <section class="content-section practica">
+            <h2>💻 Implementar abrirCuenta()</h2>
+
+            <p>Ahora implementaremos el método <code>abrirCuenta()</code> en la clase <code>Cliente</code>, aplicando todo lo aprendido.</p>
+
+            <h3>Requisitos del Negocio</h3>
+            <div class="info-box">
+                <ul>
+                    <li>Un cliente puede tener máximo <strong>6 cuentas</strong></li>
+                    <li>Debe recibir el número de cuenta y el tipo como parámetros</li>
+                    <li>Debe retornar <code>true</code> si se abrió exitosamente</li>
+                    <li>Debe retornar <code>false</code> si ya tiene 6 cuentas</li>
+                </ul>
+            </div>
+
+            <h3>Firma del Método</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Firma de abrirCuenta()</span>
+                </div>
+                <pre><code class="language-java">public boolean abrirCuenta(String numeroCuenta, String tipo) {
+    // Implementación aquí
+}</code></pre>
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <h3>Paso 1: Validar Límite de Cuentas</h3>
+                    <p>Primero verificamos si el cliente ya tiene 6 cuentas:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Paso 1</span>
+                        </div>
+                        <pre><code class="language-java">if (cuentas.size() &gt;= 6) {
+    return false;  // Ya tiene 6 cuentas, no puede abrir más
+}</code></pre>
+                    </div>
+                    <div class="info-box">
+                        <p><strong>Explicación:</strong></p>
+                        <ul>
+                            <li><code>cuentas.size()</code> nos da el número actual de cuentas</li>
+                            <li>Si es 6 o más, retornamos <code>false</code> inmediatamente</li>
+                            <li>Esto evita exceder el límite permitido</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Paso 2: Crear Nueva Cuenta</h3>
+                    <p>Si hay espacio, creamos una nueva cuenta con los datos recibidos:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Paso 2</span>
+                        </div>
+                        <pre><code class="language-java">Cuenta nueva = new Cuenta(tipo, numeroCuenta);</code></pre>
+                    </div>
+                    <div class="info-box">
+                        <p><strong>Nota:</strong> Recuerda que el constructor de <code>Cuenta</code> recibe primero el tipo y luego el número.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Paso 3: Agregar a la Lista</h3>
+                    <p>Agregamos la cuenta nueva al ArrayList:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Paso 3</span>
+                        </div>
+                        <pre><code class="language-java">cuentas.add(nueva);</code></pre>
+                    </div>
+                    <div class="info-box">
+                        <p>El método <code>add()</code> agrega la cuenta al final de la lista y aumenta automáticamente el tamaño.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Paso 4: Retornar Éxito</h3>
+                    <p>Finalmente, retornamos <code>true</code> para indicar que la cuenta se abrió exitosamente:</p>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>Paso 4</span>
+                        </div>
+                        <pre><code class="language-java">return true;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Código Completo</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Cliente.java - Método abrirCuenta()</span>
+                </div>
+                <pre><code class="language-java">public boolean abrirCuenta(String numeroCuenta, String tipo) {
+    // Paso 1: Validar límite de 6 cuentas
+    if (cuentas.size() &gt;= 6) {
+        return false;
+    }
+
+    // Paso 2: Crear nueva cuenta
+    Cuenta nueva = new Cuenta(tipo, numeroCuenta);
+
+    // Paso 3: Agregar a la lista
+    cuentas.add(nueva);
+
+    // Paso 4: Retornar éxito
+    return true;
+}</code></pre>
+            </div>
+
+            <div class="info-box success">
+                <h3>¿Qué hace este método?</h3>
+                <ol>
+                    <li>Verifica si el cliente ya tiene 6 cuentas</li>
+                    <li>Si ya tiene 6, rechaza la operación y retorna <code>false</code></li>
+                    <li>Si hay espacio, crea una nueva cuenta con los datos proporcionados</li>
+                    <li>Agrega la cuenta al ArrayList</li>
+                    <li>Retorna <code>true</code> indicando éxito</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Diagrama de Flujo -->
+        <section class="content-section teoria">
+            <h2>📊 Diagrama de Flujo</h2>
+
+            <div class="info-box">
+                <pre style="background: white; color: #2c3e50; padding: 2rem; font-family: monospace; font-size: 0.9em; line-height: 1.8;">
+                    ┌─────────────────┐
+                    │  Inicio         │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │ size() &gt;= 6?    │
+                    └────────┬────────┘
+                             │
+                    ┌────────┴────────┐
+                    │                 │
+                   Sí                No
+                    │                 │
+                    ▼                 ▼
+            ┌──────────────┐  ┌──────────────────┐
+            │ return false │  │ Crear nueva      │
+            └──────────────┘  │ Cuenta           │
+                              └────────┬─────────┘
+                                       │
+                                       ▼
+                              ┌──────────────────┐
+                              │ add(nueva)       │
+                              └────────┬─────────┘
+                                       │
+                                       ▼
+                              ┌──────────────────┐
+                              │ return true      │
+                              └──────────────────┘
+                </pre>
+            </div>
+        </section>
+
+        <!-- Ejemplo de Uso -->
+        <section class="content-section practica">
+            <h2>🎬 Ejemplo de Uso</h2>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Probando abrirCuenta()</span>
+                </div>
+                <pre><code class="language-java">// Crear cliente
+Cliente cliente = new Cliente("Juan Pérez", "1234567890");
+
+// Abrir primera cuenta
+boolean exito1 = cliente.abrirCuenta("001", "AHORROS");
+System.out.println("Cuenta 1: " + exito1);  // true
+System.out.println("Total cuentas: " + cliente.getCuentas().size());  // 1
+
+// Abrir segunda cuenta
+boolean exito2 = cliente.abrirCuenta("002", "CORRIENTE");
+System.out.println("Cuenta 2: " + exito2);  // true
+System.out.println("Total cuentas: " + cliente.getCuentas().size());  // 2
+
+// Abrir más cuentas...
+cliente.abrirCuenta("003", "AHORROS");    // true (3 cuentas)
+cliente.abrirCuenta("004", "CORRIENTE");  // true (4 cuentas)
+cliente.abrirCuenta("005", "AHORROS");    // true (5 cuentas)
+cliente.abrirCuenta("006", "AHORROS");    // true (6 cuentas)
+
+// Intentar abrir la séptima (debe fallar)
+boolean exito7 = cliente.abrirCuenta("007", "AHORROS");
+System.out.println("Cuenta 7: " + exito7);  // false
+System.out.println("Total cuentas: " + cliente.getCuentas().size());  // 6</code></pre>
+            </div>
+
+            <h3>Salida Esperada</h3>
+            <div class="code-block">
+                <pre><code>Cuenta 1: true
+Total cuentas: 1
+Cuenta 2: true
+Total cuentas: 2
+Cuenta 7: false
+Total cuentas: 6</code></pre>
+            </div>
+        </section>
+
+        <!-- Escenarios de Prueba -->
+        <section class="content-section practica">
+            <h2>🧪 Escenarios de Prueba</h2>
+
+            <div class="two-column">
+                <div class="info-box success">
+                    <h3>Caso Exitoso ✓</h3>
+                    <div class="code-block">
+                        <pre><code class="language-java">Cliente c = new Cliente("Ana", "123");
+
+// Tiene 0 cuentas, hay espacio
+c.abrirCuenta("001", "AHORROS");
+// Retorna: true
+// size() ahora es: 1</code></pre>
+                    </div>
+                </div>
+
+                <div class="info-box danger">
+                    <h3>Caso Rechazado ✗</h3>
+                    <div class="code-block">
+                        <pre><code class="language-java">// Ya tiene 6 cuentas
+// size() == 6
+
+c.abrirCuenta("007", "AHORROS");
+// Retorna: false
+// size() sigue siendo: 6</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejercicio -->
+        <section class="content-section ejercicio">
+            <h2>✏️ Ejercicio Práctico</h2>
+
+            <div class="info-box warning">
+                <h3>Tu Tarea</h3>
+                <p>Implementa el método <code>abrirCuenta()</code> en la clase <code>Cliente</code>.</p>
+            </div>
+
+            <h3>Ubicación del Archivo</h3>
+            <div class="code-block">
+                <pre><code>src/main/java/edu/eam/ingesoft/fundamentos/cuentabancaria/logica/Cliente.java</code></pre>
+            </div>
+
+            <h3>Pasos a Seguir</h3>
+            <div class="steps">
+                <div class="step">
+                    <h4>1. Ubica el método</h4>
+                    <p>Busca el método <code>abrirCuenta()</code> que tiene un <code>// TODO</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>2. Implementa la validación</h4>
+                    <p>Verifica si <code>cuentas.size() &gt;= 6</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>3. Crea y agrega la cuenta</h4>
+                    <p>Crea una nueva <code>Cuenta</code> y agrégala con <code>add()</code></p>
+                </div>
+
+                <div class="step">
+                    <h4>4. Retorna el resultado</h4>
+                    <p><code>false</code> si está lleno, <code>true</code> si se agregó</p>
+                </div>
+
+                <div class="step">
+                    <h4>5. Prueba tu código</h4>
+                    <p>Ejecuta: <code>mvn test -Dtest=ClienteTest#testAbrirCuenta</code></p>
+                </div>
+            </div>
+
+            <h3>Checklist de Verificación</h3>
+            <div class="info-box">
+                <ul style="list-style: none; padding-left: 0;">
+                    <li><input type="checkbox"> Valida <code>cuentas.size() &gt;= 6</code></li>
+                    <li><input type="checkbox"> Retorna <code>false</code> si ya tiene 6 cuentas</li>
+                    <li><input type="checkbox"> Crea nueva <code>Cuenta</code> con <code>new Cuenta(tipo, numeroCuenta)</code></li>
+                    <li><input type="checkbox"> Agrega la cuenta con <code>cuentas.add(nueva)</code></li>
+                    <li><input type="checkbox"> Retorna <code>true</code> después de agregar</li>
+                    <li><input type="checkbox"> El método tiene la firma correcta</li>
+                    <li><input type="checkbox"> Las pruebas pasan exitosamente</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Resumen -->
+        <section class="content-section">
+            <h2>📝 Resumen de lo Aprendido</h2>
+
+            <div class="two-column">
+                <div>
+                    <h3>Método add()</h3>
+                    <ul>
+                        <li>Agrega elementos al final de la lista</li>
+                        <li>Sintaxis: <code>lista.add(elemento)</code></li>
+                        <li>El tamaño aumenta automáticamente</li>
+                        <li>No necesitas gestionar capacidad manualmente</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Método size()</h3>
+                    <ul>
+                        <li>Retorna el número de elementos</li>
+                        <li>Sintaxis: <code>int n = lista.size()</code></li>
+                        <li>Útil para validar límites</li>
+                        <li>Se actualiza automáticamente</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box success" style="margin-top: 2rem;">
+                <h3>🎉 ¡Felicitaciones!</h3>
+                <p>Has completado todas las lecciones del curso. Ahora sabes:</p>
+                <ul>
+                    <li>✅ Crear y usar constructores</li>
+                    <li>✅ Aplicar encapsulamiento con getters y setters</li>
+                    <li>✅ Declarar e inicializar ArrayList</li>
+                    <li>✅ Agregar elementos y verificar tamaños</li>
+                </ul>
+                <p><strong>Estás listo para implementar el proyecto completo de Gestión de Cuentas Bancarias!</strong></p>
+            </div>
+        </section>
+
+        <!-- Próximos Pasos -->
+        <section class="content-section">
+            <h2>🚀 Próximos Pasos</h2>
+
+            <div class="info-box success">
+                <h3>¡Felicitaciones! Has completado las 4 lecciones</h3>
+                <p>Ahora es momento de probar tu implementación</p>
+            </div>
+
+            <div class="info-box">
+                <h3>Continúa con:</h3>
+                <ol>
+                    <li><strong>Prueba tu código con el CLI:</strong> <a href="guia-cli.html">Ver Guía del CLI →</a></li>
+                    <li><strong>Ejecuta los tests:</strong> <code>mvn test</code></li>
+                    <li><strong>Revisa la solución:</strong> Compara tu código con <code>solucion/</code></li>
+                </ol>
+            </div>
+
+            <div class="cta" style="margin-top: 2rem;">
+                <h2>💻 Prueba tu Implementación</h2>
+                <a href="guia-cli.html" class="btn btn-primary">Ir a la Guía del CLI →</a>
+            </div>
+        </section>
+
+        <!-- Navegación -->
+        <nav class="lesson-nav">
+            <a href="3-arraylist-crear.html" class="btn btn-secondary">← Anterior: ArrayList - Crear</a>
+            <a href="../index.html" class="btn btn-primary">Volver al Inicio</a>
+        </nav>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 - Fundamentos de Programación | EAM Universidad</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Save checklist state
+        document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((cb) => {
+            cb.addEventListener('change', () => {
+                const states = [];
+                document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((checkbox, i) => {
+                    states[i] = checkbox.checked;
+                });
+                localStorage.setItem('lesson-4-checklist', JSON.stringify(states));
+            });
+        });
+
+        // Load checklist state
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('lesson-4-checklist');
+            if (saved) {
+                const states = JSON.parse(saved);
+                document.querySelectorAll('.ejercicio input[type="checkbox"]').forEach((cb, idx) => {
+                    if (states[idx] !== undefined) {
+                        cb.checked = states[idx];
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

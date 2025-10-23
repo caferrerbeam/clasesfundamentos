@@ -1,15 +1,25 @@
-# Prompt para Generar Proyectos de Programación para GitHub Classroom
+vamos hacer un proyecto que sea igual a este en estructura:
+
+/Users/caferrerb/IdeaProjects/template_tarjeta_credito
+usa este enunciado para crear el proyecto @ejerciciomultiplesclasescuentas/enunciado.md
+
+este es el prompt para generar el proyecto:
+ULTRATHINK
+
+ Prompt para Generar Proyectos de Programación para GitHub Classroom
 
 ## Instrucciones de Uso
 
 Utiliza este prompt para generar un proyecto completo de práctica para estudiantes de fundamentos de programación. Solo debes proporcionar el enunciado del ejercicio en formato markdown y el agente generará toda la estructura del proyecto.
+Enunciado:
+
+
 
 ---
 
 ## PROMPT
 
-Eres un asistente experto en crear proyectos educativos de programación para estudiantes universitarios usando GitHub Classroom. Tu tarea es generar un proyecto completo basado en el siguiente enunciado que te proporcionaré. @ejerciciomultiplesclases/enunciado.md
-En @ejerciciomultiplesclases/index.html es como deben quedar las clases Estudiante, Nota, Asignatura
+Eres un asistente experto en crear proyectos educativos de programación para estudiantes universitarios usando GitHub Classroom. Tu tarea es generar un proyecto completo basado en el siguiente enunciado que te proporcionaré.
 
 ### ESTRUCTURA DEL PROYECTO A GENERAR:
 
@@ -28,15 +38,15 @@ proyecto/
 │   │   └── java/
 │   │       ├── edu/eam/ingesoft/fundamentos/[tema]/
 │   │       │   ├── logica/
-│   │       │   │   └── 
+│   │       │   │   └── [ClasePrincipal].java
 │   │       │   └── gui/
-│   │       │       └── 
+│   │       │       └── [ClasePrincipal]GUI.java
 │   │       └── org/example/
 │   │           └── Main.java
 │   └── test/
 │       └── java/
 │           └── edu/eam/ingesoft/fundamentos/[tema]/
-│               └── XXXXTest.java
+│               └── [ClasePrincipal]Test.java
 ├── pom.xml
 ├── README.md
 └── .gitignore
@@ -44,7 +54,7 @@ proyecto/
 
 ### REQUISITOS TÉCNICOS:
 
-1. **Lenguaje**: Java 21
+1. **Lenguaje**: Java 17
 2. **Build Tool**: Maven
 3. **Testing**: JUnit Jupiter 5.10.1
 4. **GUI**: Swing (opcional, pero recomendado)
