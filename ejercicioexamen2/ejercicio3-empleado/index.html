@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Evaluación Integral de Empleados</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .emoji {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #434343;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #ffd700;
+        }
+
+        .section h3 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .context-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #434343;
+        }
+
+        .context-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .diagram-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid #e9ecef;
+            overflow-x: auto;
+        }
+
+        .diagram-title {
+            text-align: center;
+            color: #434343;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .rule-card {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .rule-card h4 {
+            color: #2d3436;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .rule-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rule-card li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .rule-card li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #d63031;
+            font-weight: bold;
+        }
+
+        .methods-list {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+        }
+
+        .method-item {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            transition: background 0.3s ease;
+        }
+
+        .method-item:last-child {
+            border-bottom: none;
+        }
+
+        .method-item:hover {
+            background: #f8f9fa;
+        }
+
+        .method-name {
+            font-family: 'Courier New', monospace;
+            color: #434343;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .method-description {
+            color: #666;
+            line-height: 1.6;
+            margin-left: 20px;
+        }
+
+        .method-returns {
+            background: #fff3cd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: inline-block;
+            font-size: 0.9em;
+            color: #856404;
+        }
+
+        .instruction-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .instruction-box h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .instruction-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #2d3436;
+            font-weight: bold;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63031;
+        }
+
+        .warning-box {
+            background: #ffe3e3;
+            border-left: 4px solid #d63031;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box strong {
+            color: #d63031;
+        }
+
+        .cargo-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .operativo { background: #a8dadc; color: #1d3557; }
+        .administrativo { background: #f1faee; color: #457b9d; }
+        .gerencial { background: #ffd60a; color: #003566; }
+        .directivo { background: #06ffa5; color: #001d3d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="emoji">💼</div>
+            <h1>Sistema de Evaluación Integral de Empleados</h1>
+            <p>TechCorp Solutions - Ejercicio de Programación</p>
+        </div>
+
+        <div class="content">
+            <!-- Contexto del Negocio -->
+            <div class="section">
+                <h2>📋 Contexto del Negocio</h2>
+                <div class="context-box">
+                    <p>
+                        La empresa <strong>TechCorp Solutions</strong> necesita un sistema automatizado para evaluar el
+                        desempeño de sus empleados y calcular su compensación anual. El sistema debe considerar múltiples
+                        factores: productividad, asistencia, antigüedad, número de proyectos completados, trabajo en equipo,
+                        certificaciones profesionales y responsabilidades de liderazgo.
+                    </p>
+                    <p style="margin-top: 15px;">
+                        La empresa tiene una estructura organizacional con cuatro niveles de cargos:
+                        <span class="cargo-badge operativo">Operativo</span>
+                        <span class="cargo-badge administrativo">Administrativo</span>
+                        <span class="cargo-badge gerencial">Gerencial</span>
+                        <span class="cargo-badge directivo">Directivo</span>
+                        cada uno con criterios de evaluación y compensación diferentes.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Diagrama de Clases -->
+            <div class="section">
+                <h2>🏗️ Diagrama de Clases</h2>
+                <div class="instruction-box">
+                    <h3>⚠️ Instrucción Importante</h3>
+                    <p>
+                        <strong>Su tarea es implementar la clase EvaluacionEmpleado y llenar la lógica de cada uno de los métodos</strong>
+                        siguiendo las reglas de negocio descritas en el enunciado completo del ejercicio.
+                    </p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Clase: EvaluacionEmpleado</div>
+                    <div class="mermaid">
+                        classDiagram
+                            class EvaluacionEmpleado {
+                                -String nombre
+                                -String cargo
+                                -int puntajeProductividad
+                                -double porcentajeAsistencia
+                                -int aniosAntiguedad
+                                -double salarioBaseMensual
+                                -int proyectosCompletados
+                                -int calificacionTrabajoEquipo
+                                -boolean tieneCertificaciones
+                                -boolean lideraEquipo
+                                +EvaluacionEmpleado(nombre, cargo, productividad, asistencia, antiguedad, salario, proyectos, equipo, certificaciones, lidera)
+                                +String determinarCategoriaDesempeño()
+                                +double calcularBonoDesempeño()
+                                +double calcularBonoAntiguedad()
+                                +double calcularBonoProyectos()
+                                +double calcularBonificacionExtra()
+                                +double calcularCompensacionTotal()
+                                +boolean evaluarElegibilidadAscenso()
+                                +String determinarPlanMejora()
+                                +void generarReporteCompleto()
+                            }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reglas Principales -->
+            <div class="section">
+                <h2>📐 Reglas Principales del Negocio</h2>
+
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <h4>📊 Categorías de Desempeño</h4>
+                        <ul>
+                            <li><strong>Rangos diferentes por cargo:</strong></li>
+                            <li>Operativo: 90/75/60</li>
+                            <li>Administrativo: 85/70/55</li>
+                            <li>Gerencial: 80/65/50</li>
+                            <li>Directivo: 80/65/50</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h4>💰 Bono por Desempeño</h4>
+                        <ul>
+                            <li><strong>Sobresaliente:</strong> 10%-25%</li>
+                            <li><strong>Destacado:</strong> 8%-15%</li>
+                            <li><strong>Satisfactorio:</strong> 0%-8%</li>
+                            <li>Depende de asistencia</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h4>⏱️ Bono por Antigüedad</h4>
+                        <ul>
+                            <li>1-3 años: 3%</li>
+                            <li>4-7 años: 6%</li>
+                            <li>8-12 años: 10%</li>
+                            <li>&gt;12 años: 15%</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h4>📁 Bono por Proyectos</h4>
+                        <ul>
+                            <li>Operativo: $100K (máx 5)</li>
+                            <li>Administrativo: $200K (máx 8)</li>
+                            <li>Gerencial: $500K (máx 10)</li>
+                            <li>Directivo: $1M (máx 15)</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h4>⭐ Bonificaciones Extra</h4>
+                        <ul>
+                            <li>Certificaciones + Equipo ≥4: 5%</li>
+                            <li>Lidera + Sobresaliente/Destacado: 8%</li>
+                            <li><strong>Cert + Lidera: 10%</strong> (no acumulable)</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h4>🚀 Criterios de Ascenso</h4>
+                        <ul>
+                            <li><strong>Diferentes por cargo</strong></li>
+                            <li>Operativo → Admin: categoría + 2 años</li>
+                            <li>Admin → Gerencial: Sobresaliente + 3 años + 5 proyectos</li>
+                            <li>Gerencial → Directivo: Sobresaliente + 4 años + lidera + cert</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Descripción de Métodos -->
+            <div class="section">
+                <h2>⚙️ Métodos a Implementar</h2>
+
+                <div class="methods-list">
+                    <div class="method-item">
+                        <div class="method-name">+ determinarCategoriaDesempeño(): String</div>
+                        <div class="method-description">
+                            Determina la categoría de desempeño según el cargo y la productividad.
+                            <br>• Usa <span class="highlight">switch-case para el cargo</span>
+                            <br>• Cada cargo tiene rangos diferentes de productividad
+                            <br>• Operativo: 90/75/60 | Admin: 85/70/55 | Gerencial/Directivo: 80/65/50
+                            <div class="method-returns">↩️ Retorna: "Sobresaliente" | "Destacado" | "Satisfactorio" | "Requiere mejora"</div>
+                        </div>
+                    </div>
+
+                    <div class="method-item">
+                        <div class="method-name">+ calcularBonoDesempeño(): double</div>
+                        <div class="method-description">
+                            Calcula el bono según la categoría de desempeño y el porcentaje de asistencia.
+                            <br>• Usa <span class="highlight">decisiones anidadas</span>: categoría → asistencia
+                            <br>• Sobresaliente: 10%-25% según asistencia (≥98% | 95-97% | 90-94% | <90%)
+                            <br>• Destacado: 8%-15% | Satisfactorio: 0%-8% | Requiere mejora: 0%
+                            <div class="method-returns">↩️ Retorna: monto del bono (porcentaje del salario mensual)</div>
+                        </div>
+                    </div>
+
+                    <div class="method-item">
+                        <div class="method-name">+ calcularBonoAntiguedad(): double</div>
+                        <div class="method-description">
+                            Calcula el bono por años de antigüedad en la empresa.
+                            <br>• 1-3 años: 3% | 4-7 años: 6% | 8-12 años: 10% | >12 años: 15%
+                            <br>• Porcentaje aplicado al salario mensual
+                            <div class="method-returns">↩️ Retorna: monto del bono de antigüedad</div>
+                        </div>
+                    </div>
+
+                    <div class="method-item">
+                        <div class="method-name">+ calcularBonoProyectos(): double</div>
+                        <div class="method-description">
+                            Calcula el bono por proyectos completados según el cargo.
+                            <br>• Determina el máximo de proyectos según cargo
+                            <br>• Si completó más del máximo, solo paga hasta el máximo
+                            <br>• Valor por proyecto varía: $100K (operativo) hasta $1M (directivo)
+                            <div class="method-returns">↩️ Retorna: monto total del bono por proyectos</div>
+                        </div>
+                    </div>
+
+                    <div class="method-item">
+                        <div class="method-name">+ calcularBonificacionExtra(): double</div>
+                        <div class="method-description">
+                            Calcula bonificaciones por habilidades y responsabilidades especiales.
+                            <br>• <span class="highlight">⚠️ IMPORTANTE:</span> Si tiene certificaciones Y lidera equipo → solo 10%
+                            <br>• Si no cumple ambas, verificar por separado:
+                            <br>&nbsp;&nbsp;- Certificaciones Y trabajo equipo ≥4: 5%
+                            <br>&nbsp;&nbsp;- Lidera Y categoría Sobresaliente/Destacado: 8%
+                            <div class="method-returns">↩️ Retorna: monto de la bonificación extra</div>
+                        </div>
+                    </div>
+
+                    <div class="method-item">
+                        <div class="method-name">+ calcularCompensacionTotal(): double</div>
+                        <div class="method-description">
+                            Calcula la compensación total anual del empleado.
+                            <br>• Suma: Salario anual (×12) + todos los bonos y bonificaciones
+                            <br>• Incluye: bono desempeño, antigüedad, proyectos, bonificación extra
+                            <div class="method-returns">↩️ Retorna: compensación total anual</div>
+                        </div>
+                    </div>
+
+                    <div class="method-item">
+                        <div class="method-name">+ evaluarElegibilidadAscenso(): boolean</div>
+                        <div class="method-description">
+                            Determina si el empleado califica para ascenso al siguiente nivel.
+                            <br>• Usa <span class="highlight">decisiones según el cargo actual</span>
+                            <br>• Cada nivel tiene criterios específicos de ascenso
+                            <br>• Directivo: retorna false (ya está en nivel máximo)
+                            <div class="method-returns">↩️ Retorna: true si es elegible para ascenso</div>
+                        </div>
+                    </div>
+
+                    <div class="method-item">
+                        <div class="method-name">+ determinarPlanMejora(): String</div>
+                        <div class="method-description">
+                            Determina el plan de desarrollo o mejora requerido.
+                            <br>• Si categoría "Requiere mejora": evalúa asistencia y productividad
+                            <br>&nbsp;&nbsp;- Asistencia <85%: "Plan de mejora - Asistencia y productividad"
+                            <br>&nbsp;&nbsp;- Productividad <50%: "Plan de mejora - Productividad crítica"
+                            <br>&nbsp;&nbsp;- Otro: "Plan de mejora - Capacitación"
+                            <br>• Si "Satisfactorio" y asistencia <90%: "Seguimiento asistencia"
+                            <div class="method-returns">↩️ Retorna: plan de mejora o "Sin plan de mejora"</div>
+                        </div>
+                    </div>
+
+                    <div class="method-item">
+                        <div class="method-name">+ generarReporteCompleto(): void</div>
+                        <div class="method-description">
+                            Imprime un reporte completo de evaluación del empleado en consola.
+                            <br>• Datos del empleado (nombre, cargo)
+                            <br>• Métricas de desempeño (productividad, asistencia, antigüedad)
+                            <br>• Categoría de desempeño
+                            <br>• Desglose de todos los bonos y bonificaciones
+                            <br>• Compensación total anual
+                            <br>• Elegibilidad para ascenso y plan de mejora
+                            <div class="method-returns">↩️ Retorna: void (imprime en consola)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetivo del Ejercicio -->
+            <div class="section">
+                <h2>🎯 Objetivos de Aprendizaje</h2>
+                <div class="context-box">
+                    <p>Este ejercicio está diseñado para practicar:</p>
+                    <ul style="margin-top: 10px; padding-left: 25px;">
+                        <li style="margin: 8px 0;"><strong>Decisiones anidadas multinivel:</strong> Categoría por cargo, luego bono por asistencia</li>
+                        <li style="margin: 8px 0;"><strong>Switch-case:</strong> Útil para manejar los diferentes cargos</li>
+                        <li style="margin: 8px 0;"><strong>Lógica condicional compleja:</strong> Bonificaciones con reglas excluyentes</li>
+                        <li style="margin: 8px 0;"><strong>Límites por categoría:</strong> Máximo de proyectos según cargo</li>
+                        <li style="margin: 8px 0;"><strong>Múltiples cálculos acumulativos:</strong> Sumar diferentes tipos de bonos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Notas Importantes -->
+            <div class="section">
+                <h2>⚠️ Notas Importantes</h2>
+
+                <div class="warning-box">
+                    <strong>⚠️ Decisión Crítica:</strong> Las bonificaciones extra NO siempre se acumulan. Si el empleado
+                    tiene certificaciones Y lidera equipo, recibe SOLO el 10%, no suma las otras dos bonificaciones.
+                </div>
+
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <h4>Rangos por Cargo</h4>
+                        <ul>
+                            <li>Cada cargo tiene rangos diferentes</li>
+                            <li>Use switch-case</li>
+                            <li>Más exigente en niveles altos</li>
+                            <li>Operativo: 90/75/60</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h4>Límites de Proyectos</h4>
+                        <ul>
+                            <li>Cada cargo tiene un máximo</li>
+                            <li>Si excede, pagar solo el máximo</li>
+                            <li>Usar Math.min() o if</li>
+                            <li>Operativo: 5, Directivo: 15</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h4>Tipos de Datos</h4>
+                        <ul>
+                            <li><code>double</code> para salarios, bonos</li>
+                            <li><code>int</code> para productividad, años</li>
+                            <li><code>String</code> para cargo, categorías</li>
+                            <li><code>boolean</code> para certificaciones, lidera</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h4>Bonificaciones Extra</h4>
+                        <ul>
+                            <li>Verificar cert + lidera PRIMERO</li>
+                            <li>Si cumple: solo 10%</li>
+                            <li>Si no: verificar otras por separado</li>
+                            <li>No sumar todas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>TechCorp Solutions - Ejercicio de Fundamentos de Programación</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Tema: Decisiones Múltiples Anidadas y Clases en Java</p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#fef3c7',
+                primaryTextColor: '#1f2937',
+                primaryBorderColor: '#434343',
+                lineColor: '#434343',
+                secondaryColor: '#fef9e7',
+                tertiaryColor: '#fffbeb',
+                classText: '#1f2937'
+            }
+        });
+    </script>
+</body>
+</html>

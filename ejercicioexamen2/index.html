@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de Preparación - Examen 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .exercises-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .exercise-header {
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .exercise-1 .exercise-header {
+            background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+        }
+
+        .exercise-2 .exercise-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .exercise-3 .exercise-header {
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+        }
+
+        .exercise-emoji {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .exercise-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .exercise-header p {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .exercise-body {
+            padding: 30px;
+        }
+
+        .exercise-description {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+        }
+
+        .exercise-topics {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .exercise-topics h4 {
+            color: #434343;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .exercise-topics ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .exercise-topics li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #555;
+        }
+
+        .exercise-topics li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .exercise-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #434343;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: scale(1.05);
+        }
+
+        .info-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .info-box h3 {
+            color: #434343;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .info-box p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            color: #666;
+            line-height: 1.8;
+            margin-left: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .exercises-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .exercise-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="emoji">📚</div>
+            <h1>Ejercicios de Preparación</h1>
+            <p>Examen 2 - Decisiones Múltiples Anidadas y Clases</p>
+        </div>
+
+        <div class="subtitle">
+            <strong>Tema:</strong> Decisiones simples, decisiones múltiples, decisiones anidadas e identificación de atributos para problemas de una sola clase
+        </div>
+
+        <div class="info-box">
+            <h3>📋 Instrucciones Generales</h3>
+            <p>
+                Esta colección contiene <strong>3 ejercicios completos</strong> diseñados para practicar los conceptos
+                que se evaluarán en el examen. Cada ejercicio incluye:
+            </p>
+            <ul>
+                <li>Enunciado completo en formato Markdown (.md)</li>
+                <li>Página web interactiva con diagrama de clases</li>
+                <li>Reglas de negocio detalladas</li>
+                <li>Ejemplos resueltos paso a paso</li>
+                <li>Escenarios de práctica</li>
+                <li>Métodos a implementar con descripción detallada</li>
+            </ul>
+            <p style="margin-top: 15px;">
+                <strong>Su tarea:</strong> Implementar cada clase completando la lógica de todos los métodos según
+                las reglas de negocio descritas en cada ejercicio.
+            </p>
+        </div>
+
+        <div class="exercises-grid">
+            <!-- Ejercicio 1: Salud -->
+            <div class="exercise-card exercise-1">
+                <div class="exercise-header">
+                    <div class="exercise-emoji">🏥</div>
+                    <h2>Ejercicio 1</h2>
+                    <p>Sistema de Evaluación de Salud</p>
+                </div>
+                <div class="exercise-body">
+                    <div class="exercise-description">
+                        Centro médico que calcula el IMC, evalúa el riesgo cardiovascular y genera un puntaje de salud
+                        según múltiples factores del paciente.
+                    </div>
+                    <div class="exercise-topics">
+                        <h4>Conceptos a practicar:</h4>
+                        <ul>
+                            <li>Rangos diferentes por género</li>
+                            <li>Decisiones anidadas por edad</li>
+                            <li>Condiciones compuestas</li>
+                            <li>Acumulación de puntos</li>
+                        </ul>
+                    </div>
+                    <div class="exercise-buttons">
+                        <a href="ejercicio1-salud/index.html" class="btn btn-primary">Ver Ejercicio</a>
+                        <a href="ejercicio1-salud/enunciado.md" class="btn btn-secondary" download>Descargar Enunciado</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejercicio 2: Taxi -->
+            <div class="exercise-card exercise-2">
+                <div class="exercise-header">
+                    <div class="exercise-emoji">🚕</div>
+                    <h2>Ejercicio 2</h2>
+                    <p>Sistema de Tarifas de Taxi</p>
+                </div>
+                <div class="exercise-body">
+                    <div class="exercise-description">
+                        Empresa de transporte que calcula el costo de viajes considerando tipo de servicio, horarios,
+                        zonas especiales y descuentos acumulables.
+                    </div>
+                    <div class="exercise-topics">
+                        <h4>Conceptos a practicar:</h4>
+                        <ul>
+                            <li>Decisiones día → hora</li>
+                            <li>Switch-case para días</li>
+                            <li>Cargos acumulables</li>
+                            <li>Descuentos acumulables</li>
+                        </ul>
+                    </div>
+                    <div class="exercise-buttons">
+                        <a href="ejercicio2-taxi/index.html" class="btn btn-primary">Ver Ejercicio</a>
+                        <a href="ejercicio2-taxi/enunciado.md" class="btn btn-secondary" download>Descargar Enunciado</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ejercicio 3: Empleado -->
+            <div class="exercise-card exercise-3">
+                <div class="exercise-header">
+                    <div class="exercise-emoji">💼</div>
+                    <h2>Ejercicio 3</h2>
+                    <p>Sistema de Evaluación de Empleados</p>
+                </div>
+                <div class="exercise-body">
+                    <div class="exercise-description">
+                        Empresa que evalúa el desempeño de empleados calculando bonos, compensación total y
+                        elegibilidad para ascenso según 4 niveles de cargo.
+                    </div>
+                    <div class="exercise-topics">
+                        <h4>Conceptos a practicar:</h4>
+                        <ul>
+                            <li>Switch-case por cargo</li>
+                            <li>Decisiones categoría → asistencia</li>
+                            <li>Bonificaciones excluyentes</li>
+                            <li>Límites por categoría</li>
+                        </ul>
+                    </div>
+                    <div class="exercise-buttons">
+                        <a href="ejercicio3-empleado/index.html" class="btn btn-primary">Ver Ejercicio</a>
+                        <a href="ejercicio3-empleado/enunciado.md" class="btn btn-secondary" download>Descargar Enunciado</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>💡 Recomendaciones</h3>
+            <ul>
+                <li>Lea completamente el enunciado antes de empezar a programar</li>
+                <li>Identifique todos los atributos necesarios según las reglas de negocio</li>
+                <li>Diseñe los diagramas de flujo antes de implementar los métodos</li>
+                <li>Pruebe cada método con los ejemplos proporcionados</li>
+                <li>Preste especial atención a las decisiones anidadas y sus niveles</li>
+                <li>Verifique que los tipos de datos sean apropiados para cada atributo</li>
+                <li>Use comentarios para explicar la lógica de las decisiones más complejas</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>Fundamentos de Programación</strong></p>
+            <p style="margin-top: 10px; opacity: 0.9;">Preparación Examen 2 - Decisiones y Clases</p>
+            <p style="margin-top: 10px; opacity: 0.8; font-size: 0.9em;">EAM Universidad - 2025-2</p>
+        </div>
+    </div>
+</body>
+</html>
