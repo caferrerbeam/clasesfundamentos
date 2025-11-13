@@ -1,0 +1,3306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa - Sistema de Wallet de Criptomonedas</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a237e;
+            --primary-dark: #0d47a1;
+            --secondary: #4caf50;
+            --accent: #ff9800;
+            --text: #222222;
+            --bg: #ffffff;
+            --bg-alt: #f5f5f5;
+            --border: #e0e0e0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--bg-alt);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        nav {
+            background: var(--primary-dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        nav li {
+            margin: 0.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary);
+            border-bottom: 4px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin: 2rem 0 1.5rem 0;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin: 2rem 0 1rem 0;
+            font-size: 2rem;
+            border-left: 6px solid var(--secondary);
+            padding-left: 1rem;
+        }
+
+        h3 {
+            color: var(--primary-dark);
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.5rem;
+        }
+
+        h4 {
+            color: #283593;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        p {
+            margin: 1rem 0;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        code {
+            background: #263238;
+            color: #4caf50;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background: #263238;
+            color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        pre code {
+            background: none;
+            color: #ffffff;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: var(--bg);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: var(--bg-alt);
+        }
+
+        .info-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+
+        .info-box.context {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .info-box.example {
+            background: #e8f5e9;
+            border-color: var(--secondary);
+        }
+
+        .info-box.warning {
+            background: #fff3e0;
+            border-color: var(--accent);
+        }
+
+        .info-box.important {
+            background: #fce4ec;
+            border-color: #e91e63;
+        }
+
+        .method-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .method-signature {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+        }
+
+        .steps {
+            background: var(--bg-alt);
+            border-left: 4px solid var(--secondary);
+            padding: 1rem 1rem 1rem 2rem;
+            margin: 1rem 0;
+            color: var(--text);
+        }
+
+        .steps h4 {
+            color: var(--primary);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin: 0 0.25rem;
+        }
+
+        .badge-req {
+            background: var(--accent);
+            color: white;
+        }
+
+        .badge-operacion {
+            background: #ff5722;
+            color: white;
+        }
+
+        .badge-criptomoneda {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .badge-wallet {
+            background: #2196f3;
+            color: white;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--secondary);
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #555;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎓 Guía Completa: Sistema de Wallet de Criptomonedas</h1>
+        <p>Análisis Inductivo - Del Problema al Diseño</p>
+        <p style="margin-top: 0.5rem; font-size: 1.1rem; opacity: 0.95;">
+            ⏰ <strong>Fecha de Entrega: 25 de Noviembre de 2025 a las 0:00</strong>
+        </p>
+        <div style="margin-top: 1rem; text-align: center;">
+            <a href="https://classroom.github.com/a/DNUpbPYt"
+               style="display: inline-block; background: #4caf50; color: white; padding: 0.75rem 2rem;
+                      border-radius: 8px; text-decoration: none; font-weight: bold;
+                      box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: all 0.3s;"
+               onmouseover="this.style.background='#45a049'; this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.background='#4caf50'; this.style.transform='translateY(0)'">
+                📚 Aceptar Asignación en GitHub Classroom
+            </a>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#parte1">Problema</a></li>
+            <li><a href="#parte2">Atributos</a></li>
+            <li><a href="#parte3">Métodos</a></li>
+            <li><a href="#operacion">Operacion</a></li>
+            <li><a href="#criptomoneda">Criptomoneda</a></li>
+            <li><a href="#wallet">Wallet</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="section"><h1 id="🎓 Guía Completa: Sistema de Wallet de Criptomonedas">🎓 Guía Completa: Sistema de Wallet de Criptomonedas</h1>
+<h2 id="Análisis Inductivo - Del Problema al Diseño">Análisis Inductivo - Del Problema al Diseño</h2>
+
+<hr>
+
+<h1 id="PARTE 1: ENUNCIADO DEL PROBLEMA">PARTE 1: ENUNCIADO DEL PROBLEMA</h1>
+
+<h2 id="🎯 Contexto">🎯 Contexto</h2>
+
+<p>Un trader de criptomonedas necesita un sistema para gestionar su portafolio que le permita:</p>
+
+<ul>
+<li>Registrar todas sus operaciones de compra y venta</li>
+<li>Calcular automáticamente las comisiones según el día y hora de operación</li>
+<li>Analizar el rendimiento de cada criptomoneda</li>
+<li>Conocer su ganancia o pérdida total</li>
+<li>Identificar cuál criptomoneda le da mejor rentabilidad</li>
+<li>Generar reportes detallados de su actividad</li>
+</ul>
+
+<p>El sistema debe manejar múltiples criptomonedas (Bitcoin, Ethereum, Cardano, etc.) y múltiples operaciones por cada una.</p>
+
+<hr>
+
+<h2 id="📐 Reglas de Negocio">📐 Reglas de Negocio</h2>
+
+<h3>1. Período del Día</h3>
+<p>Cada operación se clasifica automáticamente según su hora:</p>
+<ul>
+<li><strong>Mañana:</strong> 6:00 a 11:59</li>
+<li><strong>Tarde:</strong> 12:00 a 17:59</li>
+<li><strong>Noche:</strong> 18:00 a 5:59</li>
+</ul>
+
+<h3>2. Sistema de Comisiones Variables</h3>
+
+<p>Las comisiones se calculan en dos pasos:</p>
+
+<strong>Paso 1 - Comisión Base por Día:</strong>
+<ul>
+<li>Lunes a Viernes: 0.5%</li>
+<li>Sábado: 0.8%</li>
+<li>Domingo: 1.0%</li>
+</ul>
+
+<strong>Paso 2 - Ajuste por Período:</strong>
+<ul>
+<li>Mañana: +0.0%</li>
+<li>Tarde: +0.2%</li>
+<li>Noche: +0.5%</li>
+</ul>
+
+<strong>Comisión Total = Base + Ajuste</strong>
+
+<p>Ejemplo: Operar un sábado a las 10 PM (noche) = 0.8% + 0.5% = 1.3%</p>
+
+<h3>3. Cálculos Financieros Base</h3>
+
+<p>Para cada operación:</p>
+<ul>
+<li><strong>Monto:</strong> cantidad × precio unitario</li>
+<li><strong>Comisión en $:</strong> monto × (comisión% / 100)</li>
+<li><strong>Costo Total (compra):</strong> monto + comisión</li>
+<li><strong>Ingreso Neto (venta):</strong> monto - comisión</li>
+</ul>
+
+<hr>
+
+<h1 id="PARTE 2: IDENTIFICACIÓN DE ATRIBUTOS">PARTE 2: IDENTIFICACIÓN DE ATRIBUTOS</h1>
+
+<h2 id="🔍 Análisis de Sustantivos">🔍 Análisis de Sustantivos</h2>
+
+<p>Del enunciado identificamos sustantivos clave:</p>
+
+<p>| Sustantivo | Análisis | Decisión |</p>
+<p>|------------|----------|----------|</p>
+<p>| <strong>Portafolio/Wallet</strong> | Contenedor principal, gestiona múltiples criptomonedas | <strong>Clase</strong> |</p>
+<p>| <strong>Criptomoneda</strong> | Entidad con identidad propia (Bitcoin, Ethereum) y su historial | <strong>Clase</strong> |</p>
+<p>| <strong>Operación</strong> | Transacción individual con datos específicos | <strong>Clase</strong> |</p>
+<p>| Tipo (Compra/Venta) | Dato que el usuario ingresa | Atributo en Operacion |</p>
+<p>| Cantidad | Dato que el usuario ingresa | Atributo en Operacion |</p>
+<p>| Precio | Dato que el usuario ingresa | Atributo en Operacion |</p>
+<p>| Día | Dato que el usuario ingresa | Atributo en Operacion |</p>
+<p>| Hora | Dato que el usuario ingresa | Atributo en Operacion |</p>
+<p>| Nombre cripto | Dato que el usuario ingresa | Atributo en Criptomoneda |</p>
+<p>| Símbolo | Dato que el usuario ingresa | Atributo en Criptomoneda |</p>
+<p>| Dueño | Dato que el usuario ingresa | Atributo en Wallet |</p>
+<p>| Monto | Se CALCULA (cantidad × precio) | NO es atributo |</p>
+<p>| Período | Se DERIVA de la hora | NO es atributo |</p>
+<p>| Comisión | Se CALCULA según reglas | NO es atributo |</p>
+<p>| Ganancia | Se CALCULA de operaciones | NO es atributo |</p>
+
+<strong>Resultado:</strong> 3 clases, 10 atributos totales
+
+<hr>
+
+<h2 id="✅ Atributos por Clase">✅ Atributos por Clase</h2>
+
+<h3>Clase <code>Operacion</code> - 5 atributos</h3>
+
+<strong>Pregunta:</strong> ¿Qué datos debe proporcionar el usuario para registrar una operación?
+
+<strong>Respuesta:</strong>
+<ul>
+<li><code>tipo</code> (String) - "Compra" o "Venta"</li>
+<li><code>cantidad</code> (double) - Cuántas unidades negoció</li>
+<li><code>precioUnitario</code> (double) - Precio por unidad en dólares</li>
+<li><code>dia</code> (String) - Día de la semana</li>
+<li><code>hora</code> (int) - Hora en formato 24h (0-23)</li>
+</ul>
+
+<strong>Principio:</strong> Solo almacenamos lo que el usuario ingresa. Todo lo demás (monto, comisión, período) se calcula.
+
+<hr>
+
+<h3>Clase <code>Criptomoneda</code> - 3 atributos</h3>
+
+<strong>Pregunta:</strong> ¿Qué define a una criptomoneda y qué debe recordar?
+
+<strong>Respuesta:</strong>
+<ul>
+<li><code>nombre</code> (String) - Nombre completo (ej: "Bitcoin")</li>
+<li><code>simbolo</code> (String) - Identificador único (ej: "BTC")</li>
+<li><code>operaciones</code> (ArrayList\<Operacion\>) - Historial completo de transacciones</li>
+</ul>
+
+<strong>Principio:</strong> Solo identidad + historial. Todo análisis (cantidades, promedios, ganancias) se calcula recorriendo el ArrayList.
+
+<hr>
+
+<h3>Clase <code>Wallet</code> - 2 atributos</h3>
+
+<strong>Pregunta:</strong> ¿Qué define a un portafolio?
+
+<strong>Respuesta:</strong>
+<ul>
+<li><code>nombreDueno</code> (String) - Dueño del portafolio</li>
+<li><code>criptomonedas</code> (ArrayList\<Criptomoneda\>) - Colección de criptomonedas</li>
+</ul>
+
+<strong>Principio:</strong> Solo dueño + colección. Todo análisis del portafolio se calcula recorriendo las criptomonedas.
+
+<hr>
+
+<h2 id="📊 Resumen de Atributos">📊 Resumen de Atributos</h2>
+
+<pre><code>
+Operacion:     5 atributos (datos de entrada del usuario)
+Criptomoneda:  3 atributos (identidad + historial)
+Wallet:        2 atributos (dueño + colección)
+───────────────────────────────────────────
+TOTAL:        10 atributos
+</code></pre>
+
+<strong>Regla de oro:</strong> Almacena solo lo que el usuario INGRESA. Calcula todo lo demás.
+
+<hr>
+
+<h1 id="PARTE 3: DE REQUISITOS A MÉTODOS">PARTE 3: DE REQUISITOS A MÉTODOS</h1>
+
+<h2 id="📋 Distribución de Métodos por Clase">📋 Distribución de Métodos por Clase</h2>
+
+<p>Antes de profundizar en cada método, aquí está la distribución completa:</p>
+
+<h3>Clase <code>Operacion</code> - 6 métodos (REQ-1 al REQ-6)</h3>
+<ul>
+<li><code>getPeriodo()</code> - Determinar período del día</li>
+<li><code>getMontoOperacion()</code> - Calcular monto total</li>
+<li><code>getComisionPorcentaje()</code> - Calcular porcentaje de comisión</li>
+<li><code>getComisionDolares()</code> - Calcular comisión en dólares</li>
+<li><code>getCostoTotal()</code> - Calcular costo total de compra</li>
+<li><code>getIngresoNeto()</code> - Calcular ingreso neto de venta</li>
+</ul>
+
+<h3>Clase <code>Criptomoneda</code> - 20 métodos (REQ-7 al REQ-26)</h3>
+<ul>
+<li><code>agregarOperacion()</code> - Registrar nueva operación</li>
+<li><code>getCantidadComprada()</code> - Total de unidades compradas</li>
+<li><code>getCantidadVendida()</code> - Total de unidades vendidas</li>
+<li><code>getCantidadActual()</code> - Unidades disponibles actualmente</li>
+<li><code>getDineroInvertido()</code> - Total invertido en compras</li>
+<li><code>getDineroRecuperado()</code> - Total recuperado en ventas</li>
+<li><code>getComisionesTotales()</code> - Comisiones pagadas en total</li>
+<li><code>getPrecioPromedioCompra()</code> - Precio promedio de compra</li>
+<li><code>getPrecioPromedioVenta()</code> - Precio promedio de venta</li>
+<li><code>getGananciaRealizada()</code> - Ganancia de operaciones cerradas</li>
+<li><code>getRentabilidadPorcentaje()</code> - Rentabilidad porcentual</li>
+<li><code>tieneVentas()</code> - Verificar si hay ventas</li>
+<li><code>getEstado()</code> - Estado de la inversión</li>
+<li><code>obtenerOperacionesPorTipo()</code> - Filtrar por tipo</li>
+<li><code>obtenerOperacionesPorDia()</code> - Filtrar por día</li>
+<li><code>obtenerOperacionesPorPeriodo()</code> - Filtrar por período</li>
+<li><code>obtenerComisionMasAlta()</code> - Operación con mayor comisión</li>
+<li><code>obtenerComisionMasBaja()</code> - Operación con menor comisión</li>
+<li><strong><code>getGananciaNoRealizada(double precioActual)</code></strong> - Ganancia potencial no realizada</li>
+<li><strong><code>getPrecioBreakEven()</code></strong> - Precio de punto de equilibrio</li>
+</ul>
+
+<h3>Clase <code>Wallet</code> - 28 métodos (REQ-27 al REQ-54)</h3>
+<ul>
+<li><code>agregarCriptomoneda()</code> - Agregar cripto al portafolio</li>
+<li><code>buscarCriptomoneda()</code> - Buscar por símbolo</li>
+<li><code>existeCriptomoneda()</code> - Verificar existencia</li>
+<li><code>registrarCompra()</code> - Registrar compra</li>
+<li><code>registrarVenta()</code> - Registrar venta</li>
+<li><code>calcularValorTotalInvertido()</code> - Inversión total</li>
+<li><code>calcularValorTotalRecuperado()</code> - Recuperación total</li>
+<li><code>calcularGananciaTotalPortafolio()</code> - Ganancia total</li>
+<li><code>calcularComisionesTotalesPortafolio()</code> - Comisiones totales</li>
+<li><code>calcularPorcentajeComisionesSobreGanancias()</code> - % comisiones</li>
+<li><code>obtenerCriptoConMejorRentabilidad()</code> - Mejor inversión</li>
+<li><code>obtenerCriptoConPeorRentabilidad()</code> - Peor inversión</li>
+<li><code>obtenerCriptosConGanancias()</code> - Lista con ganancias</li>
+<li><code>obtenerCriptosConPerdidas()</code> - Lista con pérdidas</li>
+<li><code>obtenerCriptosSinVentas()</code> - Holdings puros</li>
+<li><code>obtenerCriptoConMasOperaciones()</code> - Más activa</li>
+<li><code>contarTotalOperaciones()</code> - Total de transacciones</li>
+<li><code>contarOperacionesPorTipo()</code> - Contar por tipo</li>
+<li><code>obtenerOperacionesPorDia()</code> - Consolidado por día</li>
+<li><code>obtenerOperacionesPorPeriodo()</code> - Consolidado por período</li>
+<li><code>obtenerOperacionMasGrande()</code> - Operación más grande</li>
+<li><code>obtenerOperacionesConComisionAlta()</code> - Operaciones costosas</li>
+<li><code>obtenerDiaMasOperado()</code> - Día más activo</li>
+<li><code>obtenerPeriodoMasOperado()</code> - Período más activo</li>
+<li><code>obtenerDiasOperados()</code> - Días únicos</li>
+<li><code>generarReporteCompleto()</code> - Reporte completo</li>
+</ul>
+
+<strong>Total: 54 métodos</strong>
+
+<hr>
+
+<h2 id="📝 Clase <code>Operacion</code>">📝 Clase <code>Operacion</code></h2>
+
+<h3>REQ-1: Determinar el período del día automáticamente</h3>
+
+<strong>Contexto:</strong> El sistema de comisiones penaliza operar de noche. El usuario solo ingresa la hora (ej: 22), el sistema debe clasificarla automáticamente en "Mañana", "Tarde" o "Noche".
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Usuario registra operación a las 9 → debe clasificarse como "Mañana"</li>
+<li>Usuario registra operación a las 14 → debe clasificarse como "Tarde"</li>
+<li>Usuario registra operación a las 22 → debe clasificarse como "Noche"</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public String getPeriodo()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Tomar el valor del atributo <code>hora</code> (ejemplo: 22)</li>
+<li>Verificar si hora está entre 6 y 11 → retornar "Mañana"</li>
+<li>Si no, verificar si hora está entre 12 y 17 → retornar "Tarde"</li>
+<li>Si no cumple ninguna → retornar "Noche"</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li><code>hora = 22</code></li>
+<li>¿22 está entre 6 y 11? NO</li>
+<li>¿22 está entre 12 y 17? NO</li>
+<li>Entonces retorna "Noche"</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Este valor se usa para calcular el ajuste de comisión según el período.
+
+<strong>Patrón:</strong> Decisión lógica con rangos
+
+<hr>
+
+<h3>REQ-2: Calcular el monto total de la operación</h3>
+
+<strong>Contexto:</strong> El usuario dice "Compré 0.5 BTC a 45000 cada uno". Necesitamos saber el valor total de esa transacción antes de aplicar comisiones.
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Compré 0.5 BTC a $45,000 cada uno</li>
+<li>Monto total = 0.5 × 45,000 = $22,500</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getMontoOperacion()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Tomar el valor de <code>cantidad</code> (ejemplo: 0.5)</li>
+<li>Tomar el valor de <code>precioUnitario</code> (ejemplo: 45000)</li>
+<li>Multiplicar cantidad × precioUnitario</li>
+<li>Retornar el resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li><code>cantidad = 0.5</code></li>
+<li><code>precioUnitario = 45000</code></li>
+<li>Cálculo: 0.5 × 45000 = 22500</li>
+<li>Retorna 22500.0</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Base para calcular comisiones y saber cuánto dinero se mueve en la operación.
+
+<strong>Patrón:</strong> Cálculo simple
+
+<hr>
+
+<h3>REQ-3: Calcular el porcentaje de comisión aplicable</h3>
+
+<strong>Contexto:</strong> La comisión varía según el día (fin de semana más caro) y el período (noche más caro). Debemos aplicar ambas reglas.
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Operación el sábado a las 22:00</li>
+<li>Comisión base (sábado) = 0.8%</li>
+<li>Período (noche) = +0.5%</li>
+<li>Comisión total = 0.8 + 0.5 = 1.3%</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getComisionPorcentaje()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+
+<strong>PASO 1: Determinar comisión base por día</strong>
+<ul>
+<li>Tomar el valor de <code>dia</code> (ejemplo: "Sábado")</li>
+<li>Si es Lunes, Martes, Miércoles, Jueves o Viernes → base = 0.5</li>
+<li>Si es Sábado → base = 0.8</li>
+<li>Si es Domingo → base = 1.0</li>
+</ul>
+
+<strong>PASO 2: Determinar ajuste por período</strong>
+<ul>
+<li>Llamar al método <code>getPeriodo()</code> (ejemplo: retorna "Noche")</li>
+<li>Si periodo es "Mañana" → ajuste = 0.0</li>
+<li>Si periodo es "Tarde" → ajuste = 0.2</li>
+<li>Si periodo es "Noche" → ajuste = 0.5</li>
+</ul>
+
+<strong>PASO 3: Sumar</strong>
+<ul>
+<li>Sumar base + ajuste</li>
+<li>Retornar el resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li><code>dia = "Sábado"</code></li>
+<li><code>hora = 22</code> (que da período "Noche")</li>
+<li>Base: "Sábado" → 0.8</li>
+<li>Ajuste: "Noche" → 0.5</li>
+<li>Comisión total: 0.8 + 0.5 = 1.3</li>
+<li>Retorna 1.3</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Determinar cuánto porcentaje se cobrará de comisión en esta operación específica.
+
+<strong>Patrón:</strong> Decisión lógica con dos criterios
+
+<hr>
+
+<h3>REQ-4: Calcular la comisión en dólares</h3>
+
+<strong>Contexto:</strong> Saber que la comisión es 1.3% no es suficiente. Necesitamos saber cuántos dólares reales se pagan.
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Monto de operación = $22,500</li>
+<li>Comisión = 1.3%</li>
+<li>Comisión en dólares = $22,500 × 0.013 = $292.50</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getComisionDolares()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Llamar a <code>getMontoOperacion()</code> para obtener el monto (ejemplo: 22500)</li>
+<li>Llamar a <code>getComisionPorcentaje()</code> para obtener el % (ejemplo: 1.3)</li>
+<li>Dividir el porcentaje entre 100 para convertirlo a decimal (1.3 / 100 = 0.013)</li>
+<li>Multiplicar monto × decimal (22500 × 0.013)</li>
+<li>Retornar el resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li>Monto = 22500</li>
+<li>Porcentaje = 1.3</li>
+<li>Cálculo: 22500 × (1.3 / 100) = 22500 × 0.013 = 292.5</li>
+<li>Retorna 292.5</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Conocer el costo monetario real de la comisión.
+
+<strong>Patrón:</strong> Cálculo derivado (usa otros métodos)
+
+<hr>
+
+<h3>REQ-5: Calcular cuánto dinero sale de la cuenta en una compra</h3>
+
+<strong>Contexto:</strong> Al comprar criptomonedas, no solo pagas el precio, también pagas la comisión. Necesitamos saber el costo total.
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Compra de 0.5 BTC a $45,000</li>
+<li>Monto = $22,500</li>
+<li>Comisión = $292.50</li>
+<li>Costo total = $22,500 + $292.50 = $22,792.50</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getCostoTotal()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Verificar el atributo <code>tipo</code> (ejemplo: "Compra")</li>
+<li>Si tipo es "Compra":</li>
+</ul>
+<p>   - Llamar a <code>getMontoOperacion()</code> (ejemplo: 22500)</p>
+<p>   - Llamar a <code>getComisionDolares()</code> (ejemplo: 292.5)</p>
+<p>   - Sumar monto + comisión</p>
+<p>   - Retornar la suma</p>
+<ul>
+<li>Si tipo es "Venta":</li>
+</ul>
+<p>   - Retornar 0</p>
+
+<strong>Ejemplo de ejecución (Compra):</strong>
+<ul>
+<li><code>tipo = "Compra"</code></li>
+<li>Monto = 22500</li>
+<li>Comisión = 292.5</li>
+<li>Costo total = 22500 + 292.5 = 22792.5</li>
+<li>Retorna 22792.5</li>
+</ul>
+
+<strong>Ejemplo de ejecución (Venta):</strong>
+<ul>
+<li><code>tipo = "Venta"</code></li>
+<li>Retorna 0 (porque en una venta no SALE dinero, ENTRA)</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Saber cuánto dinero realmente sale de mi cuenta al comprar.
+
+<strong>Patrón:</strong> Cálculo condicional según tipo
+
+<hr>
+
+<h3>REQ-6: Calcular cuánto dinero entra a la cuenta en una venta</h3>
+
+<strong>Contexto:</strong> Al vender criptomonedas, no recibes el monto completo porque se descuenta la comisión.
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Venta de 0.3 BTC a $52,000</li>
+<li>Monto = $15,600</li>
+<li>Comisión = $203</li>
+<li>Ingreso neto = $15,600 - $203 = $15,397</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getIngresoNeto()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Verificar el atributo <code>tipo</code> (ejemplo: "Venta")</li>
+<li>Si tipo es "Venta":</li>
+</ul>
+<p>   - Llamar a <code>getMontoOperacion()</code> (ejemplo: 15600)</p>
+<p>   - Llamar a <code>getComisionDolares()</code> (ejemplo: 203)</p>
+<p>   - Restar monto - comisión</p>
+<p>   - Retornar el resultado</p>
+<ul>
+<li>Si tipo es "Compra":</li>
+</ul>
+<p>   - Retornar 0</p>
+
+<strong>Ejemplo de ejecución (Venta):</strong>
+<ul>
+<li><code>tipo = "Venta"</code></li>
+<li>Monto = 15600</li>
+<li>Comisión = 203</li>
+<li>Ingreso neto = 15600 - 203 = 15397</li>
+<li>Retorna 15397</li>
+</ul>
+
+<strong>Ejemplo de ejecución (Compra):</strong>
+<ul>
+<li><code>tipo = "Compra"</code></li>
+<li>Retorna 0 (porque en una compra no ENTRA dinero, SALE)</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Saber cuánto dinero realmente entra a mi cuenta al vender.
+
+<strong>Patrón:</strong> Cálculo condicional según tipo
+
+<hr>
+
+<h2 id="📝 Clase <code>Criptomoneda</code>">📝 Clase <code>Criptomoneda</code></h2>
+
+<h3>REQ-7: Registrar una nueva operación</h3>
+
+<strong>Contexto:</strong> El usuario realiza una compra o venta. Necesitamos agregar esta transacción al historial de la criptomoneda.
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Usuario dice: "Compré 0.5 BTC a $45,000 el lunes a las 9"</li>
+<li>Debemos crear una operación y agregarla al ArrayList</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public void agregarOperacion(String tipo, double cantidad, double precioUnitario, String dia, int hora)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Recibir los 5 parámetros (ejemplo: "Compra", 0.5, 45000, "Lunes", 9)</li>
+<li>Crear un objeto Operacion: <code>Operacion op = new Operacion("Compra", 0.5, 45000, "Lunes", 9)</code></li>
+<li>Agregar el objeto al ArrayList: <code>operaciones.add(op)</code></li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li>Parámetros recibidos: "Compra", 0.5, 45000.0, "Lunes", 9</li>
+<li>Se crea: <code>new Operacion("Compra", 0.5, 45000.0, "Lunes", 9)</code></li>
+<li>Se agrega al ArrayList <code>operaciones</code></li>
+<li>Ahora el ArrayList tiene una operación más</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Construir el historial de transacciones.
+
+<strong>Nota pedagógica:</strong> El método NO recibe un objeto ya creado, recibe los datos sueltos para que el estudiante practique la instanciación.
+
+<strong>Patrón:</strong> Instanciación y agregación
+
+<hr>
+
+<h3>REQ-8: Calcular cuántas unidades se han comprado en total</h3>
+
+<strong>Contexto:</strong> El usuario ha hecho múltiples compras en diferentes momentos. Necesitamos saber el total acumulado.
+
+<strong>Ejemplo:</strong>
+<p>Historial de operaciones de Bitcoin:</p>
+<ul>
+<li>Compra: 0.5 BTC</li>
+<li>Compra: 0.3 BTC</li>
+<li>Venta: 0.2 BTC</li>
+<li>Compra: 0.1 BTC</li>
+</ul>
+
+<p>Cantidad comprada = 0.5 + 0.3 + 0.1 = 0.9 BTC (ignoramos la venta)</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getCantidadComprada()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Crear una variable <code>total</code> inicializada en 0</li>
+<li>Recorrer el ArrayList <code>operaciones</code> uno por uno</li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Verificar si su tipo es "Compra"</p>
+<p>   - Si es compra: sumar su cantidad al total</p>
+<p>   - Si no es compra: ignorarla y continuar</p>
+<ul>
+<li>Al terminar el recorrido, retornar el total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+ArrayList operaciones tiene 4 elementos:
+  [0]: Operacion(tipo="Compra", cantidad=0.5, ...)
+  [1]: Operacion(tipo="Compra", cantidad=0.3, ...)
+  [2]: Operacion(tipo="Venta", cantidad=0.2, ...)
+  [3]: Operacion(tipo="Compra", cantidad=0.1, ...)
+
+Proceso:
+  total = 0
+  Revisar [0]: tipo="Compra" → total = 0 + 0.5 = 0.5
+  Revisar [1]: tipo="Compra" → total = 0.5 + 0.3 = 0.8
+  Revisar [2]: tipo="Venta" → ignorar
+  Revisar [3]: tipo="Compra" → total = 0.8 + 0.1 = 0.9
+
+Retorna: 0.9
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Base para calcular cuánto poseemos y precios promedio.
+
+<strong>Patrón:</strong> Acumulador con filtro
+
+<hr>
+
+<h3>REQ-9: Calcular cuántas unidades se han vendido en total</h3>
+
+<strong>Contexto:</strong> Similar al anterior, pero para ventas.
+
+<strong>Ejemplo:</strong>
+<p>Usando el mismo historial:</p>
+<ul>
+<li>Compra: 0.5 BTC</li>
+<li>Compra: 0.3 BTC</li>
+<li>Venta: 0.2 BTC</li>
+<li>Compra: 0.1 BTC</li>
+</ul>
+
+<p>Cantidad vendida = 0.2 BTC (solo la venta)</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getCantidadVendida()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Crear una variable <code>total</code> inicializada en 0</li>
+<li>Recorrer el ArrayList <code>operaciones</code></li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Verificar si su tipo es "Venta"</p>
+<p>   - Si es venta: sumar su cantidad al total</p>
+<p>   - Si no es venta: ignorarla</p>
+<ul>
+<li>Retornar el total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+ArrayList operaciones (mismo de antes)
+
+Proceso:
+  total = 0
+  Revisar [0]: tipo="Compra" → ignorar
+  Revisar [1]: tipo="Compra" → ignorar
+  Revisar [2]: tipo="Venta" → total = 0 + 0.2 = 0.2
+  Revisar [3]: tipo="Compra" → ignorar
+
+Retorna: 0.2
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Saber cuánto hemos vendido para calcular cantidad actual.
+
+<strong>Patrón:</strong> Acumulador con filtro
+
+<hr>
+
+<h3>REQ-10: Calcular cuántas unidades tenemos disponibles actualmente</h3>
+
+<strong>Contexto:</strong> Balance actual = lo que compré - lo que vendí
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Total comprado: 0.9 BTC</li>
+<li>Total vendido: 0.2 BTC</li>
+<li>Cantidad actual: 0.9 - 0.2 = 0.7 BTC</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getCantidadActual()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Llamar a <code>getCantidadComprada()</code> → obtener 0.9</li>
+<li>Llamar a <code>getCantidadVendida()</code> → obtener 0.2</li>
+<li>Restar comprada - vendida → 0.9 - 0.2</li>
+<li>Retornar el resultado → 0.7</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li>Cantidad comprada = 0.9</li>
+<li>Cantidad vendida = 0.2</li>
+<li>Cálculo: 0.9 - 0.2 = 0.7</li>
+<li>Retorna 0.7</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Saber cuántas unidades poseemos AHORA.
+
+<strong>Patrón:</strong> Cálculo derivado (usa otros métodos)
+
+<hr>
+
+<h3>REQ-11: Calcular cuánto dinero hemos invertido comprando</h3>
+
+<strong>Contexto:</strong> Sumar el valor de todas las compras (sin contar comisiones).
+
+<strong>Ejemplo:</strong>
+<p>Operaciones de Bitcoin:</p>
+<ul>
+<li>Compra: 0.5 BTC a $45,000 → monto = $22,500</li>
+<li>Compra: 0.3 BTC a $44,000 → monto = $13,200</li>
+<li>Venta: 0.2 BTC a $52,000 → ignorar</li>
+<li>Compra: 0.1 BTC a $46,000 → monto = $4,600</li>
+</ul>
+
+<p>Dinero invertido = $22,500 + $13,200 + $4,600 = $40,300</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getDineroInvertido()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Crear variable <code>total</code> = 0</li>
+<li>Recorrer el ArrayList <code>operaciones</code></li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Verificar si tipo es "Compra"</p>
+<p>   - Si es compra:</p>
+<p>     - Llamar a <code>operacion.getMontoOperacion()</code></p>
+<p>     - Sumar ese monto al total</p>
+<p>   - Si no es compra: ignorar</p>
+<ul>
+<li>Retornar total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+ArrayList operaciones:
+  [0]: Compra, cantidad=0.5, precio=45000 → monto=22500
+  [1]: Compra, cantidad=0.3, precio=44000 → monto=13200
+  [2]: Venta, cantidad=0.2, precio=52000 → monto=10400
+  [3]: Compra, cantidad=0.1, precio=46000 → monto=4600
+
+Proceso:
+  total = 0
+  [0]: tipo="Compra" → monto=22500 → total = 0 + 22500 = 22500
+  [1]: tipo="Compra" → monto=13200 → total = 22500 + 13200 = 35700
+  [2]: tipo="Venta" → ignorar
+  [3]: tipo="Compra" → monto=4600 → total = 35700 + 4600 = 40300
+
+Retorna: 40300
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Base para calcular precio promedio de compra.
+
+<strong>Patrón:</strong> Acumulador con filtro
+
+<hr>
+
+<h3>REQ-12: Calcular cuánto dinero hemos recuperado vendiendo</h3>
+
+<strong>Contexto:</strong> Sumar el valor de todas las ventas (sin contar comisiones).
+
+<strong>Ejemplo:</strong>
+<p>Usando el mismo historial, solo hay una venta:</p>
+<ul>
+<li>Venta: 0.2 BTC a $52,000 → monto = $10,400</li>
+</ul>
+
+<p>Dinero recuperado = $10,400</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getDineroRecuperado()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Crear variable <code>total</code> = 0</li>
+<li>Recorrer el ArrayList <code>operaciones</code></li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Verificar si tipo es "Venta"</p>
+<p>   - Si es venta: sumar su monto al total</p>
+<p>   - Si no: ignorar</p>
+<ul>
+<li>Retornar total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+(Mismo ArrayList de antes)
+
+Proceso:
+  total = 0
+  [0]: tipo="Compra" → ignorar
+  [1]: tipo="Compra" → ignorar
+  [2]: tipo="Venta" → monto=10400 → total = 0 + 10400 = 10400
+  [3]: tipo="Compra" → ignorar
+
+Retorna: 10400
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Base para calcular precio promedio de venta y ganancias.
+
+<strong>Patrón:</strong> Acumulador con filtro
+
+<hr>
+
+<h3>REQ-13: Calcular cuánto hemos pagado en comisiones</h3>
+
+<strong>Contexto:</strong> Cada operación (compra O venta) tiene una comisión. Necesitamos el total.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Operaciones:
+  [0]: Compra → comisión = $112.50
+  [1]: Compra → comisión = $66.00
+  [2]: Venta → comisión = $135.20
+  [3]: Compra → comisión = $23.00
+</code></pre>
+
+<p>Comisiones totales = $112.50 + $66 + $135.20 + $23 = $336.70</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getComisionesTotales()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Crear variable <code>total</code> = 0</li>
+<li>Recorrer el ArrayList <code>operaciones</code></li>
+<li>Por cada operación (SIN importar el tipo):</li>
+</ul>
+<p>   - Llamar a <code>operacion.getComisionDolares()</code></p>
+<p>   - Sumar esa comisión al total</p>
+<ul>
+<li>Retornar total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Proceso:
+  total = 0
+  [0]: comisión=112.50 → total = 0 + 112.50 = 112.50
+  [1]: comisión=66.00 → total = 112.50 + 66.00 = 178.50
+  [2]: comisión=135.20 → total = 178.50 + 135.20 = 313.70
+  [3]: comisión=23.00 → total = 313.70 + 23.00 = 336.70
+
+Retorna: 336.70
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Medir el impacto de las comisiones en nuestra inversión.
+
+<strong>Patrón:</strong> Acumulador simple (sin filtro, todas las operaciones)
+
+<hr>
+
+<h3>REQ-14: Calcular el precio promedio al que compramos</h3>
+
+<strong>Contexto:</strong> Si compré 2 unidades a $100 y 3 unidades a $150, mi precio promedio ponderado es:
+<ul>
+<li>Total invertido: (2 × $100) + (3 × $150) = $200 + $450 = $650</li>
+<li>Total comprado: 2 + 3 = 5</li>
+<li>Precio promedio: $650 / 5 = $130</li>
+</ul>
+
+<strong>Ejemplo con nuestros datos:</strong>
+<ul>
+<li>Dinero invertido: $40,300</li>
+<li>Cantidad comprada: 0.9 BTC</li>
+<li>Precio promedio: $40,300 / 0.9 = $44,777.78 por BTC</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getPrecioPromedioCompra()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Llamar a <code>getCantidadComprada()</code> → ejemplo: 0.9</li>
+<li>Verificar si cantidad > 0 (para evitar división por cero)</li>
+<li>Si cantidad > 0:</li>
+</ul>
+<p>   - Llamar a <code>getDineroInvertido()</code> → ejemplo: 40300</p>
+<p>   - Dividir dinero / cantidad → 40300 / 0.9</p>
+<p>   - Retornar el resultado</p>
+<ul>
+<li>Si cantidad = 0:</li>
+</ul>
+<p>   - Retornar 0</p>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li>Cantidad comprada = 0.9</li>
+<li>¿0.9 > 0? SÍ</li>
+<li>Dinero invertido = 40300</li>
+<li>Cálculo: 40300 / 0.9 = 44777.777...</li>
+<li>Retorna 44777.777</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Saber el costo promedio de cada unidad que poseemos.
+
+<strong>Patrón:</strong> Cálculo derivado con validación
+
+<hr>
+
+<h3>REQ-15: Calcular el precio promedio al que vendimos</h3>
+
+<strong>Contexto:</strong> Similar al anterior, para ventas.
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Dinero recuperado: $10,400</li>
+<li>Cantidad vendida: 0.2 BTC</li>
+<li>Precio promedio: $10,400 / 0.2 = $52,000 por BTC</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getPrecioPromedioVenta()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Llamar a <code>getCantidadVendida()</code> → ejemplo: 0.2</li>
+<li>Verificar si cantidad > 0</li>
+<li>Si cantidad > 0:</li>
+</ul>
+<p>   - Llamar a <code>getDineroRecuperado()</code> → ejemplo: 10400</p>
+<p>   - Dividir dinero / cantidad → 10400 / 0.2</p>
+<p>   - Retornar el resultado</p>
+<ul>
+<li>Si cantidad = 0:</li>
+</ul>
+<p>   - Retornar 0</p>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li>Cantidad vendida = 0.2</li>
+<li>¿0.2 > 0? SÍ</li>
+<li>Dinero recuperado = 10400</li>
+<li>Cálculo: 10400 / 0.2 = 52000</li>
+<li>Retorna 52000.0</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Comparar con precio promedio de compra para calcular rentabilidad.
+
+<strong>Patrón:</strong> Cálculo derivado con validación
+
+<hr>
+
+<h3>REQ-16: Calcular la ganancia o pérdida realizada</h3>
+
+<strong>Contexto:</strong> Ganancia = (lo que recuperé vendiendo) - (lo que me costó lo que vendí)
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Vendí 0.2 BTC</li>
+<li>Precio promedio de compra: $44,777.78</li>
+<li>Lo que me costó lo vendido: 0.2 × $44,777.78 = $8,955.56</li>
+<li>Lo que recuperé: $10,400</li>
+<li>Ganancia: $10,400 - $8,955.56 = $1,444.44</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getGananciaRealizada()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Llamar a <code>getCantidadVendida()</code> → ejemplo: 0.2</li>
+<li>Verificar si cantidad vendida > 0</li>
+<li>Si hay ventas:</li>
+</ul>
+<p>   - Llamar a <code>getDineroRecuperado()</code> → ejemplo: 10400</p>
+<p>   - Llamar a <code>getCantidadVendida()</code> → ejemplo: 0.2</p>
+<p>   - Llamar a <code>getPrecioPromedioCompra()</code> → ejemplo: 44777.78</p>
+<p>   - Calcular costo de lo vendido: 0.2 × 44777.78 = 8955.556</p>
+<p>   - Calcular ganancia: 10400 - 8955.556 = 1444.444</p>
+<p>   - Retornar ganancia</p>
+<ul>
+<li>Si no hay ventas:</li>
+</ul>
+<p>   - Retornar 0</p>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li>Cantidad vendida = 0.2</li>
+<li>¿0.2 > 0? SÍ</li>
+<li>Recuperado = 10400</li>
+<li>Costo de lo vendido = 0.2 × 44777.78 = 8955.556</li>
+<li>Ganancia = 10400 - 8955.556 = 1444.444</li>
+<li>Retorna 1444.444</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Saber si estamos ganando o perdiendo dinero.
+
+<strong>Patrón:</strong> Cálculo derivado con lógica condicional
+
+<hr>
+
+<h3>REQ-17: Calcular la rentabilidad porcentual</h3>
+
+<strong>Contexto:</strong> Rentabilidad % = ((precio venta - precio compra) / precio compra) × 100
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Precio promedio compra: $44,777.78</li>
+<li>Precio promedio venta: $52,000</li>
+<li>Diferencia: $52,000 - $44,777.78 = $7,222.22</li>
+<li>Rentabilidad: ($7,222.22 / $44,777.78) × 100 = 16.13%</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getRentabilidadPorcentaje()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+<ul>
+<li>Llamar a <code>tieneVentas()</code> (método que veremos después)</li>
+<li>Llamar a <code>getPrecioPromedioCompra()</code> → ejemplo: 44777.78</li>
+<li>Verificar si tiene ventas Y precio compra > 0</li>
+<li>Si ambas condiciones se cumplen:</li>
+</ul>
+<p>   - Llamar a <code>getPrecioPromedioVenta()</code> → ejemplo: 52000</p>
+<p>   - Calcular diferencia: 52000 - 44777.78 = 7222.22</p>
+<p>   - Dividir entre precio compra: 7222.22 / 44777.78 = 0.1613</p>
+<p>   - Multiplicar por 100: 0.1613 × 100 = 16.13</p>
+<p>   - Retornar 16.13</p>
+<ul>
+<li>Si no cumple:</li>
+</ul>
+<p>   - Retornar 0</p>
+
+<strong>Ejemplo de ejecución:</strong>
+<ul>
+<li>Tiene ventas: SÍ</li>
+<li>Precio compra = 44777.78, ¿> 0? SÍ</li>
+<li>Precio venta = 52000</li>
+<li>Cálculo: ((52000 - 44777.78) / 44777.78) × 100</li>
+<li>= (7222.22 / 44777.78) × 100</li>
+<li>= 0.1613 × 100 = 16.13</li>
+<li>Retorna 16.13</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Comparar desempeño entre diferentes criptomonedas.
+
+<strong>Patrón:</strong> Cálculo derivado con validación
+
+<hr>
+
+<h3>REQ-18: Verificar si hay operaciones de venta</h3>
+
+<strong>Contexto:</strong> Muchos cálculos solo tienen sentido si hay ventas. Necesitamos verificar rápidamente.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Operaciones:
+  [0]: Compra
+  [1]: Compra
+  [2]: Venta ← encontramos una venta
+  [3]: Compra
+
+Resultado: true (sí hay ventas)
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public boolean tieneVentas()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Recorrer el ArrayList <code>operaciones</code></li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Verificar si su tipo es "Venta"</p>
+<p>   - Si encontramos una venta: retornar <code>true</code> inmediatamente (no seguir buscando)</p>
+<ul>
+<li>Si terminamos de recorrer todo y no encontramos ninguna:</li>
+</ul>
+<p>   - Retornar <code>false</code></p>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Proceso:
+  Revisar [0]: tipo="Compra" → continuar
+  Revisar [1]: tipo="Compra" → continuar
+  Revisar [2]: tipo="Venta" → ¡encontrada! → retornar true inmediatamente
+  (ya no revisamos [3])
+
+Retorna: true
+</code></pre>
+
+<strong>Ejemplo sin ventas:</strong>
+<pre><code>
+Operaciones solo de compras:
+  [0]: Compra
+  [1]: Compra
+  [2]: Compra
+
+Proceso:
+  Revisar todas → ninguna es venta
+  Terminar recorrido
+
+Retorna: false
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Validación previa para cálculos de rentabilidad y ganancia.
+
+<strong>Patrón:</strong> Búsqueda booleana con salida temprana
+
+<hr>
+
+<h3>REQ-19: Clasificar el estado de la inversión</h3>
+
+<strong>Contexto:</strong> Queremos una clasificación simple para reportes.
+
+<strong>Ejemplo 1:</strong> Tiene ventas y ganancia positiva → "Ganancia"
+<strong>Ejemplo 2:</strong> Tiene ventas y ganancia negativa → "Pérdida"
+<strong>Ejemplo 3:</strong> No tiene ventas → "Sin ventas"
+
+<strong>Método resultante:</strong>
+<pre><code>
+public String getEstado()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Llamar a <code>tieneVentas()</code></li>
+<li>Si NO tiene ventas:</li>
+</ul>
+<p>   - Retornar "Sin ventas"</p>
+<ul>
+<li>Si tiene ventas:</li>
+</ul>
+<p>   - Llamar a <code>getGananciaRealizada()</code> → ejemplo: 1444.44</p>
+<p>   - Si ganancia > 0:</p>
+<p>     - Retornar "Ganancia"</p>
+<p>   - Si ganancia ≤ 0:</p>
+<p>     - Retornar "Pérdida"</p>
+
+<strong>Ejemplo de ejecución 1:</strong>
+<ul>
+<li>Tiene ventas: SÍ</li>
+<li>Ganancia realizada: 1444.44</li>
+<li>¿1444.44 > 0? SÍ</li>
+<li>Retorna "Ganancia"</li>
+</ul>
+
+<strong>Ejemplo de ejecución 2 (sin ventas):</strong>
+<ul>
+<li>Tiene ventas: NO</li>
+<li>Retorna "Sin ventas"</li>
+</ul>
+
+<strong>Por qué es necesario:</strong> Clasificación rápida para reportes.
+
+<strong>Patrón:</strong> Decisión lógica
+
+<hr>
+
+<h3>REQ-20: Obtener todas las operaciones de un tipo específico</h3>
+
+<strong>Contexto:</strong> Queremos analizar solo las compras o solo las ventas por separado.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Operaciones:
+  [0]: Compra, cantidad=0.5
+  [1]: Compra, cantidad=0.3
+  [2]: Venta, cantidad=0.2
+  [3]: Compra, cantidad=0.1
+
+Si pedimos tipo="Compra", debe retornar: [0], [1], [3]
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Operacion> obtenerOperacionesPorTipo(String tipo)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear un ArrayList vacío llamado <code>resultado</code></li>
+<li>Recorrer el ArrayList <code>operaciones</code></li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Verificar si su tipo coincide con el parámetro <code>tipo</code></p>
+<p>   - Si coincide: agregar esa operación al <code>resultado</code></p>
+<p>   - Si no coincide: ignorarla</p>
+<ul>
+<li>Retornar el ArrayList <code>resultado</code></li>
+</ul>
+
+<strong>Ejemplo de ejecución (tipo="Compra"):</strong>
+<pre><code>
+Crear resultado = ArrayList vacío
+Revisar [0]: tipo="Compra" → ¿coincide? SÍ → agregar a resultado
+Revisar [1]: tipo="Compra" → ¿coincide? SÍ → agregar a resultado
+Revisar [2]: tipo="Venta" → ¿coincide? NO → ignorar
+Revisar [3]: tipo="Compra" → ¿coincide? SÍ → agregar a resultado
+
+resultado tiene ahora 3 operaciones: [0], [1], [3]
+Retorna resultado
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Análisis separado de compras y ventas.
+
+<strong>Patrón:</strong> Filtrado
+
+<hr>
+
+<h3>REQ-21: Obtener todas las operaciones de un día específico</h3>
+
+<strong>Contexto:</strong> Ver qué operaciones hicimos un día en particular.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Operaciones:
+  [0]: día="Lunes", cantidad=0.5
+  [1]: día="Miércoles", cantidad=0.3
+  [2]: día="Lunes", cantidad=0.2
+  [3]: día="Viernes", cantidad=0.1
+
+Si pedimos dia="Lunes", debe retornar: [0], [2]
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Operacion> obtenerOperacionesPorDia(String dia)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear ArrayList vacío <code>resultado</code></li>
+<li>Recorrer <code>operaciones</code></li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Verificar si su día coincide con el parámetro</p>
+<p>   - Si coincide: agregarla al resultado</p>
+<ul>
+<li>Retornar resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución (dia="Lunes"):</strong>
+<pre><code>
+resultado = vacío
+[0]: día="Lunes" → agregar
+[1]: día="Miércoles" → ignorar
+[2]: día="Lunes" → agregar
+[3]: día="Viernes" → ignorar
+
+Retorna ArrayList con 2 operaciones
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Análisis temporal por día de la semana.
+
+<strong>Patrón:</strong> Filtrado
+
+<hr>
+
+<h3>REQ-22: Obtener operaciones de un período específico</h3>
+
+<strong>Contexto:</strong> Analizar operaciones de mañana, tarde o noche.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Operaciones:
+  [0]: hora=9 → período="Mañana"
+  [1]: hora=14 → período="Tarde"
+  [2]: hora=22 → período="Noche"
+  [3]: hora=10 → período="Mañana"
+
+Si pedimos periodo="Mañana", debe retornar: [0], [3]
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Operacion> obtenerOperacionesPorPeriodo(String periodo)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear ArrayList vacío <code>resultado</code></li>
+<li>Recorrer <code>operaciones</code></li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Llamar a <code>operacion.getPeriodo()</code></p>
+<p>   - Si el período coincide con el parámetro: agregarla</p>
+<ul>
+<li>Retornar resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución (periodo="Mañana"):</strong>
+<pre><code>
+resultado = vacío
+[0]: getPeriodo()="Mañana" → agregar
+[1]: getPeriodo()="Tarde" → ignorar
+[2]: getPeriodo()="Noche" → ignorar
+[3]: getPeriodo()="Mañana" → agregar
+
+Retorna ArrayList con 2 operaciones
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar en qué franja horaria operamos más.
+
+<strong>Patrón:</strong> Filtrado
+
+<hr>
+
+<h3>REQ-23: Encontrar la operación con la comisión más alta</h3>
+
+<strong>Contexto:</strong> Identificar cuál operación nos costó más en comisiones.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Operaciones:
+  [0]: comisión=$112.50
+  [1]: comisión=$66.00
+  [2]: comisión=$203.00 ← la más alta
+  [3]: comisión=$23.00
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public Operacion obtenerComisionMasAlta()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Verificar si el ArrayList está vacío → si está vacío, retornar null</li>
+<li>Tomar la primera operación como "máximo provisional"</li>
+<li>Obtener su comisión y guardarla como "comisión máxima"</li>
+<li>Recorrer las demás operaciones (desde la segunda)</li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Obtener su comisión</p>
+<p>   - Comparar con la comisión máxima actual</p>
+<p>   - Si es mayor: actualizar el máximo y la operación máxima</p>
+<ul>
+<li>Retornar la operación con mayor comisión</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+¿ArrayList vacío? NO
+
+Paso inicial:
+  operacionMax = operaciones[0] (comisión=$112.50)
+  comisionMax = 112.50
+
+Recorrer desde [1]:
+  [1]: comisión=66.00 → ¿66 > 112.50? NO → no cambiar
+  [2]: comisión=203.00 → ¿203 > 112.50? SÍ → operacionMax=[2], comisionMax=203
+  [3]: comisión=23.00 → ¿23 > 203? NO → no cambiar
+
+Retorna operaciones[2]
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Optimizar horarios de trading.
+
+<strong>Patrón:</strong> Búsqueda de máximo
+
+<hr>
+
+<h3>REQ-24: Encontrar la operación con la comisión más baja</h3>
+
+<strong>Contexto:</strong> Identificar el mejor caso para replicarlo.
+
+<strong>Ejemplo:</strong>
+<p>Usando el mismo ejemplo, la comisión más baja es $23 (operación [3])</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public Operacion obtenerComisionMasBaja()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Verificar si el ArrayList está vacío → retornar null si está vacío</li>
+<li>Tomar la primera operación como "mínimo provisional"</li>
+<li>Obtener su comisión como "comisión mínima"</li>
+<li>Recorrer las demás operaciones</li>
+<li>Por cada una:</li>
+</ul>
+<p>   - Si su comisión es MENOR que el mínimo actual: actualizar</p>
+<ul>
+<li>Retornar la operación con menor comisión</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+operacionMin = operaciones[0] (comisión=$112.50)
+comisionMin = 112.50
+
+Recorrer:
+  [1]: comisión=66 → ¿66 < 112.50? SÍ → operacionMin=[1], comisionMin=66
+  [2]: comisión=203 → ¿203 < 66? NO → no cambiar
+  [3]: comisión=23 → ¿23 < 66? SÍ → operacionMin=[3], comisionMin=23
+
+Retorna operaciones[3]
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar mejores prácticas de horario.
+
+<strong>Patrón:</strong> Búsqueda de mínimo
+
+<hr>
+
+<h3>REQ-25: Calcular ganancia no realizada dado un precio de mercado actual</h3>
+
+<strong>Contexto:</strong> La ganancia realizada solo considera operaciones YA ejecutadas (compras y ventas cerradas). Pero aún tenemos criptomonedas en nuestro poder que no hemos vendido. Si el precio actual del mercado es diferente al precio promedio que pagamos, tenemos una ganancia o pérdida "en papel" (no realizada).
+
+<strong>¿Por qué necesitamos el precio actual como parámetro?</strong>
+
+<p>El sistema NO conoce automáticamente el precio actual del Bitcoin, Ethereum, etc. Estos precios cambian cada segundo en el mercado. Por eso, el USUARIO debe proporcionarlo. El usuario consulta el precio en un exchange (ej: "Bitcoin está a $48,000 ahora") y nos lo pasa como parámetro.</p>
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Compramos en total: 0.9 BTC</li>
+<li>Vendimos: 0.2 BTC</li>
+<li>Cantidad actual que poseemos: 0.7 BTC</li>
+<li>Precio promedio que pagamos: $44,777.78 por BTC</li>
+<li>Lo que pagamos por los 0.7 BTC que AÚN tenemos: 0.7 × $44,777.78 = $31,344.45</li>
+</ul>
+
+<strong>Ahora el usuario consulta el precio actual:</strong>
+<ul>
+<li>Precio actual del mercado: $48,000 por BTC</li>
+<li>Lo que VALDRÍA ahora si vendiéramos: 0.7 × $48,000 = $33,600</li>
+</ul>
+
+<strong>Ganancia no realizada:</strong>
+<ul>
+<li>Valor actual - Costo de lo que tenemos</li>
+<li>$33,600 - $31,344.45 = $2,255.55</li>
+<li>Esto significa que si vendiéramos AHORA, ganaríamos $2,255.55 adicionales</li>
+</ul>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getGananciaNoRealizada(double precioActual)
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+
+<strong>PASO 1: Obtener la cantidad actual que poseemos</strong>
+<ul>
+<li>Llamar a <code>getCantidadActual()</code> → ejemplo: 0.7 BTC</li>
+</ul>
+
+<strong>PASO 2: Verificar si tenemos unidades</strong>
+<ul>
+<li>Si cantidad actual ≤ 0:</li>
+</ul>
+<p>   - Retornar 0 (no tenemos nada, no hay ganancia no realizada)</p>
+
+<strong>PASO 3: Calcular cuánto pagamos por lo que aún tenemos</strong>
+<ul>
+<li>Llamar a <code>getPrecioPromedioCompra()</code> → ejemplo: 44777.78</li>
+<li>Multiplicar: cantidad actual × precio promedio compra</li>
+<li>Ejemplo: 0.7 × 44777.78 = 31344.446 (lo que PAGAMOS)</li>
+</ul>
+
+<strong>PASO 4: Calcular cuánto vale ahora en el mercado</strong>
+<ul>
+<li>Tomar el parámetro <code>precioActual</code> → ejemplo: 48000</li>
+<li>Multiplicar: cantidad actual × precio actual</li>
+<li>Ejemplo: 0.7 × 48000 = 33600 (lo que VALE ahora)</li>
+</ul>
+
+<strong>PASO 5: Calcular la diferencia</strong>
+<ul>
+<li>Restar: valor actual - costo pagado</li>
+<li>Ejemplo: 33600 - 31344.446 = 2255.554</li>
+<li>Retornar el resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Parámetro recibido: precioActual = 48000
+
+Paso 1: Cantidad actual = 0.7 BTC
+Paso 2: ¿0.7 > 0? SÍ, continuar
+
+Paso 3: Calcular lo que pagamos
+  - Precio promedio compra = 44777.78
+  - Costo = 0.7 × 44777.78 = 31344.446
+
+Paso 4: Calcular lo que vale ahora
+  - Valor actual = 0.7 × 48000 = 33600
+
+Paso 5: Calcular ganancia
+  - Ganancia no realizada = 33600 - 31344.446 = 2255.554
+
+Retorna: 2255.554
+</code></pre>
+
+<strong>Ejemplo con pérdida no realizada:</strong>
+<pre><code>
+Si el precio actual fuera $42,000 (bajó en lugar de subir):
+  - Valor actual: 0.7 × 42000 = 29400
+  - Costo pagado: 31344.446
+  - Ganancia no realizada: 29400 - 31344.446 = -1944.446 (pérdida)
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Permite al trader saber si debe vender ahora (si hay ganancia) o esperar (si hay pérdida). Es fundamental para tomar decisiones de trading en tiempo real. La ganancia realizada solo muestra el pasado; la ganancia no realizada muestra el potencial del presente.
+
+<strong>Patrón:</strong> Cálculo derivado con parámetro externo
+
+<hr>
+
+<h3>REQ-26: Calcular el precio de punto de equilibrio (break-even)</h3>
+
+<strong>Contexto:</strong> Un trader necesita saber: "¿A qué precio debería vender para NO perder dinero?" Este es el "punto de equilibrio" o "break-even price". Si vendo por ENCIMA de este precio, gano. Si vendo por DEBAJO, pierdo.
+
+<strong>¿Cómo se calcula?</strong>
+
+<p>Debemos recuperar EXACTAMENTE lo que pagamos por las unidades que AÚN tenemos (considerando también las comisiones futuras).</p>
+
+<strong>Ejemplo:</strong>
+<ul>
+<li>Cantidad actual: 0.7 BTC</li>
+<li>Precio promedio de compra: $44,777.78</li>
+<li>Lo que pagamos: 0.7 × $44,777.78 = $31,344.45</li>
+</ul>
+
+<strong>Pero hay un problema:</strong> Cuando vendamos, pagaremos una comisión. Para simplificar, asumiremos la comisión promedio más baja posible (día laboral en la mañana = 0.5% + 0% = 0.5%).
+
+<p>Si vendemos al precio X:</p>
+<ul>
+<li>Monto bruto: 0.7 × X</li>
+<li>Comisión: (0.7 × X) × 0.005</li>
+<li>Ingreso neto: (0.7 × X) - comisión</li>
+</ul>
+
+<p>Para el punto de equilibrio:</p>
+<ul>
+<li>Ingreso neto = Lo que pagamos</li>
+<li>(0.7 × X) - (0.7 × X × 0.005) = 31344.45</li>
+<li>(0.7 × X) × (1 - 0.005) = 31344.45</li>
+<li>(0.7 × X) × 0.995 = 31344.45</li>
+<li>X = 31344.45 / (0.7 × 0.995)</li>
+<li>X = 31344.45 / 0.6965</li>
+<li>X = 45,000.36</li>
+</ul>
+
+<strong>Resultado:</strong> Si vendo a $45,000.36 por BTC, recupero exactamente lo que invertí (ni gano ni pierdo).
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double getPrecioBreakEven()
+</code></pre>
+
+<strong>Pasos del cálculo:</strong>
+
+<strong>PASO 1: Obtener cantidad actual</strong>
+<ul>
+<li>Llamar a <code>getCantidadActual()</code> → ejemplo: 0.7</li>
+</ul>
+
+<strong>PASO 2: Validar que tengamos unidades</strong>
+<ul>
+<li>Si cantidad ≤ 0:</li>
+</ul>
+<p>   - Retornar 0 (no tiene sentido calcular break-even si no tenemos nada)</p>
+
+<strong>PASO 3: Calcular lo que pagamos por lo que tenemos</strong>
+<ul>
+<li>Llamar a <code>getPrecioPromedioCompra()</code> → ejemplo: 44777.78</li>
+<li>Multiplicar: cantidad × precio promedio</li>
+<li>Ejemplo: 0.7 × 44777.78 = 31344.446 (esto es lo que DEBEMOS recuperar)</li>
+</ul>
+
+<strong>PASO 4: Considerar la comisión de venta</strong>
+<ul>
+<li>Definir comisión mínima = 0.5% = 0.005</li>
+<li>Calcular factor de ajuste: 1 - 0.005 = 0.995</li>
+<li>Este factor representa que del monto de venta, solo recibiremos el 99.5%</li>
+</ul>
+
+<strong>PASO 5: Calcular el precio necesario</strong>
+<ul>
+<li>Precio break-even = costo pagado / (cantidad × factor ajuste)</li>
+<li>Ejemplo: 31344.446 / (0.7 × 0.995)</li>
+<li>Cálculo: 31344.446 / 0.6965 = 45000.64</li>
+<li>Retornar el resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Paso 1: Cantidad actual = 0.7 BTC
+Paso 2: ¿0.7 > 0? SÍ, continuar
+
+Paso 3: Calcular costo pagado
+  - Precio promedio compra = 44777.78
+  - Costo pagado = 0.7 × 44777.78 = 31344.446
+
+Paso 4: Factor de comisión
+  - Comisión venta mínima = 0.5% = 0.005
+  - Factor de ajuste = 1 - 0.005 = 0.995
+
+Paso 5: Calcular precio break-even
+  - Cantidad ajustada = 0.7 × 0.995 = 0.6965
+  - Precio break-even = 31344.446 / 0.6965 = 45000.64
+
+Retorna: 45000.64
+</code></pre>
+
+<strong>Interpretación del resultado:</strong>
+<pre><code>
+Si el precio break-even es $45,000.64:
+
+<ul>
+<li>Vender a $46,000 → GANANCIA (está por encima)</li>
+<li>Vender a $45,000.64 → EQUILIBRIO (ni gano ni pierdo)</li>
+<li>Vender a $44,000 → PÉRDIDA (está por debajo)</li>
+</ul>
+</code></pre>
+
+<strong>Ejemplo con otro caso:</strong>
+<pre><code>
+Supongamos:
+  - Cantidad actual: 1.5 BTC
+  - Precio promedio compra: $38,000
+  - Costo pagado: 1.5 × 38000 = 57000
+
+Cálculo:
+  - Cantidad ajustada: 1.5 × 0.995 = 1.4925
+  - Precio break-even: 57000 / 1.4925 = 38193.52
+
+Si vendo a $38,193.52, recupero exactamente mi inversión.
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Este método es CRÍTICO para decisiones de trading. El trader puede:
+<ul>
+<li>Comparar el precio actual del mercado con su break-even</li>
+<li>Decidir si debe vender ahora o esperar</li>
+<li>Establecer "stop-loss" automático en ese precio</li>
+<li>Saber cuánto margen tiene para negociar</li>
+</ul>
+
+<p>Si el precio actual está MUY por debajo del break-even, el trader sabe que está en riesgo de pérdidas grandes.</p>
+
+<strong>Por qué necesita cálculo:</strong> No podemos simplemente usar el precio promedio de compra, porque:
+<ul>
+<li>Solo consideramos lo que AÚN tenemos (no todo lo comprado)</li>
+<li>Debemos considerar la comisión futura de venta</li>
+<li>Es un cálculo matemático específico para break-even</li>
+</ul>
+
+<strong>Patrón:</strong> Cálculo derivado con ajuste por comisión
+
+<hr>
+
+<h2 id="📝 Clase <code>Wallet</code>">📝 Clase <code>Wallet</code></h2>
+
+<h3>REQ-27: Agregar una criptomoneda al portafolio</h3>
+
+<strong>Contexto:</strong> El trader quiere empezar a operar con Bitcoin.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Portafolio vacío
+Usuario dice: "Agrega Bitcoin (BTC)"
+Resultado: crear objeto Criptomoneda y agregarlo
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public void agregarCriptomoneda(String nombre, String simbolo)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Recibir parámetros (ejemplo: "Bitcoin", "BTC")</li>
+<li>Verificar si ya existe una cripto con ese símbolo</li>
+<li>Si NO existe:</li>
+</ul>
+<p>   - Crear objeto: <code>Criptomoneda cripto = new Criptomoneda("Bitcoin", "BTC")</code></p>
+<p>   - Agregarlo: <code>criptomonedas.add(cripto)</code></p>
+<ul>
+<li>Si ya existe:</li>
+</ul>
+<p>   - No hacer nada (evitar duplicados)</p>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Parámetros: "Bitcoin", "BTC"
+¿Existe "BTC"? NO
+Crear: new Criptomoneda("Bitcoin", "BTC")
+Agregar al ArrayList criptomonedas
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Inicializar nuevas inversiones.
+
+<strong>Nota pedagógica:</strong> Recibe datos sueltos para practicar instanciación.
+
+<strong>Patrón:</strong> Instanciación y agregación condicional
+
+<hr>
+
+<h3>REQ-28: Buscar una criptomoneda por símbolo</h3>
+
+<strong>Contexto:</strong> Para registrar una operación en Bitcoin, primero debo encontrarlo.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Portafolio tiene:
+  [0]: Criptomoneda(nombre="Bitcoin", simbolo="BTC")
+  [1]: Criptomoneda(nombre="Ethereum", simbolo="ETH")
+  [2]: Criptomoneda(nombre="Cardano", simbolo="ADA")
+
+Buscar "ETH" → debe retornar el objeto [1]
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public Criptomoneda buscarCriptomoneda(String simbolo)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Recibir símbolo a buscar (ejemplo: "ETH")</li>
+<li>Recorrer el ArrayList <code>criptomonedas</code></li>
+<li>Por cada criptomoneda:</li>
+</ul>
+<p>   - Obtener su símbolo</p>
+<p>   - Comparar con el símbolo buscado</p>
+<p>   - Si coincide: retornar esa criptomoneda inmediatamente</p>
+<ul>
+<li>Si termina el recorrido sin encontrar:</li>
+</ul>
+<p>   - Retornar null</p>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Buscar "ETH"
+Revisar [0]: símbolo="BTC" → ¿es "ETH"? NO → continuar
+Revisar [1]: símbolo="ETH" → ¿es "ETH"? SÍ → retornar criptomonedas[1]
+(no revisar [2])
+</code></pre>
+
+<strong>Ejemplo sin encontrar:</strong>
+<pre><code>
+Buscar "SOL" (no existe)
+Revisar [0]: "BTC" ≠ "SOL"
+Revisar [1]: "ETH" ≠ "SOL"
+Revisar [2]: "ADA" ≠ "SOL"
+Terminar recorrido
+Retornar null
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Localizar una cripto específica para operaciones.
+
+<strong>Patrón:</strong> Búsqueda lineal
+
+<hr>
+
+<h3>REQ-29: Verificar si existe una criptomoneda</h3>
+
+<strong>Contexto:</strong> Antes de agregar Bitcoin, verificar que no esté ya.
+
+<strong>Método resultante:</strong>
+<pre><code>
+public boolean existeCriptomoneda(String simbolo)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Llamar a <code>buscarCriptomoneda(simbolo)</code></li>
+<li>Si retorna null → retornar false</li>
+<li>Si retorna un objeto → retornar true</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+existeCriptomoneda("BTC")
+Llamar buscarCriptomoneda("BTC")
+Resultado: objeto Criptomoneda (no es null)
+¿null? NO
+Retornar true
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Validación antes de agregar.
+
+<strong>Patrón:</strong> Delegación simple
+
+<hr>
+
+<h3>REQ-30: Registrar una operación de compra</h3>
+
+<strong>Contexto:</strong> Usuario dice: "Compré 0.5 BTC a $45,000 el lunes a las 9"
+
+<strong>Método resultante:</strong>
+<pre><code>
+public void registrarCompra(String simbolo, double cantidad, double precio, String dia, int hora)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Recibir parámetros (ejemplo: "BTC", 0.5, 45000, "Lunes", 9)</li>
+<li>Buscar la criptomoneda: <code>Criptomoneda cripto = buscarCriptomoneda("BTC")</code></li>
+<li>Verificar si existe (cripto != null)</li>
+<li>Si existe:</li>
+</ul>
+<p>   - Llamar a <code>cripto.agregarOperacion("Compra", 0.5, 45000, "Lunes", 9)</code></p>
+<ul>
+<li>Si no existe:</li>
+</ul>
+<p>   - No hacer nada (o mostrar error)</p>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Parámetros: "BTC", 0.5, 45000.0, "Lunes", 9
+Buscar "BTC" → encontrado
+Llamar: cripto.agregarOperacion("Compra", 0.5, 45000.0, "Lunes", 9)
+La operación se agrega al historial de Bitcoin
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Interfaz simple para el usuario.
+
+<strong>Patrón:</strong> Delegación
+
+<hr>
+
+<h3>REQ-31: Registrar una operación de venta</h3>
+
+<strong>Contexto:</strong> Similar al anterior pero para ventas.
+
+<strong>Método resultante:</strong>
+<pre><code>
+public void registrarVenta(String simbolo, double cantidad, double precio, String dia, int hora)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Buscar la criptomoneda</li>
+<li>Si existe: llamar a <code>agregarOperacion</code> con tipo "Venta"</li>
+</ul>
+
+<strong>Ejemplo:</strong>
+<pre><code>
+registrarVenta("BTC", 0.3, 52000, "Sábado", 22)
+Buscar "BTC" → encontrado
+Llamar: cripto.agregarOperacion("Venta", 0.3, 52000, "Sábado", 22)
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Interfaz simple para ventas.
+
+<strong>Patrón:</strong> Delegación
+
+<hr>
+
+<h3>REQ-32: Calcular el dinero total invertido en el portafolio</h3>
+
+<strong>Contexto:</strong> Sumar lo invertido en TODAS las criptomonedas.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Portafolio tiene:
+  Bitcoin: dinero invertido = $40,300
+  Ethereum: dinero invertido = $37,200
+  Cardano: dinero invertido = $1,310
+
+Total invertido = $40,300 + $37,200 + $1,310 = $78,810
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double calcularValorTotalInvertido()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear variable <code>total</code> = 0</li>
+<li>Recorrer el ArrayList <code>criptomonedas</code></li>
+<li>Por cada criptomoneda:</li>
+</ul>
+<p>   - Llamar a <code>cripto.getDineroInvertido()</code></p>
+<p>   - Sumar ese valor al total</p>
+<ul>
+<li>Retornar total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+total = 0
+Revisar Bitcoin: getDineroInvertido()=40300 → total = 0 + 40300 = 40300
+Revisar Ethereum: getDineroInvertido()=37200 → total = 40300 + 37200 = 77500
+Revisar Cardano: getDineroInvertido()=1310 → total = 77500 + 1310 = 78810
+
+Retorna 78810
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Vista global del capital invertido.
+
+<strong>Patrón:</strong> Acumulador sobre colección de objetos
+
+<hr>
+
+<h3>REQ-33: Calcular el dinero total recuperado del portafolio</h3>
+
+<strong>Contexto:</strong> Sumar lo recuperado de TODAS las ventas.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin: recuperado = $10,400
+Ethereum: recuperado = $22,200
+Cardano: recuperado = $1,350
+
+Total = $10,400 + $22,200 + $1,350 = $33,950
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double calcularValorTotalRecuperado()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear variable <code>total</code> = 0</li>
+<li>Recorrer <code>criptomonedas</code></li>
+<li>Por cada una: sumar su <code>getDineroRecuperado()</code></li>
+<li>Retornar total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+total = 0
+Bitcoin: 10400 → total = 10400
+Ethereum: 22200 → total = 32600
+Cardano: 1350 → total = 33950
+
+Retorna 33950
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Saber cuánto hemos recuperado en total.
+
+<strong>Patrón:</strong> Acumulador
+
+<hr>
+
+<h3>REQ-34: Calcular la ganancia total del portafolio</h3>
+
+<strong>Contexto:</strong> Sumar ganancias de las criptos QUE TIENEN VENTAS.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin: tiene ventas, ganancia = $1,444
+Ethereum: tiene ventas, ganancia = $3,600
+Cardano: tiene ventas, ganancia = $564
+Solana: SIN ventas → ignorar
+Ripple: SIN ventas → ignorar
+
+Total ganancia = $1,444 + $3,600 + $564 = $5,608
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double calcularGananciaTotalPortafolio()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear variable <code>total</code> = 0</li>
+<li>Recorrer <code>criptomonedas</code></li>
+<li>Por cada criptomoneda:</li>
+</ul>
+<p>   - Verificar si tiene ventas</p>
+<p>   - Si tiene ventas: sumar su ganancia realizada</p>
+<p>   - Si no tiene ventas: ignorarla</p>
+<ul>
+<li>Retornar total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+total = 0
+Bitcoin: tieneVentas()=true → ganancia=1444 → total=1444
+Ethereum: tieneVentas()=true → ganancia=3600 → total=5044
+Cardano: tieneVentas()=true → ganancia=564 → total=5608
+Solana: tieneVentas()=false → ignorar
+Ripple: tieneVentas()=false → ignorar
+
+Retorna 5608
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Resultado financiero final del portafolio.
+
+<strong>Patrón:</strong> Acumulador con filtro
+
+<hr>
+
+<h3>REQ-35: Calcular las comisiones totales del portafolio</h3>
+
+<strong>Contexto:</strong> Sumar TODAS las comisiones de TODAS las criptos.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin: comisiones = $336.70
+Ethereum: comisiones = $420.50
+Cardano: comisiones = $13.20
+Solana: comisiones = $10.00
+Ripple: comisiones = $9.60
+
+Total = $336.70 + $420.50 + $13.20 + $10 + $9.60 = $790
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double calcularComisionesTotalesPortafolio()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear variable <code>total</code> = 0</li>
+<li>Recorrer todas las criptomonedas</li>
+<li>Por cada una: sumar su <code>getComisionesTotales()</code></li>
+<li>Retornar total</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+total = 0
+Bitcoin: 336.70 → total = 336.70
+Ethereum: 420.50 → total = 757.20
+Cardano: 13.20 → total = 770.40
+Solana: 10.00 → total = 780.40
+Ripple: 9.60 → total = 790.00
+
+Retorna 790.00
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Medir el impacto global de las comisiones.
+
+<strong>Patrón:</strong> Acumulador
+
+<hr>
+
+<h3>REQ-36: Calcular porcentaje de comisiones sobre ganancias</h3>
+
+<strong>Contexto:</strong> Si gané $5,608 pero pagué $790 en comisiones, ¿qué % representan?
+
+<strong>Cálculo:</strong> ($790 / $5,608) × 100 = 14.09%
+
+<strong>Método resultante:</strong>
+<pre><code>
+public double calcularPorcentajeComisionesSobreGanancias()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Llamar a <code>calcularGananciaTotalPortafolio()</code> → ejemplo: 5608</li>
+<li>Verificar si ganancia > 0</li>
+<li>Si ganancia > 0:</li>
+</ul>
+<p>   - Llamar a <code>calcularComisionesTotalesPortafolio()</code> → ejemplo: 790</p>
+<p>   - Dividir: 790 / 5608 = 0.1409</p>
+<p>   - Multiplicar por 100: 0.1409 × 100 = 14.09</p>
+<p>   - Retornar 14.09</p>
+<ul>
+<li>Si ganancia ≤ 0:</li>
+</ul>
+<p>   - Retornar 0</p>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Ganancia total = 5608
+¿5608 > 0? SÍ
+Comisiones totales = 790
+Cálculo: (790 / 5608) × 100 = 14.09
+Retorna 14.09
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Evaluar eficiencia de la estrategia.
+
+<strong>Patrón:</strong> Cálculo derivado con validación
+
+<hr>
+
+<h3>REQ-37: Encontrar la criptomoneda con mejor rentabilidad</h3>
+
+<strong>Contexto:</strong> De las criptos CON VENTAS, ¿cuál tiene mayor rentabilidad %?
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin: tiene ventas, rentabilidad = 16.13%
+Ethereum: tiene ventas, rentabilidad = 19.35% ← la mejor
+Cardano: tiene ventas, rentabilidad = 71.76% ← ¡la mejor real!
+Solana: SIN ventas → ignorar
+Ripple: SIN ventas → ignorar
+
+Mejor: Cardano con 71.76%
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public Criptomoneda obtenerCriptoConMejorRentabilidad()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear variables: <code>mejorCripto = null</code>, <code>mejorRentabilidad = valor muy negativo</code></li>
+<li>Recorrer <code>criptomonedas</code></li>
+<li>Por cada criptomoneda:</li>
+</ul>
+<p>   - Verificar si tiene ventas</p>
+<p>   - Si tiene ventas:</p>
+<p>     - Obtener su rentabilidad</p>
+<p>     - Si es mayor que <code>mejorRentabilidad</code>:</p>
+<p>       - Actualizar <code>mejorCripto</code> y <code>mejorRentabilidad</code></p>
+<p>   - Si no tiene ventas: ignorarla</p>
+<ul>
+<li>Retornar <code>mejorCripto</code></li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+mejorCripto = null
+mejorRentabilidad = -∞
+
+Bitcoin: tieneVentas()=true
+  rentabilidad = 16.13
+  ¿16.13 > -∞? SÍ → mejorCripto=Bitcoin, mejorRentabilidad=16.13
+
+Ethereum: tieneVentas()=true
+  rentabilidad = 19.35
+  ¿19.35 > 16.13? SÍ → mejorCripto=Ethereum, mejorRentabilidad=19.35
+
+Cardano: tieneVentas()=true
+  rentabilidad = 71.76
+  ¿71.76 > 19.35? SÍ → mejorCripto=Cardano, mejorRentabilidad=71.76
+
+Solana: tieneVentas()=false → ignorar
+Ripple: tieneVentas()=false → ignorar
+
+Retorna Cardano
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar la inversión más exitosa.
+
+<strong>Patrón:</strong> Búsqueda de máximo con filtro
+
+<hr>
+
+<h3>REQ-38: Encontrar la criptomoneda con peor rentabilidad</h3>
+
+<strong>Contexto:</strong> De las criptos con ventas, ¿cuál tiene menor rentabilidad?
+
+<strong>Ejemplo:</strong>
+<p>Del ejemplo anterior, Bitcoin con 16.13% sería la peor (entre las que tienen ventas).</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public Criptomoneda obtenerCriptoConPeorRentabilidad()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear: <code>peorCripto = null</code>, <code>peorRentabilidad = valor muy positivo</code></li>
+<li>Recorrer criptomonedas con ventas</li>
+<li>Por cada una: si su rentabilidad < peorRentabilidad, actualizar</li>
+<li>Retornar peorCripto</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+peorRentabilidad = +∞
+
+Bitcoin: rent=16.13 → ¿16.13 < +∞? SÍ → peorCripto=Bitcoin, peorRent=16.13
+Ethereum: rent=19.35 → ¿19.35 < 16.13? NO
+Cardano: rent=71.76 → ¿71.76 < 16.13? NO
+(Solana y Ripple sin ventas → ignorar)
+
+Retorna Bitcoin
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar inversiones problemáticas.
+
+<strong>Patrón:</strong> Búsqueda de mínimo con filtro
+
+<hr>
+
+<h3>REQ-39: Obtener lista de criptomonedas en ganancia</h3>
+
+<strong>Contexto:</strong> ¿Cuáles inversiones nos están dando dinero?
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin: tiene ventas, ganancia = $1,444 (positiva) → incluir
+Ethereum: tiene ventas, ganancia = $3,600 (positiva) → incluir
+Cardano: tiene ventas, ganancia = -$200 (negativa) → NO incluir
+Solana: SIN ventas → NO incluir
+
+Resultado: [Bitcoin, Ethereum]
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Criptomoneda> obtenerCriptosConGanancias()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear ArrayList vacío <code>resultado</code></li>
+<li>Recorrer <code>criptomonedas</code></li>
+<li>Por cada cripto:</li>
+</ul>
+<p>   - Verificar si tiene ventas</p>
+<p>   - Si tiene ventas:</p>
+<p>     - Obtener su ganancia realizada</p>
+<p>     - Si ganancia > 0: agregarla al resultado</p>
+<ul>
+<li>Retornar resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+resultado = vacío
+
+Bitcoin: tieneVentas()=true, ganancia=1444 → ¿1444>0? SÍ → agregar
+Ethereum: tieneVentas()=true, ganancia=3600 → ¿3600>0? SÍ → agregar
+Cardano: tieneVentas()=true, ganancia=-200 → ¿-200>0? NO
+Solana: tieneVentas()=false → no revisar ganancia
+
+Retorna ArrayList con [Bitcoin, Ethereum]
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Filtrar inversiones exitosas.
+
+<strong>Patrón:</strong> Filtrado con condición compuesta
+
+<hr>
+
+<h3>REQ-40: Obtener lista de criptomonedas en pérdida</h3>
+
+<strong>Contexto:</strong> ¿Cuáles inversiones nos están perdiendo dinero?
+
+<strong>Ejemplo:</strong>
+<p>Cardano con ganancia = -$200 (negativa)</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Criptomoneda> obtenerCriptosConPerdidas()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear ArrayList vacío</li>
+<li>Recorrer criptomonedas</li>
+<li>Por cada una con ventas:</li>
+</ul>
+<p>   - Si ganancia < 0: agregarla</p>
+<ul>
+<li>Retornar resultado</li>
+</ul>
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Solo Cardano tiene ganancia negativa
+Retorna ArrayList con [Cardano]
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar inversiones problemáticas.
+
+<strong>Patrón:</strong> Filtrado
+
+<hr>
+
+<h3>REQ-41: Obtener criptomonedas sin ventas</h3>
+
+<strong>Contexto:</strong> ¿Cuáles son "holdings" puros (solo compras)?
+
+<strong>Ejemplo:</strong>
+<p>Solana y Ripple no tienen ventas → [Solana, Ripple]</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Criptomoneda> obtenerCriptosSinVentas()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear ArrayList vacío</li>
+<li>Recorrer criptomonedas</li>
+<li>Por cada una:</li>
+</ul>
+<p>   - Si NO tiene ventas: agregarla</p>
+<ul>
+<li>Retornar resultado</li>
+</ul>
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin: tieneVentas()=true → ignorar
+Ethereum: tieneVentas()=true → ignorar
+Cardano: tieneVentas()=true → ignorar
+Solana: tieneVentas()=false → agregar
+Ripple: tieneVentas()=false → agregar
+
+Retorna [Solana, Ripple]
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar inversiones a largo plazo.
+
+<strong>Patrón:</strong> Filtrado por negación
+
+<hr>
+
+<h3>REQ-42: Encontrar la criptomoneda más operada</h3>
+
+<strong>Contexto:</strong> ¿Con cuál hemos hecho más transacciones?
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin: 10 operaciones ← la más operada
+Ethereum: 8 operaciones
+Cardano: 5 operaciones
+Solana: 1 operación
+Ripple: 1 operación
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public Criptomoneda obtenerCriptoConMasOperaciones()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Verificar si portafolio vacío → retornar null</li>
+<li>Tomar la primera cripto como máximo provisional</li>
+<li>Obtener su cantidad de operaciones</li>
+<li>Recorrer las demás</li>
+<li>Por cada una: si tiene más operaciones, actualizar máximo</li>
+<li>Retornar la cripto con más operaciones</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+criptoMax = Bitcoin
+maxOps = 10
+
+Ethereum: ops=8 → ¿8>10? NO
+Cardano: ops=5 → ¿5>10? NO
+Solana: ops=1 → ¿1>10? NO
+Ripple: ops=1 → ¿1>10? NO
+
+Retorna Bitcoin
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar nuestra cripto favorita.
+
+<strong>Patrón:</strong> Búsqueda de máximo
+
+<hr>
+
+<h3>REQ-43: Contar operaciones totales del portafolio</h3>
+
+<strong>Contexto:</strong> ¿Cuántas transacciones en total?
+
+<strong>Ejemplo:</strong>
+<p>Bitcoin (10) + Ethereum (8) + Cardano (5) + Solana (1) + Ripple (1) = 25 operaciones</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public int contarTotalOperaciones()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear contador = 0</li>
+<li>Recorrer criptomonedas</li>
+<li>Por cada una: sumar su cantidad de operaciones</li>
+<li>Retornar contador</li>
+</ul>
+
+<strong>Ejemplo:</strong>
+<pre><code>
+total = 0
+Bitcoin: 10 → total = 10
+Ethereum: 8 → total = 18
+Cardano: 5 → total = 23
+Solana: 1 → total = 24
+Ripple: 1 → total = 25
+
+Retorna 25
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Métrica de actividad.
+
+<strong>Patrón:</strong> Acumulador
+
+<hr>
+
+<h3>REQ-44: Contar operaciones por tipo en todo el portafolio</h3>
+
+<strong>Contexto:</strong> ¿Cuántas compras en total? ¿Cuántas ventas?
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin: 7 compras, 3 ventas
+Ethereum: 5 compras, 3 ventas
+Cardano: 3 compras, 2 ventas
+Solana: 1 compra, 0 ventas
+Ripple: 1 compra, 0 ventas
+
+Si pedimos tipo="Compra" → 7+5+3+1+1 = 17 compras
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public int contarOperacionesPorTipo(String tipo)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear contador = 0</li>
+<li>Recorrer criptomonedas</li>
+<li>Por cada cripto:</li>
+</ul>
+<p>   - Llamar a <code>obtenerOperacionesPorTipo(tipo)</code></p>
+<p>   - Ese método retorna un ArrayList</p>
+<p>   - Contar cuántos elementos tiene ese ArrayList</p>
+<p>   - Sumar al contador</p>
+<ul>
+<li>Retornar contador</li>
+</ul>
+
+<strong>Ejemplo (tipo="Compra"):</strong>
+<pre><code>
+contador = 0
+Bitcoin: obtenerOperacionesPorTipo("Compra") → ArrayList con 7 elementos → contador=7
+Ethereum: obtenerOperacionesPorTipo("Compra") → ArrayList con 5 elementos → contador=12
+Cardano: obtenerOperacionesPorTipo("Compra") → ArrayList con 3 elementos → contador=15
+Solana: obtenerOperacionesPorTipo("Compra") → ArrayList con 1 elemento → contador=16
+Ripple: obtenerOperacionesPorTipo("Compra") → ArrayList con 1 elemento → contador=17
+
+Retorna 17
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Analizar balance entre compras y ventas.
+
+<strong>Patrón:</strong> Acumulador con delegación
+
+<hr>
+
+<h3>REQ-45: Obtener todas las operaciones de un día (consolidado)</h3>
+
+<strong>Contexto:</strong> Ver TODAS las operaciones del lunes, de CUALQUIER cripto.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin tiene 2 operaciones del lunes
+Ethereum tiene 1 operación del lunes
+Cardano tiene 0 operaciones del lunes
+Solana tiene 1 operación del lunes
+
+Resultado: ArrayList con 4 operaciones del lunes
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Operacion> obtenerOperacionesPorDia(String dia)
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear ArrayList vacío <code>resultado</code></li>
+<li>Recorrer todas las criptomonedas</li>
+<li>Por cada cripto:</li>
+</ul>
+<p>   - Llamar a <code>cripto.obtenerOperacionesPorDia(dia)</code></p>
+<p>   - Ese método retorna un ArrayList con las operaciones de ese día</p>
+<p>   - Agregar TODAS esas operaciones al <code>resultado</code> (usar addAll)</p>
+<ul>
+<li>Retornar resultado</li>
+</ul>
+
+<strong>Ejemplo (dia="Lunes"):</strong>
+<pre><code>
+resultado = vacío
+
+Bitcoin: obtenerOperacionesPorDia("Lunes") → ArrayList con [op1, op2]
+  resultado.addAll([op1, op2]) → resultado ahora tiene 2 elementos
+
+Ethereum: obtenerOperacionesPorDia("Lunes") → ArrayList con [op3]
+  resultado.addAll([op3]) → resultado ahora tiene 3 elementos
+
+Cardano: obtenerOperacionesPorDia("Lunes") → ArrayList vacío
+  resultado.addAll([]) → resultado sigue con 3 elementos
+
+Solana: obtenerOperacionesPorDia("Lunes") → ArrayList con [op4]
+  resultado.addAll([op4]) → resultado ahora tiene 4 elementos
+
+Retorna ArrayList con 4 operaciones
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Análisis temporal cruzando criptomonedas.
+
+<strong>Patrón:</strong> Consolidación (unir múltiples listas)
+
+<hr>
+
+<h3>REQ-46: Obtener operaciones de un período (consolidado)</h3>
+
+<strong>Contexto:</strong> Todas las operaciones de la mañana, de cualquier cripto.
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Operacion> obtenerOperacionesPorPeriodo(String periodo)
+</code></pre>
+
+<strong>Pasos:</strong> Idénticos al REQ-43, pero llamando a <code>obtenerOperacionesPorPeriodo</code>
+
+<strong>Ejemplo (periodo="Mañana"):</strong>
+<pre><code>
+Bitcoin: 3 operaciones de mañana
+Ethereum: 2 operaciones de mañana
+Cardano: 1 operación de mañana
+Solana: 0 operaciones de mañana
+Ripple: 1 operación de mañana
+
+Consolidar todas → ArrayList con 7 operaciones
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Analizar patrones horarios.
+
+<strong>Patrón:</strong> Consolidación
+
+<hr>
+
+<h3>REQ-47: Encontrar la operación más grande del portafolio</h3>
+
+<strong>Contexto:</strong> De TODAS las operaciones de TODAS las criptos, ¿cuál tiene mayor monto?
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin op1: monto=$22,500
+Bitcoin op2: monto=$13,200
+Ethereum op1: monto=$37,200 ← la más grande
+Cardano op1: monto=$560
+...
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public Operacion obtenerOperacionMasGrande()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear: <code>operacionMax = null</code>, <code>montoMax = valor muy negativo</code></li>
+<li>Recorrer cada criptomoneda</li>
+<li>Por cada cripto:</li>
+</ul>
+<p>   - Obtener su ArrayList de operaciones</p>
+<p>   - Recorrer cada operación de esa cripto:</p>
+<p>     - Obtener su monto</p>
+<p>     - Si monto > montoMax: actualizar máximo</p>
+<ul>
+<li>Retornar operacionMax</li>
+</ul>
+
+<strong>Ejemplo de ejecución (recorrido anidado):</strong>
+<pre><code>
+operacionMax = null
+montoMax = -∞
+
+Recorrer Bitcoin:
+  op1: monto=22500 → ¿22500>-∞? SÍ → operacionMax=op1, montoMax=22500
+  op2: monto=13200 → ¿13200>22500? NO
+
+Recorrer Ethereum:
+  op1: monto=37200 → ¿37200>22500? SÍ → operacionMax=op1_eth, montoMax=37200
+  op2: monto=22200 → ¿22200>37200? NO
+
+Recorrer Cardano:
+  op1: monto=560 → ¿560>37200? NO
+  ...
+
+Retorna la operación de Ethereum con monto $37,200
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar operaciones significativas.
+
+<strong>Patrón:</strong> Búsqueda de máximo en estructura anidada
+
+<hr>
+
+<h3>REQ-48: Obtener operaciones con comisión alta</h3>
+
+<strong>Contexto:</strong> Todas las operaciones (de cualquier cripto) con comisión > 1%.
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Bitcoin op1: comisión=0.5% → NO incluir
+Bitcoin op2: comisión=1.3% → incluir
+Ethereum op1: comisión=0.7% → NO incluir
+Solana op1: comisión=1.5% → incluir
+
+Resultado: [Bitcoin op2, Solana op1]
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<Operacion> obtenerOperacionesConComisionAlta()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear ArrayList vacío <code>resultado</code></li>
+<li>Recorrer cada criptomoneda</li>
+<li>Por cada cripto:</li>
+</ul>
+<p>   - Recorrer cada operación de esa cripto:</p>
+<p>     - Obtener su comisión %</p>
+<p>     - Si comisión > 1.0: agregarla al resultado</p>
+<ul>
+<li>Retornar resultado</li>
+</ul>
+
+<strong>Ejemplo:</strong>
+<pre><code>
+resultado = vacío
+
+Recorrer Bitcoin:
+  op1: comisión%=0.5 → ¿0.5>1.0? NO
+  op2: comisión%=1.3 → ¿1.3>1.0? SÍ → agregar
+
+Recorrer Ethereum:
+  op1: comisión%=0.7 → NO
+  op2: comisión%=0.7 → NO
+
+Recorrer Solana:
+  op1: comisión%=1.5 → ¿1.5>1.0? SÍ → agregar
+
+Retorna ArrayList con 2 operaciones
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar operaciones costosas.
+
+<strong>Patrón:</strong> Filtrado en estructura anidada
+
+<hr>
+
+<h3>REQ-49: Determinar el día más operado</h3>
+
+<strong>Contexto:</strong> ¿Qué día de la semana operamos más?
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Lunes: 8 operaciones ← el más operado
+Martes: 3 operaciones
+Miércoles: 5 operaciones
+Jueves: 2 operaciones
+Viernes: 6 operaciones
+Sábado: 0 operaciones
+Domingo: 1 operación
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public String obtenerDiaMasOperado()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear 7 contadores (uno por cada día de la semana), todos en 0</li>
+<li>Recorrer cada criptomoneda</li>
+<li>Por cada cripto:</li>
+</ul>
+<p>   - Recorrer cada operación:</p>
+<p>     - Obtener su día</p>
+<p>     - Incrementar el contador de ese día</p>
+<ul>
+<li>Encontrar cuál contador es el mayor</li>
+<li>Retornar el día correspondiente a ese contador</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+Contadores:
+  contLunes=0, contMartes=0, contMiercoles=0, contJueves=0,
+  contViernes=0, contSabado=0, contDomingo=0
+
+Recorrer Bitcoin (10 operaciones):
+  op1: día="Lunes" → contLunes++
+  op2: día="Lunes" → contLunes++
+  op3: día="Miércoles" → contMiercoles++
+  ...
+
+Recorrer Ethereum (8 operaciones):
+  ...
+
+Al final:
+  contLunes=8, contMartes=3, contMiercoles=5, contJueves=2,
+  contViernes=6, contSabado=0, contDomingo=1
+
+Encontrar máximo: contLunes=8 es el mayor
+Retorna "Lunes"
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar patrones de comportamiento.
+
+<strong>Patrón:</strong> Análisis estadístico con contadores múltiples
+
+<hr>
+
+<h3>REQ-50: Determinar el período más operado</h3>
+
+<strong>Contexto:</strong> ¿Mañana, tarde o noche?
+
+<strong>Ejemplo:</strong>
+<p>Mañana: 12 operaciones ← el más operado</p>
+<p>Tarde: 8 operaciones</p>
+<p>Noche: 5 operaciones</p>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public String obtenerPeriodoMasOperado()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear 3 contadores: contMañana=0, contTarde=0, contNoche=0</li>
+<li>Recorrer cada cripto y cada operación</li>
+<li>Por cada operación:</li>
+</ul>
+<p>   - Obtener su período (llamando getPeriodo())</p>
+<p>   - Incrementar el contador correspondiente</p>
+<ul>
+<li>Encontrar el contador mayor</li>
+<li>Retornar ese período</li>
+</ul>
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Después de recorrer todo:
+  contMañana=12, contTarde=8, contNoche=5
+
+Máximo: contMañana=12
+Retorna "Mañana"
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Analizar horarios preferidos.
+
+<strong>Patrón:</strong> Análisis estadístico
+
+<hr>
+
+<h3>REQ-51: Obtener días únicos operados</h3>
+
+<strong>Contexto:</strong> ¿En cuáles días hemos operado? (sin repetir)
+
+<strong>Ejemplo:</strong>
+<pre><code>
+Operamos en: Lunes, Miércoles, Viernes, Sábado
+NO operamos en: Martes, Jueves, Domingo
+
+Resultado: ["Lunes", "Miércoles", "Viernes", "Sábado"]
+</code></pre>
+
+<strong>Método resultante:</strong>
+<pre><code>
+public ArrayList<String> obtenerDiasOperados()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear ArrayList vacío <code>resultado</code></li>
+<li>Recorrer cada criptomoneda</li>
+<li>Por cada cripto:</li>
+</ul>
+<p>   - Recorrer cada operación:</p>
+<p>     - Obtener su día</p>
+<p>     - Verificar si ese día YA está en <code>resultado</code></p>
+<p>     - Si NO está: agregarlo</p>
+<p>     - Si ya está: ignorarlo (evitar duplicados)</p>
+<ul>
+<li>Retornar resultado</li>
+</ul>
+
+<strong>Ejemplo de ejecución:</strong>
+<pre><code>
+resultado = vacío []
+
+Bitcoin op1: día="Lunes" → ¿está en []? NO → agregar → ["Lunes"]
+Bitcoin op2: día="Lunes" → ¿está en ["Lunes"]? SÍ → ignorar
+Bitcoin op3: día="Miércoles" → ¿está? NO → agregar → ["Lunes", "Miércoles"]
+Ethereum op1: día="Viernes" → ¿está? NO → agregar → ["Lunes", "Miércoles", "Viernes"]
+Ethereum op2: día="Lunes" → ¿está? SÍ → ignorar
+Solana op1: día="Sábado" → ¿está? NO → agregar → ["Lunes", "Miércoles", "Viernes", "Sábado"]
+
+Retorna ["Lunes", "Miércoles", "Viernes", "Sábado"]
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Identificar cobertura temporal.
+
+<strong>Patrón:</strong> Extracción de valores únicos
+
+<hr>
+
+<h3>REQ-52: Generar reporte completo</h3>
+
+<strong>Contexto:</strong> Documento de texto con toda la información resumida.
+
+<strong>Método resultante:</strong>
+<pre><code>
+public String generarReporteCompleto()
+</code></pre>
+
+<strong>Pasos:</strong>
+<ul>
+<li>Crear un String (o StringBuilder) para acumular el texto</li>
+<li>Agregar encabezado con nombre del dueño</li>
+<li>Recorrer cada criptomoneda y agregar:</li>
+</ul>
+<p>   - Nombre y símbolo</p>
+<p>   - Cantidad actual</p>
+<p>   - Dinero invertido y recuperado</p>
+<p>   - Ganancia y rentabilidad</p>
+<p>   - Comisiones pagadas</p>
+<p>   - Total de operaciones</p>
+<ul>
+<li>Agregar resumen general:</li>
+</ul>
+<p>   - Valor total invertido</p>
+<p>   - Ganancia total</p>
+<p>   - Comisiones totales</p>
+<p>   - Mejor y peor criptomoneda</p>
+<ul>
+<li>Retornar el String completo</li>
+</ul>
+
+<strong>Ejemplo de salida:</strong>
+<pre><code>
+=================================
+REPORTE DE PORTAFOLIO
+Dueño: Juan Pérez
+=================================
+
+BITCOIN (BTC)
+  Cantidad actual: 0.7 BTC
+  Dinero invertido: $40,300.00
+  Dinero recuperado: $10,400.00
+  Ganancia realizada: $1,444.44
+  Rentabilidad: 16.13%
+  Comisiones pagadas: $336.70
+  Operaciones: 10
+
+[... más criptos ...]
+
+RESUMEN GENERAL:
+  Valor total invertido: $78,810.00
+  Ganancia total: $5,608.00
+  Comisiones totales: $790.00
+  Mejor rentabilidad: Cardano (71.76%)
+  Peor rentabilidad: Bitcoin (16.13%)
+  Total operaciones: 25
+</code></pre>
+
+<strong>Por qué es necesario:</strong> Visualización completa del portafolio.
+
+<strong>Patrón:</strong> Consolidación de información con formato
+
+<hr>
+
+<h2 id="📊 RESUMEN FINAL">📊 RESUMEN FINAL</h2>
+
+<h3>Total de Métodos por Clase</h3>
+
+<pre><code>
+Operacion: 6 métodos de cálculo
+Criptomoneda: 20 métodos
+Wallet: 28 métodos
+─────────────────────────
+TOTAL: 54 métodos
+</code></pre>
+
+<h3>Patrones de Recorrido Identificados</h3>
+
+<ul>
+<li><strong>Acumulador simple:</strong> Suma valores recorriendo ArrayList</li>
+<li><strong>Acumulador con filtro:</strong> Suma solo elementos que cumplen condición</li>
+<li><strong>Búsqueda de máximo/mínimo:</strong> Encuentra elemento con mayor/menor valor</li>
+<li><strong>Filtrado:</strong> Crea nuevo ArrayList con elementos que cumplen condición</li>
+<li><strong>Búsqueda booleana:</strong> Verifica si existe al menos un elemento que cumple condición</li>
+<li><strong>Cálculo derivado:</strong> Usa resultados de otros métodos</li>
+<li><strong>Consolidación:</strong> Une resultados de múltiples fuentes</li>
+<li><strong>Recorrido anidado:</strong> Recorre ArrayList dentro de otro ArrayList</li>
+<li><strong>Análisis estadístico:</strong> Usa contadores múltiples para análisis</li>
+<li><strong>Extracción de únicos:</strong> Filtra elementos sin repetir</li>
+</ul>
+
+<h3>Principios del Diseño</h3>
+
+<ul>
+<li><strong>Solo 10 atributos totales:</strong> Todo lo demás se calcula</li>
+<li><strong>Instanciación interna:</strong> Los métodos reciben datos sueltos, NO objetos</li>
+<li><strong>Sin redundancia:</strong> No almacenamos valores calculables</li>
+<li><strong>Siempre correcto:</strong> Como todo se calcula en tiempo real, nunca hay datos desactualizados</li>
+<li><strong>Recorridos frecuentes:</strong> La mayoría de métodos requieren recorrer ArrayLists</li>
+</ul>
+
+<hr>
+
+<h2 id="✅ Tarea del Estudiante">✅ Tarea del Estudiante</h2>
+
+<p>Para cada método listado:</p>
+
+<ul>
+<li><strong>Copiar la firma</strong> exactamente como se especificó</li>
+<li><strong>Implementar la lógica</strong> siguiendo los pasos numerados</li>
+<li><strong>Usar el patrón</strong> de recorrido apropiado</li>
+<li><strong>Validar casos especiales:</strong></li>
+</ul>
+<p>   - Listas vacías</p>
+<p>   - División por cero</p>
+<p>   - Valores null</p>
+
+<strong>Lo que NO proporcionamos:</strong> El código interno completo (eso es tu práctica)
+
+<strong>Lo que SÍ proporcionamos:</strong>
+<ul>
+<li>La firma exacta de cada método</li>
+<li>Ejemplo concreto de entrada</li>
+<li>Pasos numerados del cálculo</li>
+<li>Ejemplo de ejecución paso a paso</li>
+<li>Ejemplo del resultado esperado</li>
+<li>Explicación de por qué es necesario</li>
+<li>El patrón a aplicar</li>
+</ul>
+
+<hr>
+
+<p>*Fin de la Guía Completa*</p>
+</div>
+    </div>
+
+    <footer>
+        <p><strong>Sistema de Wallet de Criptomonedas</strong></p>
+        <p>Fundamentos de Programación - Universidad EAM © 2025</p>
+    </footer>
+
+    <script>
+        mermaid.initialize({{ startOnLoad: true, theme: 'default' }});
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {{
+            anchor.addEventListener('click', function (e) {{
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {{
+                    target.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+                }}
+            }});
+        }});
+    </script>
+</body>
+</html>
